@@ -14,7 +14,7 @@ import _thread
 
 
 from nixt.lib.default import Default
-from nixt.lib.object  import Object
+from nixt.lib.object  import Object, ident
 from nixt.run.thread  import launch
 from nixt.run.utils   import parse, spl
 
@@ -47,6 +47,7 @@ class Event(Default):
     def __init__(self):
         Default.__init__(self)
         self._ready  = threading.Event()
+        self.orig    = ""
         self.result  = []
         self.txt     = ""
         self.type    = "command"
@@ -77,6 +78,7 @@ class Handler:
 
     def callback(self, evt):
         "call callback based on event type."
+        evt.orig = ident(self)
         func = getattr(self.cbs, evt.type, None)
         if not func:
             evt.ready()

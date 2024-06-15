@@ -20,7 +20,7 @@ def ini(event):
         event.reply("ini <name>")
         return
     if not MODS:
-        event.reply("modules not availabl")
+        event.reply("modules are not available")
         return
     for name in event.args:
         for nme in spl(name):

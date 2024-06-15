@@ -24,16 +24,6 @@ class Broker:
     def __init__(self):
         self.objs = Object()
 
-    def add(self, obj):
-        "add an object to the broker."
-        with lock:
-            ids = ident(obj)
-            setattr(self.objs, ids, obj)
-            name = ids.split(os.sep, maxsplit=1)[0]
-            if name not in Broker.fqns:
-                Broker.fqns.append(name)
-            return ids
-
     def all(self, name=None, deleted=False):
         "return all objects."
         with lock:
@@ -69,7 +59,6 @@ class Broker:
         "return object by origin (repr)"
         return getattr(self.objs, orig, None)
 
-
     def keyz(self, key):
         "return all matching keys."
         return [x for x in keys(self.objs) if key == x.split(os.sep)[0]]
@@ -80,6 +69,7 @@ class Broker:
         if kyz:
             update(obj, getattr(self.objs, kyz[-1]))
             return kyz[-1]
+        return None
 
     def long(self, txt):
         "expand to full qualified name."
@@ -87,6 +77,16 @@ class Broker:
             if txt.lower() == qual.split(".")[-1].lower():
                 return qual
         return txt
+
+    def register(self, obj):
+        "add an object to the broker."
+        with lock:
+            ids = ident(obj)
+            setattr(self.objs, ids, obj)
+            name = ids.split(os.sep, maxsplit=1)[0]
+            if name not in Broker.fqns:
+                Broker.fqns.append(name)
+            return ids
 
 
 def __dir__():

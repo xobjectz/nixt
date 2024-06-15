@@ -5,7 +5,7 @@
 
 
 from nixt.lib.object  import fmt
-from nixt.run.persist import Persist
+from nixt.run.persist import Persist, find
 
 
 def fnd(event):
@@ -18,7 +18,7 @@ def fnd(event):
         return
     otype = Persist.long(event.args[0])
     nmr = 0
-    for _fnm, obj in Persist.find(otype, event.gets):
+    for _fnm, obj in find(otype, event.gets):
         event.reply(f"{nmr} {fmt(obj)}")
         nmr += 1
     if not nmr:

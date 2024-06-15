@@ -20,7 +20,7 @@ from urllib.parse import quote_plus, urlencode
 
 from nixt.lib.default import Default
 from nixt.lib.object  import Object, fmt, update, values
-from nixt.run.persist import Persist, last, sync
+from nixt.run.persist import find, last, sync
 from nixt.run.main    import broker
 from nixt.run.thread  import Repeater, launch
 from nixt.run.utils   import fntime, laps, spl
@@ -71,7 +71,7 @@ class Fetcher(Object):
         self.dosave = False
         self.seen = Seen()
         self.seenfn = None
-        broker.add(self)
+        broker.register(self)
 
     @staticmethod
     def display(obj):
@@ -132,7 +132,7 @@ class Fetcher(Object):
     def run(self, silent=False):
         "fetch all feeds."
         thrs = []
-        for _fn, feed in Persist.find('rss'):
+        for _fn, feed in find('rss'):
             thrs.append(launch(self.fetch, feed, silent, name=f"{feed.rss}"))
         return thrs
 
@@ -281,7 +281,7 @@ def dpl(event):
         event.reply('dpl <stringinurl> <item1,item2>')
         return
     setter = {'display_list': event.args[1]}
-    for _fn, feed in Persist.find("rss", {'rss': event.args[0]}):
+    for _fn, feed in find("rss", {'rss': event.args[0]}):
         if feed:
             update(feed, setter)
     event.reply('ok')
@@ -293,7 +293,7 @@ def nme(event):
         event.reply('nme <stringinurl> <name>')
         return
     selector = {'rss': event.args[0]}
-    for _fn, feed in Persist.find("rss", selector):
+    for _fn, feed in find("rss", selector):
         if feed:
             feed.name = event.args[1]
     event.reply('ok')
@@ -304,7 +304,7 @@ def rem(event):
     if len(event.args) != 1:
         event.reply('rem <stringinurl>')
         return
-    for _fnm, feed in Persist.find("rss"):
+    for _fnm, feed in find("rss"):
         if event.args[0] not in feed.rss:
             continue
         if feed:
@@ -317,7 +317,7 @@ def res(event):
     if len(event.args) != 1:
         event.reply('res <stringinurl>')
         return
-    for fnm, feed in Persist.find("rss", None, True):
+    for fnm, feed in find("rss", None, True):
         if event.args[0] not in feed.rss:
             continue
         if feed:
@@ -330,7 +330,7 @@ def rss(event):
     "add a feed."
     if not event.rest:
         nrs = 0
-        for fnm, feed in Persist.find('rss'):
+        for fnm, feed in find('rss'):
             nrs += 1
             elp = laps(time.time()-fntime(fnm))
             txt = fmt(feed)
@@ -342,7 +342,7 @@ def rss(event):
     if 'http' not in url:
         event.reply('i need an url')
         return
-    for fnm, result in Persist.find("rss", {'rss': url}):
+    for fnm, result in find("rss", {'rss': url}):
         if result:
             event.reply(f'already got {url}')
             return

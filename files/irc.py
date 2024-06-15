@@ -18,10 +18,11 @@ import _thread
 
 
 from nixt.lib.default import Default
-from nixt.lib.object  import Object, edit, fmt, keys, values
+from nixt.lib.object  import Object, edit, fmt, keys
 from nixt.run.handler import Event, Handler, CLI, command
 from nixt.run.log     import Logging, debug
 from nixt.run.main    import broker
+from nixt.run.persist import last, sync
 from nixt.run.thread  import launch, later
 
 
@@ -40,18 +41,6 @@ def init():
     irc.start()
     irc.events.joined.wait()
     return irc
-
-
-def shutdown():
-    "shutdown irc bot."
-    for bot in values(broker.objs):
-        if "irc" not in str(type(bot)).lower():
-            continue
-        debug(f"IRC stopping {repr(bot)}")
-        bot.state.pongcheck = True
-        bot.state.keeprunning = False
-        bot.events.connected.clear()
-        bot.stop()
 
 
 class Config(Default):
@@ -82,7 +71,7 @@ class Config(Default):
         self.realname = self.realname or Config.realname
         self.server = self.server or Config.server
         self.username = self.username or Config.username
-        broker.add(self)
+        broker.register(self)
 
 
 class TextWrap(textwrap.TextWrapper):
@@ -207,7 +196,7 @@ class IRC(CLI, Handler, Output):
         self.register('PRIVMSG', cb_privmsg)
         self.register('QUIT', cb_quit)
         self.register("366", cb_ready)
-        broker.add(self)
+        broker.register(self)
 
     def announce(self, txt):
         "announce on all channels."
@@ -508,7 +497,7 @@ class IRC(CLI, Handler, Output):
 
     def start(self):
         "start bot."
-        broker.last(self.cfg)
+        last(self.cfg)
         if self.cfg.channel not in self.channels:
             self.channels.append(self.cfg.channel)
         self.events.connected.clear()
@@ -623,7 +612,7 @@ def cb_quit(bot, evt):
 def cfg(event):
     "configure command."
     config = Config()
-    broker.last(config)
+    last(config)
     if not event.sets:
         event.reply(
                     fmt(
@@ -634,7 +623,7 @@ def cfg(event):
                    )
     else:
         edit(config, event.sets)
-        broker.add(config)
+        sync(config)
         event.reply('ok')
 
 

@@ -47,7 +47,10 @@ Persist.workdir = Cfg.wdr
 
 
 if os.path.exists("mods"):
-    import mods
+    try:
+        import mods
+    except ModuleNotFoundError:
+        pass
 else:
     mods = None
 

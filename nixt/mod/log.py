@@ -10,7 +10,7 @@ import time
 
 
 from nixt.lib.object  import Object
-from nixt.run.persist import Persist, sync
+from nixt.run.persist import find, sync
 from nixt.run.utils   import fntime, laps
 
 
@@ -27,7 +27,7 @@ def log(event):
     "log text."
     if not event.rest:
         nmr = 0
-        for fnm, obj in Persist.find('log'):
+        for fnm, obj in find('log'):
             lap = laps(time.time() - fntime(fnm))
             event.reply(f'{nmr} {obj.txt} {lap}')
             nmr += 1

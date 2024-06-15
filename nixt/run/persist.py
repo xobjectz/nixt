@@ -22,22 +22,6 @@ class Persist(Object):
 
     workdir = ""
 
-    @staticmethod
-    def find(mtc, selector=None, index=None, deleted=False):
-        "find object matching the selector dict."
-        clz = Persist.long(mtc)
-        nrs = -1
-        for fnm in sorted(Persist.fns(clz), key=fntime):
-            obj = Default()
-            fetch(obj, fnm)
-            if not deleted and '__deleted__' in obj:
-                continue
-            if selector and not search(obj, selector):
-                continue
-            nrs += 1
-            if index is not None and nrs != int(index):
-                continue
-            yield (fnm, obj)
 
     @staticmethod
     def fns(mtc=""):
@@ -94,12 +78,29 @@ def fetch(obj, pth):
         return os.sep.join(pth.split(os.sep)[-3:])
 
 
+def find(mtc, selector=None, index=None, deleted=False):
+    "find object matching the selector dict."
+    clz = Persist.long(mtc)
+    nrs = -1
+    for fnm in sorted(Persist.fns(clz), key=fntime):
+        obj = Default()
+        fetch(obj, fnm)
+        if not deleted and '__deleted__' in obj:
+            continue
+        if selector and not search(obj, selector):
+            continue
+        nrs += 1
+        if index is not None and nrs != int(index):
+            continue
+        yield (fnm, obj)
+
+
 def last(obj, selector=None):
     "return last object saved."
     if selector is None:
         selector = {}
     result = sorted(
-                    Persist.find(fqn(obj), selector),
+                    find(fqn(obj), selector),
                     key=lambda x: fntime(x[0])
                    )
     res = None
@@ -124,6 +125,7 @@ def __dir__():
     return (
         'Persist',
         'fetch',
+        'find',
         'last',
         'sync'
     )
