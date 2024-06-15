@@ -79,6 +79,7 @@ class Broker:
         kyz = sorted(self.keyz(fqn(obj)), key=fntime)
         if kyz:
             update(obj, getattr(self.objs, kyz[-1]))
+        return kyz[-1]
 
     def long(self, txt):
         "expand to full qualified name."

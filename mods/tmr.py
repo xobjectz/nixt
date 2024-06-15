@@ -9,11 +9,11 @@ import re
 import time as ttime
 
 
-from nixt.lib.object  import update 
+from nixt.lib.object  import update
 from nixt.run.handler import Event
 from nixt.run.main    import broker
 from nixt.run.thread  import Timer, launch
-from nixt.run.utils   import spl
+from nixt.run.utils   import laps
 
 
 def init():

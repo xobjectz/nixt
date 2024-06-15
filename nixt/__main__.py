@@ -34,23 +34,13 @@ import time
 sys.path.insert(0, os.getcwd())
 
 
-from nixt.lib.default import Default
 from nixt.run.handler import CLI, Event,cmnd, scan
+from nixt.run.main    import Cfg
 from nixt.run.persist import Persist
 from nixt.run.utils   import parse
 
 
 from nixt import mod as modules
-
-
-Cfg         = Default()
-Cfg.dis     = ""
-Cfg.mod     = "cmd,err,fnd,log,mod,tdo,thr,tmr"
-Cfg.opts    = ""
-Cfg.name    = "nixt"
-Cfg.version = "3"
-Cfg.wdr     = os.path.expanduser(f"~/.{Cfg.name}")
-Cfg.pidfile = os.path.join(Cfg.wdr, f"{Cfg.name}.pid")
 
 
 if os.path.exists("mods"):

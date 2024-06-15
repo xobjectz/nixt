@@ -1,4 +1,6 @@
 # This file is placed in the Public Domain.
+#
+# pylint: disable=R0903,E1121
 
 
 "rich site syndicate"
@@ -39,12 +41,12 @@ DEBUG = False
 fetchlock = _thread.allocate_lock()
 
 
-class Feed(Default): # pylint: disable=R0903
+class Feed(Default):
 
     "Feed"
 
 
-class Rss(Default): # pylint: disable=R0903
+class Rss(Default):
 
     "Rss"
 
@@ -54,7 +56,7 @@ class Rss(Default): # pylint: disable=R0903
         self.rss          = ''
 
 
-class Seen(Default): # pylint: disable=R0903
+class Seen(Default):
 
     "Seen"
 
