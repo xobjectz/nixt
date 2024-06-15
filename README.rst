@@ -26,8 +26,8 @@ DESCRIPTION
     commands, deferred exception handling to not crash on an error, a
     parser to parse commandline options and values, etc.
 
-    NIXT has all the python3 code to program objects in a functional
-    way. It provides a base Object class that has only dunder methods, all
+    NIXT is python3 code to program objects in a functional way. It
+    provides a base Object class that has only dunder methods, all
     methods are factored out into functions with the objects as the first
     argument. It is called Object Programming (OP), OOP without the
     oriented.
@@ -43,6 +43,7 @@ AUTHOR
 ::
 
     xobjectz <objx@proton.me>
+
 
 COPYRIGHT
 

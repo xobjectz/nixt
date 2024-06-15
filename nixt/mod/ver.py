@@ -4,9 +4,9 @@
 "list of commands."
 
 
-VERSION = "1"
+from nixt.__main__ import Cfg
 
 
 def ver(event):
     "list commands."
-    event.reply(f"NIXT version {VERSION}")
+    event.reply(f"{Cfg.name.upper()} version {Cfg.version}")

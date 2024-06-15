@@ -7,11 +7,11 @@ build-backend = "setuptools.build_meta"
 
 
 [project]
-name = "objx"
-description = "objects library"
-version = "83"
+name = "nixt"
+description = "you have been nixt."
+version = "2"
 authors = [
-    {name = "Bart Thate", email = "bthate@dds.nl"},
+    {name = "xobjectz", email = "objx@proton.me"},
 ]
 readme = "README.rst"
 license = {text="Public Domain"}
@@ -24,22 +24,28 @@ classifiers = [
 ]
 
 
+[project.scripts]
+"nixt" = "__main__:main"
+
 [project.urls]
-"home" = "https://pypi.org/project/objx"
-"bugs" = "https://github.com/xobjectz/objx/issues"
-"source" = "https://github.com/xobjectz/objx"
+"home" = "https://pypi.org/project/nixt"
+"bugs" = "https://github.com/xobjectz/nixt/issues"
+"source" = "https://github.com/xobjectz/nixt"
 
 
 [tool.setuptools]
 packages = [
-    'objx',
+    'nixt',
+    'nixt.lib',
+    'nixt.run',
+    'nixt.mod'
 ]
 zip-safe=true
 
 
 [tool.setuptools.data-files]
-"share/doc/objx" = [
-    "README.rst"
+"share/doc/nixt" = [
+    "README.rst",
 ]
 
 [tool.setuptools.exclude-package-data]

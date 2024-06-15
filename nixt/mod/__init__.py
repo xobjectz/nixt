@@ -4,11 +4,13 @@
 "modules"
 
 
-from . import fnd, log, mod, tdo, thr, ver
+from . import cmd, err, fnd, log, mod, tdo, thr, ver
 
 
 def __dir__():
     return (
+        'cmd',
+        'err',
         'fnd',
         'log',
         'mod',
