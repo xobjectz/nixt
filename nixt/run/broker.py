@@ -8,8 +8,8 @@ import os
 import _thread
 
 
-from objx        import Object, fqn, ident, keys, search, update
-from objr.utils  import fntime
+from nixt.lib.object import Object, fqn, ident, keys, search, update
+from nixt.run.utils  import fntime
 
 
 lock = _thread.allocate_lock()

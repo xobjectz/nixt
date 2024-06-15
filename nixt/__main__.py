@@ -53,7 +53,6 @@ Cfg.wdr     = os.path.expanduser(f"~/.{Cfg.name}")
 Cfg.pidfile = os.path.join(Cfg.wdr, f"{Cfg.name}.pid")
 
 
-
 if os.path.exists("mods"):
     import mods
 else:
@@ -155,6 +154,7 @@ def main():
         csl = Console()
         csl.out = print
         csl.start()
+        cmnd(Cfg.otxt, print)
         while 1:
             time.sleep(1.0)
     elif Cfg.otxt:
