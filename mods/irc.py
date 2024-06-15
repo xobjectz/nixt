@@ -21,14 +21,13 @@ from nixt.lib.default import Default
 from nixt.lib.object  import Object, edit, fmt, keys, values
 from nixt.run.handler import Event, Handler, CLI, command
 from nixt.run.log     import Logging, debug
+from nixt.run.main    import broker
 from nixt.run.thread  import launch, later
-from nixt.run.broker  import Broker
 
 
 NAME    = "nixt"
 
 
-broker  = Broker()
 saylock = _thread.allocate_lock()
 
 

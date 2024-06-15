@@ -43,6 +43,9 @@ from nixt.run.utils   import parse
 from nixt import mod as modules
 
 
+Persist.workdir = Cfg.wdr
+
+
 if os.path.exists("mods"):
     import mods
 else:
@@ -121,7 +124,6 @@ def wrap(func):
 def main():
     "main"
     Cfg.mod = ",".join(dir(modules))
-    Persist.workdir = Cfg.wdr
     Persist.skel()
     parse(Cfg, " ".join(sys.argv[1:]))
     if mods:

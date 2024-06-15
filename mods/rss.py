@@ -1,6 +1,4 @@
 # This file is placed in the Public Domain.
-#
-# pylint: disable=R0903,E1121
 
 
 "rich site syndicate"
@@ -19,13 +17,13 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote_plus, urlencode
 
 
+
 from nixt.lib.default import Default
 from nixt.lib.object  import Object, fmt, update, values
-from nixt.run.thread  import Repeater
+from nixt.run.persist import Persist, last, sync
 from nixt.run.main    import broker
-from nixt.run.utils   import laps
-from nixt.run.thread  import launch
-from nixt.run.utils   import spl, fntime
+from nixt.run.thread  import Repeater, launch
+from nixt.run.utils   import fntime, laps, spl
 
 
 def init():
@@ -41,12 +39,12 @@ DEBUG = False
 fetchlock = _thread.allocate_lock()
 
 
-class Feed(Default):
+class Feed(Default): # pylint: disable=R0903
 
     "Feed"
 
 
-class Rss(Default):
+class Rss(Default): # pylint: disable=R0903
 
     "Rss"
 
@@ -56,7 +54,7 @@ class Rss(Default):
         self.rss          = ''
 
 
-class Seen(Default):
+class Seen(Default): # pylint: disable=R0903
 
     "Seen"
 
@@ -116,7 +114,7 @@ class Fetcher(Object):
                 self.seen.urls.append(uurl)
                 counter += 1
                 if self.dosave:
-                    broker.add(fed)
+                    sync(fed)
                 result.append(fed)
         if silent:
             return counter
@@ -134,13 +132,13 @@ class Fetcher(Object):
     def run(self, silent=False):
         "fetch all feeds."
         thrs = []
-        for _fn, feed in broker.all('rss'):
+        for _fn, feed in Persist.find('rss'):
             thrs.append(launch(self.fetch, feed, silent, name=f"{feed.rss}"))
         return thrs
 
     def start(self, repeat=True):
         "start fetcher."
-        self.seenfn = broker.last(self.seen)
+        self.seenfn = last(self.seen)
         if repeat:
             repeater = Repeater(300.0, self.run)
             repeater.start()
@@ -283,7 +281,7 @@ def dpl(event):
         event.reply('dpl <stringinurl> <item1,item2>')
         return
     setter = {'display_list': event.args[1]}
-    for _fn, feed in broker.find("rss", {'rss': event.args[0]}):
+    for _fn, feed in Persist.find("rss", {'rss': event.args[0]}):
         if feed:
             update(feed, setter)
     event.reply('ok')
@@ -295,7 +293,7 @@ def nme(event):
         event.reply('nme <stringinurl> <name>')
         return
     selector = {'rss': event.args[0]}
-    for _fn, feed in broker.find("rss", selector):
+    for _fn, feed in Persist.find("rss", selector):
         if feed:
             feed.name = event.args[1]
     event.reply('ok')
@@ -306,7 +304,7 @@ def rem(event):
     if len(event.args) != 1:
         event.reply('rem <stringinurl>')
         return
-    for _fnm, feed in broker.all("rss"):
+    for _fnm, feed in Persist.find("rss"):
         if event.args[0] not in feed.rss:
             continue
         if feed:
@@ -319,12 +317,12 @@ def res(event):
     if len(event.args) != 1:
         event.reply('res <stringinurl>')
         return
-    for fnm, feed in broker.all("rss", True):
+    for fnm, feed in Persist.find("rss", None, True):
         if event.args[0] not in feed.rss:
             continue
         if feed:
             feed.__deleted__ = False
-            broker.add(feed, fnm)
+            sync(feed, fnm)
     event.reply('ok')
 
 
@@ -332,7 +330,7 @@ def rss(event):
     "add a feed."
     if not event.rest:
         nrs = 0
-        for fnm, feed in broker.all('rss'):
+        for fnm, feed in Persist.find('rss'):
             nrs += 1
             elp = laps(time.time()-fntime(fnm))
             txt = fmt(feed)
@@ -344,13 +342,13 @@ def rss(event):
     if 'http' not in url:
         event.reply('i need an url')
         return
-    for fnm, result in broker.find("rss", {'rss': url}):
+    for fnm, result in Persist.find("rss", {'rss': url}):
         if result:
             event.reply(f'already got {url}')
             return
     feed = Rss()
     feed.rss = event.args[0]
-    broker.add(feed)
+    sync(feed)
     event.reply('ok')
 
 
