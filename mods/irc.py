@@ -19,13 +19,16 @@ import _thread
 
 from nixt.lib.default import Default
 from nixt.lib.object  import Object, edit, fmt, keys, values
-from nixt.run.handler import Event, Handler, command
+from nixt.run.handler import Event, Handler, CLI, command
 from nixt.run.log     import Logging, debug
 from nixt.run.thread  import launch, later
-from nixt.run.broker  import broker
+from nixt.run.broker  import Broker
 
 
 NAME    = "nixt"
+
+
+broker  = Broker()
 saylock = _thread.allocate_lock()
 
 
@@ -170,11 +173,12 @@ class Output():
         return 0
 
 
-class IRC(Handler, Output):
+class IRC(CLI, Handler, Output):
 
     "IRC"
 
     def __init__(self):
+        CLI.__init__(self)
         Handler.__init__(self)
         Output.__init__(self)
         self.buffer = []
