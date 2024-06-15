@@ -140,6 +140,7 @@ def main():
         daemon(Cfg.pidfile, "-v" in sys.argv)
         privileges(Cfg.user)
         scan(modules, Cfg.mod)
+        cmnd(Cfg.otxt, print)
         while 1:
             time.sleep(1.0)
         return
