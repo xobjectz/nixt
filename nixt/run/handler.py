@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # This file is placed in the Public Domain.
 #
-# pylint: disable=E1102
+# pylint: disable=R0902,E1102
 
 
 "handler"

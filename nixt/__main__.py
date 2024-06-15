@@ -1,6 +1,6 @@
 # This file is placed in the Public Domain.
 #
-# pylint: disable=C0413,W0105
+# pylint: disable=C0103,C0413,W0105,W0212,
 
 
 """NIXT - you have been nixt.
@@ -22,8 +22,10 @@
 
 """
 
-
+import getpass
 import os
+import pathlib
+import pwd
 import sys
 import termios
 import time
@@ -33,7 +35,7 @@ sys.path.insert(0, os.getcwd())
 
 
 from nixt.lib.default import Default
-from nixt.run.handler import CLI, Commands, Event, Handler, cmnd, command, scan
+from nixt.run.handler import CLI, Event,cmnd, scan
 from nixt.run.persist import Persist
 from nixt.run.utils   import parse
 
@@ -41,21 +43,21 @@ from nixt.run.utils   import parse
 from nixt import mod as modules
 
 
-Cfg             = Default()
-Cfg.dis         = ""
-Cfg.mod         = "cmd,err,fnd,log,mod,tdo,thr,tmr"
-Cfg.opts        = ""
-Cfg.name        = "nixt"
-Cfg.version     = "2"
-Cfg.wdr         = os.path.expanduser(f"~/.{Cfg.name}")
-Cfg.pidfile     = os.path.join(Cfg.wdr, f"{Cfg.name}.pid")
+Cfg         = Default()
+Cfg.dis     = ""
+Cfg.mod     = "cmd,err,fnd,log,mod,tdo,thr,tmr"
+Cfg.opts    = ""
+Cfg.name    = "nixt"
+Cfg.version = "3"
+Cfg.wdr     = os.path.expanduser(f"~/.{Cfg.name}")
+Cfg.pidfile = os.path.join(Cfg.wdr, f"{Cfg.name}.pid")
 
 
 
 if os.path.exists("mods"):
-     import mods
+    import mods
 else:
-     mods = None
+    mods = None
 
 
 class Console(CLI):
