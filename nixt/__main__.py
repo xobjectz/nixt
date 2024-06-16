@@ -124,6 +124,11 @@ def wrap(func):
             termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, old3)
 
 
+def wrapped():
+    "wrap main."
+    wrap(main)
+
+
 def main():
     "main"
     Cfg.mod = ",".join(dir(modules))
@@ -158,4 +163,4 @@ def main():
 
 
 if __name__ == "__main__":
-    wrap(main)
+    wrapped()

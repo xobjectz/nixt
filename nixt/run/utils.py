@@ -9,7 +9,7 @@ import time
 import types
 
 
-from objx.default import Default
+from nixt.lib.default import Default
 
 
 def fntime(daystr):
