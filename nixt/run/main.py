@@ -16,7 +16,7 @@ Cfg.dis     = ""
 Cfg.mod     = "cmd,err,fnd,log,mod,tdo,thr,tmr"
 Cfg.opts    = ""
 Cfg.name    = "nixt"
-Cfg.version = "4"
+Cfg.version = "5"
 Cfg.wdr     = os.path.expanduser(f"~/.{Cfg.name}")
 Cfg.pidfile = os.path.join(Cfg.wdr, f"{Cfg.name}.pid")
 
