@@ -9,4 +9,4 @@ from nixt.run.main import Cfg
 
 def ver(event):
     "list commands."
-    event.reply(f"{Cfg.name.upper()} version {Cfg.version}")
+    event.reply(f"{Cfg.name.upper()} {Cfg.version}")
