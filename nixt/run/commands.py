@@ -1,22 +1,8 @@
 #!/usr/bin/env python3
 # This file is placed in the Public Domain.
-#
-# pylint: disable=R0902,E1102
 
 
-"handler"
-
-
-import inspect
-import queue
-import threading
-import _thread
-
-
-from nixt.lib.default import Default
-from nixt.lib.object  import Object, ident
-from nixt.run.thread  import launch
-from nixt.run.utils   import parse, spl
+"commands"
 
 
 class Commands:

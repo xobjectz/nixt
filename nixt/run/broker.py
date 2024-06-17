@@ -9,10 +9,8 @@ import _thread
 
 
 from nixt.lib.object import Object, fqn, ident, keys, search, update
+from nixt.lib.locks  import brokerlock
 from nixt.run.utils  import fntime
-
-
-lock = _thread.allocate_lock()
 
 
 class Broker:
@@ -26,7 +24,7 @@ class Broker:
 
     def all(self, name=None, deleted=False):
         "return all objects."
-        with lock:
+        with brokerlock:
             if name:
                 name = self.long(name)
             for key in self.keyz(name):
@@ -38,7 +36,7 @@ class Broker:
     def find(self, name, selector, index=None, deleted=False):
         "find objects stored in the broker."
         nrss = 0
-        with lock:
+        with brokerlock:
             for key in self.keyz(self.long(name)):
                 obj = getattr(self.objs, key)
                 if deleted and '__deleted__' not in dir(obj):
@@ -80,7 +78,7 @@ class Broker:
 
     def register(self, obj):
         "add an object to the broker."
-        with lock:
+        with brokerlock:
             ids = ident(obj)
             setattr(self.objs, ids, obj)
             name = ids.split(os.sep, maxsplit=1)[0]

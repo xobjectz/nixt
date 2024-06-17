@@ -12,6 +12,32 @@ import types
 from nixt.lib.default import Default
 
 
+def daemon(pidfile, verbose=False):
+    "switch to background."
+    pid = os.fork()
+    if pid != 0:
+        os._exit(0)
+    os.setsid()
+    pid2 = os.fork()
+    if pid2 != 0:
+        os._exit(0)
+    if not verbose:
+        with open('/dev/null', 'r', encoding="utf-8") as sis:
+            os.dup2(sis.fileno(), sys.stdin.fileno())
+        with open('/dev/null', 'a+', encoding="utf-8") as sos:
+            os.dup2(sos.fileno(), sys.stdout.fileno())
+        with open('/dev/null', 'a+', encoding="utf-8") as ses:
+            os.dup2(ses.fileno(), sys.stderr.fileno())
+    os.umask(0)
+    os.chdir("/")
+    if os.path.exists(pidfile):
+        os.unlink(pidfile)
+    path = pathlib.Path(pidfile)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(pidfile, "w", encoding="utf-8") as fds:
+        fds.write(str(os.getpid()))
+
+
 def fntime(daystr):
     "convert file name to it's saved time."
     daystr = daystr.replace('_', ':')
@@ -139,6 +165,13 @@ def parse(obj, txt=None):
         obj.txt = obj.cmd or ""
 
 
+def privileges(username):
+    "drop privileges."
+    pwnam = pwd.getpwnam(username)
+    os.setgid(pwnam.pw_gid)
+    os.setuid(pwnam.pw_uid)
+
+
 def spl(txt):
     "split comma separated string into a list."
     try:
@@ -151,3 +184,30 @@ def spl(txt):
 def strip(pth, nmr=3):
     "reduce to path with directory."
     return os.sep.join(pth.split(os.sep)[-nmr:])
+
+
+def wrap(func):
+    "reset terminal."
+    old3 = None
+    try:
+        old3 = termios.tcgetattr(sys.stdin.fileno())
+    except termios.error:
+        pass
+    try:
+        func()
+    except (KeyboardInterrupt, EOFError):
+        print("")
+    finally:
+        if old3:
+            termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, old3)
+
+
+def __dir__():
+    return (
+        'fntime',
+        'laps',
+        'named',
+        'parse',
+        'spl',
+        'strip'
+    )
