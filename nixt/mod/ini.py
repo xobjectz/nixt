@@ -4,6 +4,10 @@
 "init"
 
 
+import _thread
+
+
+from nixt.run.errors import later
 from nixt.run.thread import launch
 from nixt.run.utils  import spl
 
@@ -28,4 +32,3 @@ def ini(event):
             if "init" in dir(mod):
                 event.reply(f"launched {nme}")
                 launch(mod.init)
- 

@@ -106,6 +106,9 @@ def main():
             time.sleep(1.0)
     elif Cfg.otxt:
         cmnd(Cfg.otxt, print)
+    if "w" in Cfg.opts:
+        while 1:
+            time.sleep(1.0)
 
 
 def __dir__():
