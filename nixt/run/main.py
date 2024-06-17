@@ -26,7 +26,7 @@ from nixt.run.utils    import daemon, parse, privileges, wrap
 
 Cfg         = Config()
 Cfg.dis     = ""
-Cfg.mod     = "cmd,err,fnd,log,mod,tdo,thr,tmr"
+Cfg.mod     = "cmd,err,mod,thr"
 Cfg.opts    = ""
 Cfg.name    = "nixt"
 Cfg.version = "5"
@@ -75,9 +75,10 @@ def main():
     "main"
     skel()
     parse(Cfg, " ".join(sys.argv[1:]))
-    Cfg.mod = ",".join(dir(modules))
-    if mods:
-        Cfg.mod += "," + ",".join(dir(mods))
+    if "a" in Cfg.opts:
+        Cfg.mod = ",".join(dir(modules))
+        if mods:
+            Cfg.mod += "," + ",".join(dir(mods))
     if "h" in Cfg.opts:
         print(helpstring)
         return
