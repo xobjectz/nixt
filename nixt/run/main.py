@@ -1,9 +1,12 @@
 # This file is placed in the Public Domain.
+#
+# pylint: disable=C0103,C0413,E0401
 
 
 "runtime"
 
 
+import getpass
 import os
 import sys
 import time
@@ -17,7 +20,7 @@ from nixt.run.console  import Console
 from nixt.run.errors   import errors
 from nixt.run.event    import Event
 from nixt.run.persist  import Persist, skel
-from nixt.run.utils    import parse, wrap
+from nixt.run.utils    import daemon, parse, privileges, wrap
 
 
 Cfg         = Config()

@@ -5,7 +5,6 @@
 
 
 import os
-import _thread
 
 
 from nixt.lib.object import Object, fqn, ident, keys, search, update

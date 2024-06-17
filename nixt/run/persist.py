@@ -1,4 +1,6 @@
 # This file is placed in the Public Domain.
+#
+# pylint: disable=R0903
 
 
 "persistence"
@@ -91,11 +93,9 @@ def long(name):
 
 def skel():
     "create directory,"
-    if os.path.exists(Persist.workdir):
-        return
-    path = pathlib.Path(store())
-    path.mkdir(parents=True, exist_ok=True)
-    return str(path)
+    if not os.path.exists(Persist.workdir):
+        path = pathlib.Path(store())
+        path.mkdir(parents=True, exist_ok=True)
 
 
 def store(pth=""):

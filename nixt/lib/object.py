@@ -97,7 +97,6 @@ def fqn(obj):
 
 def ident(obj):
     "return an id for an object."
-    full = [fqn(obj),]
     return pjoin(fqn(obj), *str(datetime.datetime.now()).split())
 
 

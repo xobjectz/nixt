@@ -1,4 +1,6 @@
 # This file is placed in the Public Domain.
+#
+# pylint: disable=W0125
 
 
 "command line interface"
@@ -32,4 +34,3 @@ class CLI(Handler):
         "show results into a channel."
         for txt in evt.result:
             self.say(evt.channel, txt)
-

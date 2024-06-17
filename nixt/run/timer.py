@@ -4,7 +4,13 @@
 "at a specific time"
 
 
+import time
+import threading
+
+
 from nixt.lib.object import Object
+from nixt.run.thread import launch
+from nixt.run.utils  import named
 
 
 class Timer(Object):

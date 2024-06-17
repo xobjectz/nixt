@@ -18,12 +18,13 @@ from urllib.parse import quote_plus, urlencode
 
 
 
-from nixt.lib.default import Default
-from nixt.lib.object  import Object, fmt, update, values
-from nixt.run.persist import find, last, sync
-from nixt.run.main    import broker
-from nixt.run.thread  import Repeater, launch
-from nixt.run.utils   import fntime, laps, spl
+from nixt.lib.default  import Default
+from nixt.lib.object   import Object, fmt, update, values
+from nixt.run.persist  import find, last, sync
+from nixt.run.main     import broker
+from nixt.run.repeater import Repeater
+from nixt.run.thread   import launch
+from nixt.run.utils    import fntime, laps, spl
 
 
 def init():
