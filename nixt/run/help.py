@@ -24,4 +24,3 @@ SERVICES
     # put modules in ~/.nixt/mods
     $ nixt -cv ini irc,rss
 """
-

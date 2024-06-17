@@ -44,7 +44,10 @@ broker = Broker()
 import nixt.mod as modules
 
 
-if os.path.exists(Cfg.moddir):
+if os.path.exists("mods"):
+    sys.path.insert(0, os.getcwd())
+    import mods
+elif os.path.exists(Cfg.moddir):
     sys.path.insert(0, Cfg.wdr)
     import mods
 else:
@@ -70,10 +73,11 @@ def wrapped():
 
 def main():
     "main"
-    Cfg.mod = ",".join(dir(modules))
     skel()
     parse(Cfg, " ".join(sys.argv[1:]))
-    Cfg.mod += "," + ",".join(dir(mods))
+    Cfg.mod = ",".join(dir(modules))
+    if mods:
+        Cfg.mod += "," + ",".join(dir(mods))
     if "h" in Cfg.opts:
         print(helpstring)
         return
@@ -86,6 +90,7 @@ def main():
         daemon(Cfg.pidfile, "-v" in sys.argv)
         privileges(Cfg.user)
         scan(modules, Cfg.mod)
+        scan(mods, Cfg.mod)
         cmnd(Cfg.otxt, print)
         while 1:
             time.sleep(1.0)
@@ -93,10 +98,10 @@ def main():
     scan(modules, Cfg.mod)
     scan(mods, Cfg.mod)
     if "c" in Cfg.opts:
+        cmnd(Cfg.otxt, print)
         csl = Console()
         csl.out = print
         csl.start()
-        cmnd(Cfg.otxt, print)
         while 1:
             time.sleep(1.0)
     elif Cfg.otxt:
