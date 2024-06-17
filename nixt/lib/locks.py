@@ -13,5 +13,6 @@ lock     = _thread.allocate_lock()
 
 def __dir__():
     return (
-        "lock",
+        'disklock',
+        'lock'
     )

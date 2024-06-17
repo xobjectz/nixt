@@ -7,11 +7,6 @@
 
 
 import datetime
-import pathlib
-import _thread
-
-
-lock = _thread.allocate_lock()
 
 
 class Object:
@@ -102,7 +97,7 @@ def fqn(obj):
 
 def ident(obj):
     "return an id for an object."
-    return pjoin(fqn(obj), *str(datetime.datetime.now()).split())
+    return "/".join(fqn(obj), *str(datetime.datetime.now()).split())
 
 
 def items(obj):
@@ -155,20 +150,6 @@ def update(obj, data, empty=True):
 def values(obj):
     "return values of an object."
     return obj.__dict__.values()
-
-
-"utilities"
-
-
-def cdir(pth):
-    "create directory."
-    path = pathlib.Path(pth)
-    path.parent.mkdir(parents=True, exist_ok=True)
-
-
-def pjoin(*args):
-    "path join."
-    return "/".join(args)
 
 
 "interface"
