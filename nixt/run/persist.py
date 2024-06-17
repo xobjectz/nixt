@@ -93,10 +93,9 @@ def skel():
     "create directory,"
     if os.path.exists(Persist.workdir):
         return
-    pth  = os.path.join(Persist.workdir, "store", "")
-    path = pathlib.Path(pth)
+    path = pathlib.Path(store())
     path.mkdir(parents=True, exist_ok=True)
-    return pth
+    return str(path)
 
 
 def store(pth=""):

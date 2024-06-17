@@ -5,13 +5,17 @@
 
 
 import os
+import sys
 
 
-from nixt.lib.config  import Config
-from nixt.run.broker  import Broker
-from nixt.run.event   import Event
-from nixt.run.handler import CLI
-from nixt.run.persist import Persist
+from nixt.run.commands import command, scan
+from nixt.lib.config   import Config
+from nixt.run.broker   import Broker
+from nixt.run.event    import Event
+from nixt.run.handler  import CLI
+from nixt.run.persist  import Persist, skel
+from nixt.run.utils    import parse, wrap
+
 
 Cfg         = Config()
 Cfg.dis     = ""
@@ -20,10 +24,21 @@ Cfg.opts    = ""
 Cfg.name    = "nixt"
 Cfg.version = "5"
 Cfg.wdr     = os.path.expanduser(f"~/.{Cfg.name}")
+Cfg.moddir  = os.path.join(Cfg.wdr, "mods")
 Cfg.pidfile = os.path.join(Cfg.wdr, f"{Cfg.name}.pid")
 
 
 Persist.workdir = Cfg.wdr
+
+
+import nixt.mod as modules
+
+
+if os.path.exists(Cfg.moddir):
+    sys.path.insert(0, Cfg.moddir)
+    import mods
+else:
+    mods = None
 
 
 broker = Broker()
@@ -48,10 +63,9 @@ def wrapped():
 def main():
     "main"
     Cfg.mod = ",".join(dir(modules))
-    Persist.skel()
+    skel()
     parse(Cfg, " ".join(sys.argv[1:]))
-    if mods:
-        Cfg.mod += "," + ",".join(dir(mods))
+    Cfg.mod += "," + ",".join(dir(mods))
     if "v" in Cfg.opts:
         dte = " ".join(time.ctime(time.time()).replace("  ", " ").split()[1:])
         print(f'{dte} {Cfg.name.upper()} {Cfg.opts.upper()} {Cfg.mod.upper()}'.replace("  ", " "))

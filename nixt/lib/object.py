@@ -97,7 +97,8 @@ def fqn(obj):
 
 def ident(obj):
     "return an id for an object."
-    return "/".join(fqn(obj), *str(datetime.datetime.now()).split())
+    full = [fqn(obj),]
+    return pjoin(fqn(obj), *str(datetime.datetime.now()).split())
 
 
 def items(obj):
@@ -153,6 +154,11 @@ def values(obj):
 
 
 "interface"
+
+
+def pjoin(*args):
+    "path join."
+    return "/".join(args)
 
 
 def __dir__():

@@ -5,6 +5,8 @@
 
 
 import os
+import sys
+import termios
 import time
 import types
 
