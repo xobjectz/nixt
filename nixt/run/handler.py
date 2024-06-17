@@ -1,43 +1,18 @@
 #!/usr/bin/env python3
 # This file is placed in the Public Domain.
-#
-# pylint: disable=R0902,E1102
 
 
 "handler"
 
 
-import inspect
 import queue
 import threading
 import _thread
 
 
-from nixt.lib.default import Default
-from nixt.lib.object  import Object, ident
-from nixt.run.thread  import launch
-from nixt.run.utils   import parse, spl
-
-
-class Commands:
-
-    "Commands"
-
-    cmds = Object()
-
-    @staticmethod
-    def add(func):
-        "add command."
-        setattr(Commands.cmds, func.__name__, func)
-
-    @staticmethod
-    def scan(mod) -> None:
-        "scan module for commands."
-        for key, cmdz in inspect.getmembers(mod, inspect.isfunction):
-            if key.startswith("cb"):
-                continue
-            if 'event' in cmdz.__code__.co_varnames:
-                Commands.add(cmdz)
+from nixt.lib.object import Object, ident
+from nixt.run.errors import later
+from nixt.run.thread import launch
 
 
 class Handler:
@@ -57,7 +32,11 @@ class Handler:
         if not func:
             evt.ready()
             return
-        evt._thr = launch(func, self, evt)
+        try:
+            func(self, evt)
+        except Exception as ex:
+            later(ex)
+            evt.ready()
 
     def loop(self):
         "proces events until interrupted."
@@ -89,70 +68,7 @@ class Handler:
         self.stopped.set()
 
 
-class CLI(Handler):
-
-    "CLI"
-
-    out = None
-
-    def __init__(self):
-        Handler.__init__(self)
-        self.register("command", command)
-
-    def say(self, _channel, txt):
-        "echo on verbose."
-        self.raw(txt)
-
-    def raw(self, txt):
-        "print to screen."
-        if self.out:
-            txt = txt.encode('utf-8', 'replace').decode()
-            self.out(txt)
-
-    def show(self, evt):
-        "show results into a channel."
-        for txt in evt.result:
-            self.say(evt.channel, txt)
-
-
-def cmnd(txt, outer):
-    "do a command using the provided output function."
-    cli = CLI()
-    cli.out = outer
-    evn = Event()
-    evn.txt = txt
-    command(cli, evn)
-    evn.wait()
-    return evn
-
-
-def command(bot, evt):
-    "check for and run a command."
-    parse(evt)
-    func = getattr(Commands.cmds, evt.cmd, None)
-    if func:
-        func(evt)
-    bot.show(evt)
-    evt.ready()
-
-
-def scan(pkg, modstr):
-    "scan modules for commands and classes"
-    mds = []
-    for modname in spl(modstr):
-        module = getattr(pkg, modname, None)
-        if not module:
-            continue
-        Commands.scan(module)
-    return mds
-
-
 def __dir__():
     return (
-        'Commands',
-        'Event',
         'Handler',
-        'cmnd',
-        'command',
-        'scan'
     )

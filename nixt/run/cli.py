@@ -4,7 +4,8 @@
 "command line interface"
 
 
-from .handler import Handler
+from .commands import command
+from .handler  import Handler
 
 
 class CLI(Handler):

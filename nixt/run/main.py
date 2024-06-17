@@ -6,13 +6,16 @@
 
 import os
 import sys
+import time
 
 
 from nixt.run.commands import command, scan
 from nixt.lib.config   import Config
 from nixt.run.broker   import Broker
+from nixt.run.cli      import CLI
+from nixt.run.console  import Console
+from nixt.run.errors   import errors
 from nixt.run.event    import Event
-from nixt.run.handler  import CLI
 from nixt.run.persist  import Persist, skel
 from nixt.run.utils    import parse, wrap
 
@@ -31,17 +34,17 @@ Cfg.pidfile = os.path.join(Cfg.wdr, f"{Cfg.name}.pid")
 Persist.workdir = Cfg.wdr
 
 
+broker = Broker()
+
+
 import nixt.mod as modules
 
 
 if os.path.exists(Cfg.moddir):
-    sys.path.insert(0, Cfg.moddir)
+    sys.path.insert(0, Cfg.wdr)
     import mods
 else:
     mods = None
-
-
-broker = Broker()
 
 
 def cmnd(txt, outer):
@@ -58,6 +61,7 @@ def cmnd(txt, outer):
 def wrapped():
     "wrap main."
     wrap(main)
+    errors()
 
 
 def main():

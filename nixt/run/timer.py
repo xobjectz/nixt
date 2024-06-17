@@ -4,6 +4,8 @@
 "at a specific time"
 
 
+from nixt.lib.object import Object
+
 
 class Timer(Object):
 
