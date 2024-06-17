@@ -19,6 +19,7 @@ from nixt.run.cli      import CLI
 from nixt.run.console  import Console
 from nixt.run.errors   import errors
 from nixt.run.event    import Event
+from nixt.run.help     import __doc__ as helpstring
 from nixt.run.persist  import Persist, skel
 from nixt.run.utils    import daemon, parse, privileges, wrap
 
@@ -73,6 +74,9 @@ def main():
     skel()
     parse(Cfg, " ".join(sys.argv[1:]))
     Cfg.mod += "," + ",".join(dir(mods))
+    if "h" in Cfg.opts:
+        print(helpstring)
+        return
     if "v" in Cfg.opts:
         dte = " ".join(time.ctime(time.time()).replace("  ", " ").split()[1:])
         print(f'{dte} {Cfg.name.upper()} {Cfg.opts.upper()} {Cfg.mod.upper()}'.replace("  ", " "))

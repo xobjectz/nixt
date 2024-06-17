@@ -4,17 +4,24 @@
 """NIXT - you have been nixt.
 
     nixt  <cmd> [key=val] [key==val]
-    nixt  [-a] [-c] [-h] [-v]
+    nixt  [-a] [-c] [-d] [-h] [-v]
 
-    options are:
+OPTIONS
 
     -a     load all modules
     -c     start console
+    -d     run in the background
     -h     show help
     -v     use verbose
 
-    the cmd command show available commands.
+COMMANDS
     
     $ nixt cmd
     cfg,cmd,dpl,err,exp,imp,mod,mre,nme,pwd,rem,res,rss,thr
+
+SERVICES
+
+    # put modules in ~/.nixt/mods
+    $ nixt -cv ini irc,rss
 """
+
