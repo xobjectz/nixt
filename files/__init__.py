@@ -20,8 +20,9 @@ for fnm in os.listdir(os.path.dirname(__file__)):
         continue
     if fnm.endswith("~"):
         continue
-    name = f"mods.{fnm[:-3]}"
-    mod = importlib.import_module(name)
+    name = fnm[:-3]
+    mname = f"mods.{name}"
+    mod = importlib.import_module(mname, "mods")
     setattr(mods, name, mod)
 
 
