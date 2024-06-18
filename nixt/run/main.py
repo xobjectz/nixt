@@ -27,7 +27,7 @@ from nixt.run.utils    import daemon, getmods, privileges, wrap
 
 Cfg         = Config()
 Cfg.dis     = ""
-Cfg.mod     = "cmd,err,mod,thr"
+Cfg.mod     = "cmd,err,ini,mod,thr"
 Cfg.opts    = ""
 Cfg.name    = "nixt"
 Cfg.version = "6"
@@ -40,7 +40,7 @@ Persist.workdir = Cfg.wdr
 
 
 broker = Broker()
-
+mods   = None
 
 import nixt.mod as modules
 
@@ -66,11 +66,13 @@ def main():
     "main"
     skel()
     parse(Cfg, " ".join(sys.argv[1:]))
-    mods = getmods(Cfg)
     if "a" in Cfg.opts:
         Cfg.mod = ",".join(dir(modules))
+    if "e" in Cfg.opts:
+        mods = getmods(Cfg)
         if mods:
             Cfg.mod += "," + ",".join(dir(mods))
+        scan(mods, Cfg.mod)
     if "h" in Cfg.opts:
         print(helpstring)
         return
@@ -89,7 +91,6 @@ def main():
             time.sleep(1.0)
         return
     scan(modules, Cfg.mod)
-    scan(mods, Cfg.mod)
     if "c" in Cfg.opts:
         cmnd(Cfg.otxt, print)
         csl = Console()

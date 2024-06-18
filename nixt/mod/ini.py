@@ -4,7 +4,7 @@
 "init"
 
 
-from nixt.run.main   import Cfg
+from nixt.run.main   import Cfg, mods
 from nixt.run.thread import launch
 from nixt.run.utils  import getmods, spl
 
@@ -14,7 +14,6 @@ def ini(event):
     if not event.args:
         event.reply("ini <name>")
         return
-    mods = getmods(Cfg)
     if not mods:
         event.reply("modules are not available")
         return

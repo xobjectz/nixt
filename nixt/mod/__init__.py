@@ -4,7 +4,7 @@
 "modules"
 
 
-from . import cmd, err, fnd, log, ini, mod, tdo, thr, ver
+from . import cmd, err, fnd, ini, mod, thr, ver
 
 
 def __dir__():
@@ -12,10 +12,8 @@ def __dir__():
         'cmd',
         'err',
         'fnd',
-        'log',
         'ini',
         'mod',
-        'tdo',
         'thr',
         'ver'
     )
