@@ -11,7 +11,7 @@ import threading
 import _thread
 
 
-from nixt.lib.object import Object, ident
+from nixt.lib.object import Object
 from nixt.run.errors import later
 from nixt.run.thread import launch
 
