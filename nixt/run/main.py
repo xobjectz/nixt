@@ -20,8 +20,9 @@ from nixt.run.console  import Console
 from nixt.run.errors   import errors
 from nixt.run.event    import Event
 from nixt.run.help     import __doc__ as helpstring
+from nixt.run.parse    import parse
 from nixt.run.persist  import Persist, skel
-from nixt.run.utils    import daemon, parse, privileges, wrap
+from nixt.run.utils    import daemon, privileges, wrap
 
 
 Cfg         = Config()
@@ -44,16 +45,6 @@ broker = Broker()
 import nixt.mod as modules
 
 
-if os.path.exists("mods"):
-    sys.path.insert(0, os.getcwd())
-    import mods
-elif os.path.exists(Cfg.moddir):
-    sys.path.insert(0, Cfg.wdr)
-    import mods
-else:
-    mods = None
-
-
 def cmnd(txt, outer):
     "do a command using the provided output function."
     cli = CLI()
@@ -63,6 +54,17 @@ def cmnd(txt, outer):
     command(cli, evn)
     evn.wait()
     return evn
+
+
+def getmods():
+    mods = None
+    if os.path.exists("mods"):
+        sys.path.insert(0, os.getcwd())
+        import mods
+    elif os.path.exists(Cfg.moddir):
+        sys.path.insert(0, Cfg.wdr)
+        import mods
+    return mods
 
 
 def wrapped():
@@ -75,6 +77,7 @@ def main():
     "main"
     skel()
     parse(Cfg, " ".join(sys.argv[1:]))
+    mods = getmods()
     if "a" in Cfg.opts:
         Cfg.mod = ",".join(dir(modules))
         if mods:

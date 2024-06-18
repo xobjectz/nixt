@@ -1,5 +1,6 @@
-#!/usr/bin/env python3
 # This file is placed in the Public Domain.
+#
+#
 
 
 "commands"
@@ -9,7 +10,8 @@ import inspect
 
 
 from nixt.lib.object import Object
-from nixt.run.utils  import parse, spl
+from nixt.run.parse  import parse
+from nixt.run.utils  import spl
 
 
 class Commands:

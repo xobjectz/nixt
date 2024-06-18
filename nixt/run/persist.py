@@ -120,7 +120,6 @@ def types():
     return os.listdir(store())
 
 
-
 def __dir__():
     return (
         'Persist',

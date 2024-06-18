@@ -1,4 +1,6 @@
 # This file is placed in the Public Domain.
+#
+#
 
 
 "modules"
@@ -13,6 +15,7 @@ from nixt.lib.object  import keys
 
 
 mods = Default()
+name = __file__.split(os.sep)[-2]
 
 
 for fnm in os.listdir(os.path.dirname(__file__)):
@@ -20,10 +23,10 @@ for fnm in os.listdir(os.path.dirname(__file__)):
         continue
     if fnm.endswith("~"):
         continue
-    name = fnm[:-3]
-    mname = f"mods.{name}"
-    mod = importlib.import_module(mname, "mods")
-    setattr(mods, name, mod)
+    nme = fnm[:-3]
+    mname = f"{name}.{nme}"
+    mod = importlib.import_module(mname, name)
+    setattr(mods, nme, mod)
 
 
 def __dir__():

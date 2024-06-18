@@ -6,8 +6,8 @@
 "command line interface"
 
 
-from .commands import command
-from .handler  import Handler
+from nixt.run.commands import command
+from nixt.run.handler  import Handler
 
 
 class CLI(Handler):
@@ -34,3 +34,9 @@ class CLI(Handler):
         "show results into a channel."
         for txt in evt.result:
             self.say(evt.channel, txt)
+
+
+def __dir__():
+    return (
+       'CLI',
+    )
