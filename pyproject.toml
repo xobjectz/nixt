@@ -49,6 +49,7 @@ zip-safe=true
 ]
 "share/nixt/examples" = [
     "files/irc.py",
+    "files/opm.py",
     "files/rss.py",
     "files/tmr.py",
     "files/udp.py"
