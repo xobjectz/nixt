@@ -10,8 +10,8 @@ import uuid
 
 
 from nixt.lib.default import Default
-from nixt.lib.object  import construct, items, update
-from nixt.run.main    import broker
+from nixt.lib.object  import construct, update
+from nixt.run.persist import find, sync
 from nixt.run.utils   import spl
 
 
@@ -110,7 +110,7 @@ def exp(event):
     "export to opml."
     event.reply(TEMPLATE)
     nrs = 0
-    for _fn, objr in broker.all("rss"):
+    for _fn, objr in find("rss"):
         nrs += 1
         obj = Default()
         update(obj, objr)
@@ -141,7 +141,7 @@ def imp(event):
         construct(rss, obj)
         rss.rss = rss.xmlUrl
         rss.insertid = insertid
-        broker.add(rss)
+        sync(rss)
         nrs += 1
     if nrs:
         event.reply(f"added {nrs} urls.")

@@ -1,6 +1,6 @@
 # This file is placed in the Public Domain.
 #
-# pylint: disable=C0103,C0413,E0401
+# pylint: disable=C0103,C0413,C0415,E0401
 
 
 "runtime"
@@ -22,7 +22,7 @@ from nixt.run.event    import Event
 from nixt.run.help     import __doc__ as helpstring
 from nixt.run.parse    import parse
 from nixt.run.persist  import Persist, skel
-from nixt.run.utils    import daemon, privileges, wrap
+from nixt.run.utils    import daemon, getmods, privileges, wrap
 
 
 Cfg         = Config()
@@ -56,17 +56,6 @@ def cmnd(txt, outer):
     return evn
 
 
-def getmods():
-    mods = None
-    if os.path.exists("mods"):
-        sys.path.insert(0, os.getcwd())
-        import mods
-    elif os.path.exists(Cfg.moddir):
-        sys.path.insert(0, Cfg.wdr)
-        import mods
-    return mods
-
-
 def wrapped():
     "wrap main."
     wrap(main)
@@ -77,7 +66,7 @@ def main():
     "main"
     skel()
     parse(Cfg, " ".join(sys.argv[1:]))
-    mods = getmods()
+    mods = getmods(Cfg)
     if "a" in Cfg.opts:
         Cfg.mod = ",".join(dir(modules))
         if mods:

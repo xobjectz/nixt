@@ -4,18 +4,9 @@
 "init"
 
 
-import _thread
-
-
-from nixt.run.errors import later
+from nixt.run.main   import Cfg
 from nixt.run.thread import launch
-from nixt.run.utils  import spl
-
-
-try:
-    import mods as MODS
-except ModuleNotFoundError:
-    MODS = None
+from nixt.run.utils  import getmods, spl
 
 
 def ini(event):
@@ -23,12 +14,13 @@ def ini(event):
     if not event.args:
         event.reply("ini <name>")
         return
-    if not MODS:
+    mods = getmods(Cfg)
+    if not mods:
         event.reply("modules are not available")
         return
     for name in event.args:
         for nme in spl(name):
-            mod = getattr(MODS, nme, None)
+            mod = getattr(mods, nme, None)
             if "init" in dir(mod):
                 event.reply(f"launched {nme}")
                 launch(mod.init)

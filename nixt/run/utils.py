@@ -1,6 +1,6 @@
 # This file is placed in the Public Domain.
 #
-# pylint: disable=W0212
+# pylint: disable=C0415,W0212,E0401
 
 
 "utilities"
@@ -53,6 +53,18 @@ def fntime(daystr):
     if rest:
         timed += float('.' + rest)
     return timed
+
+
+def getmods(cfg):
+    "return modules package."
+    mods = None
+    if os.path.exists("mods"):
+        sys.path.insert(0, os.getcwd())
+        import mods
+    elif os.path.exists(cfg.moddir):
+        sys.path.insert(0, cfg.wdr)
+        import mods
+    return mods
 
 
 def laps(seconds, short=True):

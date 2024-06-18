@@ -11,7 +11,7 @@ from nixt.lib.object import Object, fqn, ident, keys, search, update
 from nixt.run.utils  import fntime
 
 
-sep = "/"
+SEP = "/"
 
 
 class Broker:
@@ -60,7 +60,7 @@ class Broker:
 
     def keyz(self, key):
         "return all matching keys."
-        return [x for x in keys(self.objs) if key == x.split(sep)[0]]
+        return [x for x in keys(self.objs) if key == x.split(SEP, maxsplit=1)[0]]
 
     def last(self, obj):
         "return last object saved."
@@ -82,7 +82,7 @@ class Broker:
         with brokerlock:
             ids = ident(obj)
             setattr(self.objs, ids, obj)
-            name = ids.split(sep, maxsplit=1)[0]
+            name = ids.split(SEP, maxsplit=1)[0]
             if name not in Broker.fqns:
                 Broker.fqns.append(name)
             return ids
