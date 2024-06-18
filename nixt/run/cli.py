@@ -6,6 +6,7 @@
 "command line interface"
 
 
+from nixt.lib.object   import Object
 from nixt.run.commands import command
 from nixt.run.handler  import Handler
 
@@ -14,6 +15,7 @@ class CLI(Handler):
 
     "CLI"
 
+    cache = Object()
     out = print
 
     def __init__(self):

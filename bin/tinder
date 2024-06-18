@@ -20,10 +20,11 @@ sys.path.insert(0, os.getcwd())
 
 
 from nixt.lib.default  import Default
-from nixt.lib.object   import Object, keys
+from nixt.lib.object   import Object, ident, keys
 from nixt.run.cli      import CLI
 from nixt.run.commands import Commands, scan
 from nixt.run.event    import Event
+from nixt.run.main     import broker
 from nixt.run.parse    import parse
 from nixt.run.persist  import Persist
 from nixt.run.thread   import launch
@@ -60,16 +61,16 @@ paylock = _thread.allocate_lock()
 
 param = Object()
 param.cmd = [""]
-param.dpl = ["title,url", ""]
+param.dpl = ["hnrss title,url"]
 param.fnd = ["log", "todo"]
-param.imp = ["files/feed.opml", ""]
+param.imp = ["files/feed.opml"]
 param.log = ["bla", ""]
 param.mod = [""]
-param.nme = ["hnrss hackernews", ""]
-param.pwd = ["pwd bla mekker", ""]
-param.rem = ["hnrss", ""]
-param.res = ["hnrss", ""]
-param.tdo = ["mekker", ""]
+param.nme = ["hnrss hackernews"]
+param.pwd = ["bla mekker"]
+param.rem = ["hnrss"]
+param.res = ["hnrss"]
+param.tdo = ["mekker"]
 param.ver = [""]
 
 
@@ -97,6 +98,8 @@ def payload(clt):
         for cmdd in cmds:
             for ex in getattr(param, cmdd, [""]):
                 evt = Event()
+                evt.channel = "#nixt"
+                evt.orig = ident(clt)
                 evt.txt = cmdd + " " + ex
                 evt.type = "command"
                 clt.put(evt)
@@ -140,6 +143,7 @@ def main():
     thrs = []
     cli = CLI()
     cli.start()
+    broker.register(cli)
     for _nr in range(nrs):
         thrs.append(launch(payload, cli))
     for thr in thrs:
