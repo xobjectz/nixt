@@ -12,7 +12,7 @@ import sys
 import time
 
 
-from nixt.run.commands import command, scan
+from nixt.run.commands import Commands, command, scan
 from nixt.lib.config   import Config
 from nixt.run.broker   import Broker
 from nixt.run.cli      import CLI
@@ -41,6 +41,7 @@ Persist.workdir = Cfg.wdr
 
 broker = Broker()
 mods   = None
+
 
 import nixt.mod as modules
 

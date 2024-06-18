@@ -18,12 +18,14 @@ class Commands:
 
     "Commands"
 
-    cmds = Object()
+    cmds     = Object()
+    modnames = Object()
 
     @staticmethod
     def add(func):
         "add command."
         setattr(Commands.cmds, func.__name__, func)
+        setattr(Commands.modnames, func.__name__, func.__module__)
 
     @staticmethod
     def scan(mod) -> None:
