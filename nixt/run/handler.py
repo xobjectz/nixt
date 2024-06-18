@@ -28,7 +28,7 @@ class Handler:
 
     def callback(self, evt):
         "call callback based on event type."
-        evt.orig = ident(self)
+        evt.orig = repr(self)
         func = getattr(self.cbs, evt.type, None)
         if not func:
             evt.ready()

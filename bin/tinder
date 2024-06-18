@@ -64,8 +64,9 @@ param.cmd = [""]
 param.dpl = ["hnrss title,url"]
 param.fnd = ["log", "todo"]
 param.imp = ["files/feed.opml"]
-param.log = ["bla", ""]
+param.log = ["bla"]
 param.mod = [""]
+param.mre = [""]
 param.nme = ["hnrss hackernews"]
 param.pwd = ["bla mekker"]
 param.rem = ["hnrss"]
@@ -99,7 +100,7 @@ def payload(clt):
             for ex in getattr(param, cmdd, [""]):
                 evt = Event()
                 evt.channel = "#nixt"
-                evt.orig = ident(clt)
+                evt.orig = repr(clt)
                 evt.txt = cmdd + " " + ex
                 evt.type = "command"
                 clt.put(evt)

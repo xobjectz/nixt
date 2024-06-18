@@ -25,7 +25,7 @@ def init():
             bot = broker.first("timer")
             evt = Event()
             update(evt, obj)
-            evt.orig = object.__repr__(bot)
+            evt.orig = repr(bot)
             timer = Timer(diff, evt.show)
             launch(timer.start)
 
@@ -216,7 +216,6 @@ def tmr(event):
     if not target or ttime.time() > target:
         event.reply("already passed given time.")
         return res
-    print(event.orig)
     bot = broker.get(event.orig)
     event.time = target
     diff = target - ttime.time()
