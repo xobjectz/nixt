@@ -6,9 +6,6 @@
 "console"
 
 
-import readline
-
-
 from nixt.run.cli   import CLI
 from nixt.run.event import Event
 

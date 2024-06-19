@@ -8,11 +8,12 @@
 
 import getpass
 import os
+import readline
 import sys
 import time
 
 
-from nixt.run.commands import Commands, command, scan
+from nixt.run.commands import command, scan
 from nixt.lib.config   import Config
 from nixt.run.broker   import Broker
 from nixt.run.cli      import CLI
@@ -65,6 +66,7 @@ def wrapped():
 
 def main():
     "main"
+    readline.redisplay()
     skel()
     parse(Cfg, " ".join(sys.argv[1:]))
     if "a" in Cfg.opts:

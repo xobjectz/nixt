@@ -13,8 +13,8 @@ import pathlib
 from nixt.lib.decoder import read
 from nixt.lib.default import Default
 from nixt.lib.encoder import write
-from nixt.lib.locks   import disklock
 from nixt.lib.object  import Object, fqn, ident, search, update
+from nixt.run.locks   import disklock
 from nixt.run.utils   import fntime, strip
 
 

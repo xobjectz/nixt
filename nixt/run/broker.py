@@ -6,8 +6,8 @@
 "broker"
 
 
-from nixt.lib.locks  import brokerlock
 from nixt.lib.object import Object, fqn, ident, keys, search, update
+from nixt.run.locks  import brokerlock
 from nixt.run.utils  import fntime
 
 
