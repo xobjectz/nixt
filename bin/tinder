@@ -63,7 +63,7 @@ param = Object()
 param.cmd = [""]
 param.dpl = ["hnrss title,url"]
 param.fnd = ["log", "todo"]
-param.imp = ["files/feed.opml"]
+param.imp = ["tests/feeds.opml"]
 param.log = ["bla"]
 param.mod = [""]
 param.mre = [""]
@@ -132,8 +132,10 @@ def wrap(func):
 
 def main():
     "main"
+    Cfg.mod = ",".join(dir(modules))
     mods = getmods(Cfg)
-    Cfg.mod = ",".join(dir(mods))
+    if mods:
+        Cfg.mod += "," + ",".join(dir(mods))
     if "v" in Cfg.opts:
         DTE = " ".join(time.ctime(time.time()).replace("  ", " ").split()[1:])
         print(f'{DTE} {Cfg.name.upper()} {Cfg.opts.upper()} {Cfg.mod.upper()}'.replace("  ", " "))
