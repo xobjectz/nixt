@@ -18,7 +18,7 @@ from nixt.lib.config   import Config
 from nixt.run.broker   import Broker
 from nixt.run.cli      import CLI
 from nixt.run.console  import Console
-from nixt.run.errors   import errors
+from nixt.run.errors   import errors, later
 from nixt.run.event    import Event
 from nixt.run.help     import __doc__ as helpstring
 from nixt.run.parse    import parse
@@ -62,8 +62,8 @@ def cmnd(txt, outer):
 def init(pkg, modstr):
     "scan modules for commands and classes"
     mds = []
-    for modname in spl(modstr):
-        module = getattr(pkg, modname, None)
+    for mod in spl(modstr):
+        module = getattr(pkg, mod, None)
         if not module:
             continue
         try:

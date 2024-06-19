@@ -19,6 +19,9 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
+import nixt
+
+
 from nixt.lib.default  import Default
 from nixt.lib.object   import Object, ident, keys
 from nixt.run.cli      import CLI
@@ -28,10 +31,7 @@ from nixt.run.main     import broker
 from nixt.run.parse    import parse
 from nixt.run.persist  import Persist
 from nixt.run.thread   import launch
-from nixt.run.utils    import getmods, laps
-
-
-import nixt.mod as modules
+from nixt.run.utils    import laps, wrap
 
 
 LAP = 1
@@ -75,6 +75,13 @@ param.tdo = ["mekker"]
 param.ver = [""]
 
 
+class CLII(CLI):
+
+    def raw(self, txt):
+        if "v" in Cfg.opts:
+            print(txt)
+
+
 def consume(evts):
     "wait for events."
     fixed = []
@@ -109,11 +116,6 @@ def payload(clt):
         return nmr
 
 
-def cmd(event):
-    "list commands."
-    event.reply(",".join(sorted(list(Commands.cmds))))
-
-
 def wrap(func):
     "reset terminal."
     old2 = None
@@ -132,21 +134,19 @@ def wrap(func):
 
 def main():
     "main"
-    Cfg.mod = ",".join(dir(modules))
-    mods = getmods(Cfg)
-    if mods:
-        Cfg.mod += "," + ",".join(dir(mods))
+    Cfg.mod = ",".join(dir(nixt.mod)) + "," + ".".join(dir(nixt.srv))
+    print(Cfg.mod)
     if "v" in Cfg.opts:
         DTE = " ".join(time.ctime(time.time()).replace("  ", " ").split()[1:])
         print(f'{DTE} {Cfg.name.upper()} {Cfg.opts.upper()} {Cfg.mod.upper()}'.replace("  ", " "))
-    scan(modules, Cfg.mod)
-    scan(mods, Cfg.mod)
+    print(Cfg.mod)
+    scan(nixt.mod, Cfg.mod)
+    scan(nixt.srv, Cfg.mod)
     nrs = Cfg.index or 1
     nrcommand = len(Commands.cmds) or 1
     thrs = []
-    cli = CLI()
+    cli = CLII()
     cli.start()
-    broker.register(cli)
     for _nr in range(nrs):
         thrs.append(launch(payload, cli))
     for thr in thrs:
@@ -155,7 +155,8 @@ def main():
     endtime = time.time()
     lap = laps(endtime-STARTTIME)
     percall = (endtime-STARTTIME)/(nrs*nrcommand)
-    print(f"{lap} {nrs} {nrcommand} {percall}")
+    if "v" in Cfg.opts:
+        print(f"{lap} {nrs} {nrcommand} {percall}")
 
 
 if __name__ == "__main__":
