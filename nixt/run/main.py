@@ -23,7 +23,7 @@ from nixt.run.event    import Event
 from nixt.run.help     import __doc__ as helpstring
 from nixt.run.parse    import parse
 from nixt.run.persist  import Persist, skel
-from nixt.run.utils    import daemon, getmods, privileges, spl, wrap
+from nixt.run.utils    import daemon, privileges, spl, wrap
 
 
 Cfg         = Config()
@@ -58,6 +58,7 @@ def cmnd(txt, outer):
     evn.wait()
     return evn
 
+
 def init(pkg, modstr):
     "scan modules for commands and classes"
     mds = []
@@ -84,41 +85,33 @@ def main():
     skel()
     parse(Cfg, " ".join(sys.argv[1:]))
     if "a" in Cfg.opts:
-        Cfg.mod = ",".join(dir(nixt.mod))
-    if "e" in Cfg.opts:
-        mods = getmods(Cfg)
-        if mods:
-            Cfg.mod += "," + ",".join(dir(mods))
-        scan(mods, Cfg.mod)
+        modstr = sorted(dir(nixt.mod) + dir(nixt.srv))
+        Cfg.mod = ",".join(modstr)
     if "h" in Cfg.opts:
         print(helpstring)
         return
     if "v" in Cfg.opts:
         dte = " ".join(time.ctime(time.time()).replace("  ", " ").split()[1:])
         print(f'{dte} {Cfg.name.upper()} {Cfg.opts.upper()} {Cfg.mod.upper()}'.replace("  ", " "))
+    wait = False
     if "d" in Cfg.opts:
-        Cfg.mod  = ",".join(dir(nixt.mod))
+        wait = True
         Cfg.user = getpass.getuser()
         daemon(Cfg.pidfile, "-v" in sys.argv)
         privileges(Cfg.user)
-        scan(nixt.mod, Cfg.mod)
-        scan(mods, Cfg.mod)
-        cmnd(Cfg.otxt, print)
-        while 1:
-            time.sleep(1.0)
-        return
-    scan(nixt.mod, Cfg.mod)
-    if "c" in Cfg.opts:
-        cmnd(Cfg.otxt, print)
-        init(nixt.srv, Cfg.mod)
+    elif "c" in Cfg.opts:
+        wait = True
         csl = Console()
         csl.out = print
         csl.start()
-        while 1:
-            time.sleep(1.0)
-    elif Cfg.otxt:
+    print(Cfg.mod)
+    scan(nixt.mod, Cfg.mod)
+    scan(nixt.srv, Cfg.mod)
+    if Cfg.otxt:
         cmnd(Cfg.otxt, print)
-    if "w" in Cfg.opts:
+        #wait = False
+    if wait or "w" in Cfg.opts:
+        init(nixt.srv, Cfg.mod)
         while 1:
             time.sleep(1.0)
 

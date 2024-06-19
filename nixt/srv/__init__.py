@@ -2,3 +2,16 @@
 
 
 "service"
+
+
+from . import irc, opm, rss, tmr, udp
+
+
+def __dir__():
+    return (
+        'irc',
+        'opm',
+        'rss',
+        'tmr',
+        'udp'
+    )
