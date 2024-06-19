@@ -9,7 +9,7 @@
 import unittest
 
 
-from files.opm import Parser
+from nixt.srv.opm import Parser
 
 
 TXT = """<opml version="1.0">

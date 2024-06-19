@@ -9,7 +9,7 @@
 import unittest
 
 
-from files.opm import Parser
+from nixt.srv.opm import Parser
 
 
 class TestAttrs(unittest.TestCase):
