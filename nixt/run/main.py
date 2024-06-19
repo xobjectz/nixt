@@ -23,7 +23,7 @@ from nixt.run.event    import Event
 from nixt.run.help     import __doc__ as helpstring
 from nixt.run.parse    import parse
 from nixt.run.persist  import Persist, skel
-from nixt.run.utils    import daemon, getmods, privileges, wrap
+from nixt.run.utils    import daemon, getmods, privileges, spl, wrap
 
 
 Cfg         = Config()
@@ -44,7 +44,8 @@ broker = Broker()
 mods   = None
 
 
-import nixt.mod as modules
+import nixt.mod
+import nixt.srv
 
 
 def cmnd(txt, outer):
@@ -56,6 +57,19 @@ def cmnd(txt, outer):
     command(cli, evn)
     evn.wait()
     return evn
+
+def init(pkg, modstr):
+    "scan modules for commands and classes"
+    mds = []
+    for modname in spl(modstr):
+        module = getattr(pkg, modname, None)
+        if not module:
+            continue
+        try:
+            module.init()
+        except Exception as ex:
+            later(ex)
+    return mds
 
 
 def wrapped():
@@ -70,7 +84,7 @@ def main():
     skel()
     parse(Cfg, " ".join(sys.argv[1:]))
     if "a" in Cfg.opts:
-        Cfg.mod = ",".join(dir(modules))
+        Cfg.mod = ",".join(dir(nixt.mod))
     if "e" in Cfg.opts:
         mods = getmods(Cfg)
         if mods:
@@ -83,19 +97,20 @@ def main():
         dte = " ".join(time.ctime(time.time()).replace("  ", " ").split()[1:])
         print(f'{dte} {Cfg.name.upper()} {Cfg.opts.upper()} {Cfg.mod.upper()}'.replace("  ", " "))
     if "d" in Cfg.opts:
-        Cfg.mod  = ",".join(dir(modules))
+        Cfg.mod  = ",".join(dir(nixt.mod))
         Cfg.user = getpass.getuser()
         daemon(Cfg.pidfile, "-v" in sys.argv)
         privileges(Cfg.user)
-        scan(modules, Cfg.mod)
+        scan(nixt.mod, Cfg.mod)
         scan(mods, Cfg.mod)
         cmnd(Cfg.otxt, print)
         while 1:
             time.sleep(1.0)
         return
-    scan(modules, Cfg.mod)
+    scan(nixt.mod, Cfg.mod)
     if "c" in Cfg.opts:
         cmnd(Cfg.otxt, print)
+        init(nixt.srv, Cfg.mod)
         csl = Console()
         csl.out = print
         csl.start()
@@ -113,6 +128,7 @@ def __dir__():
         'Cfg',
         'broker',
         'cmnd',
+        'init',
         'main',
         'wrapped'
     )
