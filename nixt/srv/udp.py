@@ -12,8 +12,8 @@ import time
 
 
 from nixt.lib.object import Object, fmt
-from nixt.run.main   import broker
 from nixt.run.log    import debug
+from nixt.run.run    import broker
 from nixt.run.thread import launch
 
 

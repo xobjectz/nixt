@@ -25,8 +25,8 @@ from nixt.run.errors   import later
 from nixt.run.event    import Event
 from nixt.run.handler  import Handler
 from nixt.run.log      import Logging, debug
-from nixt.run.main     import broker
 from nixt.run.persist  import last, sync
+from nixt.run.run      import broker
 from nixt.run.thread   import launch
 
 

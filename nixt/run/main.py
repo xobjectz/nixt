@@ -1,47 +1,25 @@
 # This file is placed in the Public Domain.
 #
-# pylint: disable=C0103,C0413,C0415,W0621,E0401
+#
 
 
-"runtime"
+"main"
 
 
-import getpass
-import os
 import readline
 import sys
 import time
 
 
-from nixt.run.commands import command, scan
-from nixt.lib.config   import Config
-from nixt.run.broker   import Broker
 from nixt.run.cli      import CLI
+from nixt.run.commands import command, scan
 from nixt.run.console  import Console
 from nixt.run.errors   import errors, later
 from nixt.run.event    import Event
-from nixt.run.help     import __doc__ as helpstring
 from nixt.run.parse    import parse
-from nixt.run.persist  import Persist, skel
-from nixt.run.utils    import daemon, privileges, spl, wrap
-
-
-Cfg         = Config()
-Cfg.dis     = ""
-Cfg.mod     = "cmd,err,ini,mod,thr"
-Cfg.opts    = ""
-Cfg.name    = "nixt"
-Cfg.version = "6"
-Cfg.wdr     = os.path.expanduser(f"~/.{Cfg.name}")
-Cfg.moddir  = os.path.join(Cfg.wdr, "mods")
-Cfg.pidfile = os.path.join(Cfg.wdr, f"{Cfg.name}.pid")
-
-
-Persist.workdir = Cfg.wdr
-
-
-broker = Broker()
-mods   = None
+from nixt.run.persist  import skel
+from nixt.run.run      import Cfg
+from nixt.run.utils    import spl, wrap
 
 
 import nixt.mod
@@ -104,7 +82,6 @@ def main():
         csl = Console()
         csl.out = print
         csl.start()
-    print(Cfg.mod)
     scan(nixt.mod, Cfg.mod)
     scan(nixt.srv, Cfg.mod)
     if Cfg.otxt:
@@ -119,7 +96,6 @@ def main():
 def __dir__():
     return (
         'Cfg',
-        'broker',
         'cmnd',
         'init',
         'main',
