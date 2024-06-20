@@ -27,7 +27,7 @@ from nixt.lib.object   import Object, ident, keys
 from nixt.run.cli      import CLI
 from nixt.run.commands import Commands, scan
 from nixt.run.event    import Event
-from nixt.run.main     import broker
+from nixt.run.run      import broker
 from nixt.run.parse    import parse
 from nixt.run.persist  import Persist
 from nixt.run.thread   import launch
@@ -70,7 +70,7 @@ param.mre = [""]
 param.nme = ["hnrss hackernews"]
 param.pwd = ["bla mekker"]
 param.rem = ["hnrss"]
-param.res = ["hnrss"]
+param.res = [""]
 param.tdo = ["mekker"]
 param.ver = [""]
 
@@ -100,7 +100,6 @@ def consume(evts):
 def payload(clt):
     "do payload."
     cmds = sorted(list(keys(Commands.cmds)))
-    #random.shuffle(cmds)
     with paylock:
         nmr = 0
         for cmdd in cmds:
@@ -134,12 +133,10 @@ def wrap(func):
 
 def main():
     "main"
-    Cfg.mod = ",".join(dir(nixt.mod)) + "," + ".".join(dir(nixt.srv))
-    print(Cfg.mod)
+    Cfg.mod = ",".join(dir(nixt.mod)) + "," + ",".join(dir(nixt.srv))
     if "v" in Cfg.opts:
         DTE = " ".join(time.ctime(time.time()).replace("  ", " ").split()[1:])
         print(f'{DTE} {Cfg.name.upper()} {Cfg.opts.upper()} {Cfg.mod.upper()}'.replace("  ", " "))
-    print(Cfg.mod)
     scan(nixt.mod, Cfg.mod)
     scan(nixt.srv, Cfg.mod)
     nrs = Cfg.index or 1

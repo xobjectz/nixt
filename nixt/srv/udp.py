@@ -1,4 +1,6 @@
 # This file is placed in the Public Domain.
+#
+# pylint: disable=R0903
 
 
 "udp to irc relay"
@@ -21,14 +23,14 @@ def init():
     "initialize udp to irc relay."
     if "s" not in Cfg.opts:
         debug("no running udp")
-        return
+        return None
     udpd = UDP()
     udpd.start()
     debug(f"started udp {fmt(Config)}")
     return udpd
 
 
-class Config(Object): # pylint: disable=R0903
+class Config(Object):
 
     "Cfg"
 
