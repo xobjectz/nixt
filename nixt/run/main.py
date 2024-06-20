@@ -26,6 +26,7 @@ from nixt.run.utils    import daemon, privileges, spl, wrap
 
 import nixt.mod
 import nixt.srv
+import nixt.usr
 
 
 def cmnd(txt, outer):
