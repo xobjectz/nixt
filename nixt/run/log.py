@@ -1,6 +1,6 @@
 # This file is placed in the Public Domain.
 #
-# pylint: disable=R0903,E1103
+# pylint: disable=R0903,E1102,E1103
 
 
 "logging"
@@ -11,19 +11,19 @@ class Logging:
     "Logging"
 
     filter = []
-
+    out    = None
 
 def debug(txt):
     "print to console."
     for skp in Logging.filter:
         if skp in txt:
             return
-    print(txt)
+    if Logging.out:
+        Logging.out(txt)
 
 
 def __dir__():
     return (
         'Logging',
-        'debug',
-        'enable'
+        'debug'
     )

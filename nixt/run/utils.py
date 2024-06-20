@@ -1,44 +1,14 @@
 # This file is placed in the Public Domain.
 #
-# pylint: disable=C0415,W0212,E0401
+# pylint: disable=R0911,C0415,W0212,E0401
 
 
 "utilities"
 
 
 import os
-import pathlib
-import pwd
-import sys
-import termios
 import time
 import types
-
-
-def daemon(pidfile, verbose=False):
-    "switch to background."
-    pid = os.fork()
-    if pid != 0:
-        os._exit(0)
-    os.setsid()
-    pid2 = os.fork()
-    if pid2 != 0:
-        os._exit(0)
-    if not verbose:
-        with open('/dev/null', 'r', encoding="utf-8") as sis:
-            os.dup2(sis.fileno(), sys.stdin.fileno())
-        with open('/dev/null', 'a+', encoding="utf-8") as sos:
-            os.dup2(sos.fileno(), sys.stdout.fileno())
-        with open('/dev/null', 'a+', encoding="utf-8") as ses:
-            os.dup2(ses.fileno(), sys.stderr.fileno())
-    os.umask(0)
-    os.chdir("/")
-    if os.path.exists(pidfile):
-        os.unlink(pidfile)
-    path = pathlib.Path(pidfile)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with open(pidfile, "w", encoding="utf-8") as fds:
-        fds.write(str(os.getpid()))
 
 
 def fntime(daystr):
@@ -53,18 +23,6 @@ def fntime(daystr):
     if rest:
         timed += float('.' + rest)
     return timed
-
-
-def getmods(cfg):
-    "return modules package."
-    mods = None
-    if os.path.exists("mods"):
-        sys.path.insert(0, os.getcwd())
-        import mods
-    elif os.path.exists(cfg.moddir):
-        sys.path.insert(0, cfg.wdr)
-        import mods
-    return mods
 
 
 def laps(seconds, short=True):
@@ -109,7 +67,6 @@ def laps(seconds, short=True):
 
 def named(obj):
     "return a full qualified name of an object/function/module."
-    # pylint: disable=R0911
     typ = type(obj)
     if isinstance(typ, types.ModuleType):
         return obj.__name__
@@ -126,13 +83,6 @@ def named(obj):
     return None
 
 
-def privileges(username):
-    "drop privileges."
-    pwnam = pwd.getpwnam(username)
-    os.setgid(pwnam.pw_gid)
-    os.setuid(pwnam.pw_uid)
-
-
 def spl(txt):
     "split comma separated string into a list."
     try:
@@ -147,28 +97,11 @@ def strip(pth, nmr=3):
     return os.sep.join(pth.split(os.sep)[-nmr:])
 
 
-def wrap(func):
-    "reset terminal."
-    old3 = None
-    try:
-        old3 = termios.tcgetattr(sys.stdin.fileno())
-    except termios.error:
-        pass
-    try:
-        func()
-    except (KeyboardInterrupt, EOFError):
-        print("")
-    finally:
-        if old3:
-            termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, old3)
-
-
 def __dir__():
     return (
         'fntime',
         'laps',
         'named',
-        'parse',
         'spl',
         'strip'
     )

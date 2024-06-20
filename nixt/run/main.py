@@ -1,14 +1,18 @@
 # This file is placed in the Public Domain.
 #
-# pylint: disable=W0718
+# pylint: disable=W0212,W0718
 
 
 "main"
 
 
 import getpass
+import os
+import pathlib
+import pwd
 import readline
 import sys
+import termios
 import time
 
 
@@ -21,7 +25,7 @@ from nixt.run.help     import __doc__ as helpstring
 from nixt.run.parse    import parse
 from nixt.run.persist  import skel
 from nixt.run.run      import Cfg
-from nixt.run.utils    import daemon, privileges, spl, wrap
+from nixt.run.utils    import spl
 
 
 import nixt.mod
@@ -40,6 +44,32 @@ def cmnd(txt, outer):
     return evn
 
 
+def daemon(pidfile, verbose=False):
+    "switch to background."
+    pid = os.fork()
+    if pid != 0:
+        os._exit(0)
+    os.setsid()
+    pid2 = os.fork()
+    if pid2 != 0:
+        os._exit(0)
+    if not verbose:
+        with open('/dev/null', 'r', encoding="utf-8") as sis:
+            os.dup2(sis.fileno(), sys.stdin.fileno())
+        with open('/dev/null', 'a+', encoding="utf-8") as sos:
+            os.dup2(sos.fileno(), sys.stdout.fileno())
+        with open('/dev/null', 'a+', encoding="utf-8") as ses:
+            os.dup2(ses.fileno(), sys.stderr.fileno())
+    os.umask(0)
+    os.chdir("/")
+    if os.path.exists(pidfile):
+        os.unlink(pidfile)
+    path = pathlib.Path(pidfile)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(pidfile, "w", encoding="utf-8") as fds:
+        fds.write(str(os.getpid()))
+
+
 def init(pkg, modstr):
     "scan modules for commands and classes"
     mds = []
@@ -52,6 +82,29 @@ def init(pkg, modstr):
         except Exception as ex:
             later(ex)
     return mds
+
+
+def privileges(username):
+    "drop privileges."
+    pwnam = pwd.getpwnam(username)
+    os.setgid(pwnam.pw_gid)
+    os.setuid(pwnam.pw_uid)
+
+
+def wrap(func):
+    "reset terminal."
+    old3 = None
+    try:
+        old3 = termios.tcgetattr(sys.stdin.fileno())
+    except termios.error:
+        pass
+    try:
+        func()
+    except (KeyboardInterrupt, EOFError):
+        print("")
+    finally:
+        if old3:
+            termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, old3)
 
 
 def wrapped():

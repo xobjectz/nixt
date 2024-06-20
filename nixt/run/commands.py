@@ -47,10 +47,12 @@ def command(bot, evt):
     evt.ready()
 
 
-def scan(pkg, modstr):
+def scan(pkg, modstr, disable=None):
     "scan modules for commands and classes"
     mds = []
     for modname in spl(modstr):
+        if disable and modname in spl(disable):
+            continue
         module = getattr(pkg, modname, None)
         if not module:
             continue

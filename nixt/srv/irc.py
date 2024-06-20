@@ -637,7 +637,6 @@ def mre(event):
     if not event.channel:
         event.reply('channel is not set.')
         return
-    print(event)
     bot = broker.get(event.orig)
     if 'cache' not in dir(bot):
         event.reply('bot is missing cache')

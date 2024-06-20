@@ -1,7 +1,6 @@
-grep -R "print(" nixt files bin/tinder
-grep -R __import__ nixt files bin/tinder
-grep -R importlib nixt files bin/tinder
-grep -R "import sys" nixt files bin/tinder
-#grep -R sys nixt files bin/tinder
-#grep -R "import os" nixt files bin/tinder
-
+grep -R "print(" nixt bin/tinder
+grep -R __import__ nixt bin/tinder
+grep -R importlib nixt bin/tinder
+grep -R "import sys" nixt bin/tinder
+#grep -R sys nixt bin/tinder
+#grep -R "import os" nixt bin/tinder
