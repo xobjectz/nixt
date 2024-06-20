@@ -2,16 +2,3 @@
 
 
 "you have been nixt."
-
-
-from . import lib, run, mod, srv, usr
-
-
-def __dir__():
-    return (
-        'lib',
-        'run',
-        'mod',
-        'srv',
-        'usr'
-    )
