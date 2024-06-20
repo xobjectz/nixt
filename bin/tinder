@@ -22,13 +22,14 @@ sys.path.insert(0, os.getcwd())
 from nixt.lib.default  import Default
 from nixt.lib.object   import Object, ident, keys
 from nixt.run.cli      import CLI
-from nixt.run.commands import Commands, scan
+from nixt.run.commands import Commands, scanned
 from nixt.run.event    import Event
+#from nixt.run.main     import 
 from nixt.run.run      import broker
 from nixt.run.parse    import parse
 from nixt.run.persist  import Persist
 from nixt.run.thread   import launch
-from nixt.run.utils    import laps, wrap
+from nixt.run.utils    import laps
 
 
 import nixt.mod
@@ -139,9 +140,7 @@ def main():
     if "v" in Cfg.opts:
         DTE = " ".join(time.ctime(time.time()).replace("  ", " ").split()[1:])
         print(f'{DTE} {Cfg.name.upper()} {Cfg.opts.upper()} {Cfg.mod.upper()}'.replace("  ", " "))
-    scan(nixt.mod, Cfg.mod)
-    scan(nixt.srv, Cfg.mod, Cfg.sets.dis)
-    scan(nixt.usr, Cfg.mod)
+    scanned(Cfg.mod)
     nrs = Cfg.index or 1
     nrcommand = len(Commands.cmds) or 1
     thrs = []

@@ -17,7 +17,7 @@ import time
 
 
 from nixt.run.cli      import CLI
-from nixt.run.commands import command, scan
+from nixt.run.commands import Commands, command
 from nixt.run.console  import Console
 from nixt.run.errors   import errors, later
 from nixt.run.event    import Event
@@ -84,6 +84,37 @@ def init(pkg, modstr):
     return mds
 
 
+def inited(modstr):
+    "init services."
+    init(nixt.srv, modstr)
+    init(nixt.usr, modstr)
+
+
+def scan(pkg, modstr, disable=None):
+    "scan modules for commands and classes"
+    mds = []
+    for modname in spl(modstr):
+        if disable and modname in spl(disable):
+            continue
+        module = getattr(pkg, modname, None)
+        if not module:
+            continue
+        Commands.scan(module)
+    return mds
+
+
+def scanned(modstr, disable=None):
+    "scan modules."
+    scan(nixt.mod, modstr, disable)
+    scan(nixt.srv, modstr, disable)
+    scan(nixt.usr, modstr, disable)
+
+
+def modnames():
+    "list all modules."
+    return dir(nixt.mod) + dir(nixt.srv) + dir(nixt.usr)
+
+
 def privileges(username):
     "drop privileges."
     pwnam = pwd.getpwnam(username)
@@ -119,7 +150,7 @@ def main():
     skel()
     parse(Cfg, " ".join(sys.argv[1:]))
     if "a" in Cfg.opts:
-        modstr = sorted(dir(nixt.mod) + dir(nixt.srv))
+        modstr = ",".join(modnames())
         Cfg.mod = ",".join(modstr)
     if "h" in Cfg.opts:
         print(helpstring)
@@ -132,17 +163,14 @@ def main():
         Cfg.user = getpass.getuser()
         daemon(Cfg.pidfile, "-v" in sys.argv)
         privileges(Cfg.user)
-        init(nixt.srv, Cfg.mod)
+        inited(Cfg.mod)
         wait = True
     elif "c" in Cfg.opts:
         csl = Console()
-        init(nixt.srv, Cfg.mod)
-        init(nixt.usr, Cfg.mod)
+        inited(Cfg.mod)
         csl.start()
         wait = True
-    scan(nixt.mod, Cfg.mod)
-    scan(nixt.srv, Cfg.mod)
-    scan(nixt.usr, Cfg.mod)
+    scanned(Cfg.mod, Cfg.sets.dis)
     if Cfg.otxt:
         cmnd(Cfg.otxt, print)
     if wait or "w" in Cfg.opts:

@@ -11,7 +11,6 @@ import inspect
 
 from nixt.lib.object import Object
 from nixt.run.parse  import parse
-from nixt.run.utils  import spl
 
 
 class Commands:
@@ -47,22 +46,8 @@ def command(bot, evt):
     evt.ready()
 
 
-def scan(pkg, modstr, disable=None):
-    "scan modules for commands and classes"
-    mds = []
-    for modname in spl(modstr):
-        if disable and modname in spl(disable):
-            continue
-        module = getattr(pkg, modname, None)
-        if not module:
-            continue
-        Commands.scan(module)
-    return mds
-
-
 def __dir__():
     return (
         'Commands',
-        'command',
-        'scan'
+        'command'
     )
