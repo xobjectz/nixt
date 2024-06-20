@@ -13,19 +13,22 @@ import time
 
 from nixt.lib.object import Object, fmt
 from nixt.run.log    import debug
-from nixt.run.run    import broker
+from nixt.run.run    import Cfg, broker
 from nixt.run.thread import launch
 
 
 def init():
     "initialize udp to irc relay."
+    if "s" not in Cfg.opts:
+        debug("no running udp")
+        return
     udpd = UDP()
     udpd.start()
-    debug(f"started udp {fmt(Cfg)}")
+    debug(f"started udp {fmt(Config)}")
     return udpd
 
 
-class Cfg(Object): # pylint: disable=R0903
+class Config(Object): # pylint: disable=R0903
 
     "Cfg"
 
@@ -51,14 +54,14 @@ class UDP(Object):
     def output(self, txt, addr=None):
         "annouce on bots."
         if addr:
-            Cfg.addr = addr
+            Config.addr = addr
         for bot in broker.all():
             bot.announce(txt.replace("\00", ""))
 
     def loop(self):
         "run input loop."
         try:
-            self._sock.bind((Cfg.host, Cfg.port))
+            self._sock.bind((Config.host, Config.port))
         except socket.gaierror:
             return
         self.ready.set()
@@ -77,7 +80,7 @@ class UDP(Object):
         self._sock.settimeout(0.01)
         self._sock.sendto(
                           bytes("exit", "utf-8"),
-                          (Cfg.host, Cfg.port)
+                          (Config.host, Config.port)
                          )
 
     def start(self):
@@ -94,7 +97,7 @@ def toudp(host, port, txt):
 def udp(event):
     "relay text to bots."
     if event.rest:
-        toudp(Cfg.host, Cfg.port, event.rest)
+        toudp(Config.host, Config.port, event.rest)
         debug(f"{len(event.rest)} characters sent")
         return
     if not select.select(
@@ -123,6 +126,6 @@ def udp(event):
                 stop = True
                 break
             size += len(txt)
-            toudp(Cfg.host, Cfg.port, txt)
+            toudp(Config.host, Config.port, txt)
         if stop:
             break

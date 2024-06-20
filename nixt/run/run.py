@@ -14,10 +14,10 @@ from nixt.run.persist import Persist
 
 Cfg         = Config()
 Cfg.dis     = ""
-Cfg.mod     = "cmd,err,ini,mod,thr"
+Cfg.mod     = "cmd,err,mod,thr"
 Cfg.opts    = ""
 Cfg.name    = "nixt"
-Cfg.version = "6"
+Cfg.version = "7"
 Cfg.wdr     = os.path.expanduser(f"~/.{Cfg.name}")
 Cfg.moddir  = os.path.join(Cfg.wdr, "mods")
 Cfg.pidfile = os.path.join(Cfg.wdr, f"{Cfg.name}.pid")

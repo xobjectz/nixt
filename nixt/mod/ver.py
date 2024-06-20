@@ -4,7 +4,7 @@
 "list of commands."
 
 
-from nixt.run.main import Cfg
+from nixt.run.run import Cfg
 
 
 def ver(event):

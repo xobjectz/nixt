@@ -1,11 +1,12 @@
 # This file is placed in the Public Domain.
 #
-#
+# pylint: disable=W0718
 
 
 "main"
 
 
+import getpass
 import readline
 import sys
 import time
@@ -16,10 +17,11 @@ from nixt.run.commands import command, scan
 from nixt.run.console  import Console
 from nixt.run.errors   import errors, later
 from nixt.run.event    import Event
+from nixt.run.help     import __doc__ as helpstring
 from nixt.run.parse    import parse
 from nixt.run.persist  import skel
 from nixt.run.run      import Cfg
-from nixt.run.utils    import spl, wrap
+from nixt.run.utils    import daemon, privileges, spl, wrap
 
 
 import nixt.mod
@@ -73,29 +75,29 @@ def main():
         print(f'{dte} {Cfg.name.upper()} {Cfg.opts.upper()} {Cfg.mod.upper()}'.replace("  ", " "))
     wait = False
     if "d" in Cfg.opts:
-        wait = True
         Cfg.user = getpass.getuser()
         daemon(Cfg.pidfile, "-v" in sys.argv)
         privileges(Cfg.user)
-    elif "c" in Cfg.opts:
+        init(nixt.srv, Cfg.mod)
         wait = True
+    elif "c" in Cfg.opts:
         csl = Console()
-        csl.out = print
+        init(nixt.srv, Cfg.mod)
+        init(nixt.usr, Cfg.mod)
         csl.start()
+        wait = True
     scan(nixt.mod, Cfg.mod)
     scan(nixt.srv, Cfg.mod)
+    scan(nixt.usr, Cfg.mod)
     if Cfg.otxt:
         cmnd(Cfg.otxt, print)
-        #wait = False
     if wait or "w" in Cfg.opts:
-        init(nixt.srv, Cfg.mod)
         while 1:
             time.sleep(1.0)
 
 
 def __dir__():
     return (
-        'Cfg',
         'cmnd',
         'init',
         'main',

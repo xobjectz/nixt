@@ -14,6 +14,7 @@ OPTIONS
     -c     start console
     -d     run in the background
     -h     show help
+    -s     run services
     -v     use verbose
 
 COMMANDS
@@ -23,6 +24,5 @@ COMMANDS
 
 SERVICES
 
-    # put modules in ~/.nixt/mods
-    $ nixt -cv ini irc,rss
+    $ nixt -cv mod=irc,rss
 """

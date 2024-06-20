@@ -4,7 +4,7 @@
 "you have been nixt."
 
 
-from . import lib, run, mod, srv
+from . import lib, run, mod, srv, usr
 
 
 def __dir__():
@@ -12,5 +12,6 @@ def __dir__():
         'lib',
         'run',
         'mod',
-        'srv'
+        'srv',
+        'usr'
     )

@@ -9,7 +9,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "nixt"
 description = "you have been nixt."
-version = "6"
+version = "7"
 authors = [
     {name = "xobjectz", email = "objx@proton.me"},
 ]
@@ -37,8 +37,10 @@ classifiers = [
 packages = [
     'nixt',
     'nixt.lib',
+    'nixt.mod',
     'nixt.run',
-    'nixt.mod'
+    'nixt.srv',
+    'nixt.usr'
 ]
 zip-safe=true
 
@@ -46,15 +48,6 @@ zip-safe=true
 [tool.setuptools.data-files]
 "share/doc/nixt" = [
     "README.rst",
-]
-"share/nixt/examples" = [
-    "files/irc.py",
-    "files/log.py",
-    "files/opm.py",
-    "files/rss.py",
-    "files/tdo.py",
-    "files/tmr.py",
-    "files/udp.py"
 ]
 [tool.setuptools.exclude-package-data]
 "*" = [

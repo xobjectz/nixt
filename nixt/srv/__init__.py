@@ -1,7 +1,7 @@
 # This file is placed in the Public Domain.
 
 
-"service"
+"services"
 
 
 from . import irc, opm, rss, tmr, udp
