@@ -4,7 +4,7 @@
 "services"
 
 
-from . import irc, opm, rss, tmr, udp
+from . import irc, opm, rss, tmr
 
 
 def __dir__():
@@ -12,6 +12,5 @@ def __dir__():
         'irc',
         'opm',
         'rss',
-        'tmr',
-        'udp'
+        'tmr'
     )
