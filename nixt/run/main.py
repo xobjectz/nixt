@@ -136,8 +136,7 @@ def main():
     skel()
     parse(Cfg, " ".join(sys.argv[1:]))
     if "a" in Cfg.opts:
-        modstr = ",".join(modnames())
-        Cfg.mod = ",".join(modstr)
+        Cfg.mod += "," + ",".join(modnames())
     if "h" in Cfg.opts:
         print(helpstring)
         return
