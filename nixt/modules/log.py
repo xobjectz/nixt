@@ -9,9 +9,9 @@
 import time
 
 
-from nixt.lib.object  import Object
-from nixt.run.persist import find, sync
-from nixt.run.utils   import fntime, laps
+from nixt.lib.object   import Object
+from nixt.run.persist  import find, sync
+from nixt.run.utils    import fntime, laps
 
 
 class Log(Object):

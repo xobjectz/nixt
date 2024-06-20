@@ -13,6 +13,7 @@ class Logging:
     filter = []
     out    = None
 
+
 def debug(txt):
     "print to console."
     for skp in Logging.filter:

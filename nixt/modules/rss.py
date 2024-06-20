@@ -1,5 +1,6 @@
 # This file is placed in the Public Domain.
-
+#
+# pylint: disable=R0903
 
 "rich site syndicate"
 
@@ -20,7 +21,8 @@ from urllib.parse import quote_plus, urlencode
 
 from nixt.lib.default  import Default
 from nixt.lib.object   import Object, fmt, update, values
-from nixt.run.persist  import find, last, sync
+from nixt.run.commands import Commands
+from nixt.run.persist  import Persist, find, last, sync
 from nixt.run.repeater import Repeater
 from nixt.run.run      import broker
 from nixt.run.thread   import launch
@@ -40,12 +42,13 @@ DEBUG = False
 fetchlock = _thread.allocate_lock()
 
 
-class Feed(Default): # pylint: disable=R0903
+class Feed(Default):
 
     "Feed"
 
 
-class Rss(Default): # pylint: disable=R0903
+
+class Rss(Default):
 
     "Rss"
 
@@ -55,7 +58,7 @@ class Rss(Default): # pylint: disable=R0903
         self.rss          = ''
 
 
-class Seen(Default): # pylint: disable=R0903
+class Seen(Default):
 
     "Seen"
 
@@ -366,4 +369,3 @@ def syn(event):
         thr.join()
         nrs += 1
     event.reply(f"{nrs} feeds synced")
- 

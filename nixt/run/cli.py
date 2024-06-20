@@ -6,9 +6,10 @@
 "command line interface"
 
 
-from nixt.lib.object   import Object
-from nixt.run.commands import command
-from nixt.run.handler  import Handler
+from ..lib.iface   import Object
+
+from .commands import command
+from .handler  import Handler
 
 
 class CLI(Handler):

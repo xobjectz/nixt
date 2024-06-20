@@ -6,23 +6,40 @@
 "persistence"
 
 
+import inspect
 import os
 import pathlib
 
 
-from nixt.lib.decoder import read
-from nixt.lib.default import Default
-from nixt.lib.encoder import write
-from nixt.lib.object  import Object, fqn, ident, search, update
-from nixt.run.locks   import disklock
-from nixt.run.utils   import fntime, strip
+from ..lib.decoder import read
+from ..lib.default import Default
+from ..lib.encoder import write
+from ..lib.object  import Object, fqn, ident, search, update
+
+
+from .locks import disklock
+from .utils import fntime, strip
 
 
 class Persist(Object):
 
     "Workdir"
 
+    fqns = []
     workdir = ""
+
+
+    @staticmethod
+    def scan(mod) -> None:
+        "scan module for commands."
+        for key, clz in inspect.getmembers(mod, inspect.isclass):
+            if not issubclass(clz, Object):
+                continue
+            Persist.whitelist(clz)
+
+    @staticmethod
+    def whitelist(clz):
+        Persist.fqns.append(fqn(clz))
 
 
 def fetch(obj, pth):
@@ -84,7 +101,7 @@ def long(name):
     "match from single name to long name."
     split = name.split(".")[-1].lower()
     res = name
-    for named in types():
+    for named in Persist.fqns:
         if split in named.split(".")[-1].lower():
             res = named
             break

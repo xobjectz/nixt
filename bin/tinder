@@ -19,22 +19,16 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from nixt.lib.default  import Default
-from nixt.lib.object   import Object, ident, keys
-from nixt.run.cli      import CLI
-from nixt.run.commands import Commands, scanned
-from nixt.run.event    import Event
-#from nixt.run.main     import 
-from nixt.run.run      import broker
-from nixt.run.parse    import parse
-from nixt.run.persist  import Persist
-from nixt.run.thread   import launch
-from nixt.run.utils    import laps
+from nixt.iface import Commands, CLI, Default, Event, Object, Persist
+from nixt.iface import broker, ident, keys, laps, launch
+from nixt.iface import parse
+
+
+from nixt.run.main import modnames, scanned
 
 
 import nixt.mod
 import nixt.srv
-import nixt.usr
 
 
 LAP = 1
@@ -136,11 +130,11 @@ def wrap(func):
 
 def main():
     "main"
-    Cfg.mod = ",".join(dir(nixt.mod)) + "," + ",".join(dir(nixt.srv))
+    Cfg.mod = ",".join(modnames())
     if "v" in Cfg.opts:
         DTE = " ".join(time.ctime(time.time()).replace("  ", " ").split()[1:])
         print(f'{DTE} {Cfg.name.upper()} {Cfg.opts.upper()} {Cfg.mod.upper()}'.replace("  ", " "))
-    scanned(Cfg.mod)
+    #scanned(Cfg.mod)
     nrs = Cfg.index or 1
     nrcommand = len(Commands.cmds) or 1
     thrs = []

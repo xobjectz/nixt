@@ -16,21 +16,19 @@ import termios
 import time
 
 
-from nixt.run.cli      import CLI
-from nixt.run.commands import Commands, command
-from nixt.run.console  import Console
-from nixt.run.errors   import errors, later
-from nixt.run.event    import Event
-from nixt.run.help     import __doc__ as helpstring
-from nixt.run.parse    import parse
-from nixt.run.persist  import skel
-from nixt.run.run      import Cfg
-from nixt.run.utils    import spl
+from .cli      import CLI
+from .commands import Commands, command
+from .console  import Console
+from .errors   import errors, later
+from .event    import Event
+from .help     import __doc__ as helpstring
+from .parse    import parse
+from .persist  import Persist, skel
+from .run      import Cfg
+from .utils    import spl
 
 
-import nixt.mod
-import nixt.srv
-import nixt.usr
+from .. import modules
 
 
 def cmnd(txt, outer):
@@ -84,12 +82,6 @@ def init(pkg, modstr):
     return mds
 
 
-def inited(modstr):
-    "init services."
-    init(nixt.srv, modstr)
-    init(nixt.usr, modstr)
-
-
 def scan(pkg, modstr, disable=None):
     "scan modules for commands and classes"
     mds = []
@@ -100,19 +92,13 @@ def scan(pkg, modstr, disable=None):
         if not module:
             continue
         Commands.scan(module)
+        Persist.scan(module)
     return mds
-
-
-def scanned(modstr, disable=None):
-    "scan modules."
-    scan(nixt.mod, modstr, disable)
-    scan(nixt.srv, modstr, disable)
-    scan(nixt.usr, modstr, disable)
 
 
 def modnames():
     "list all modules."
-    return dir(nixt.mod) + dir(nixt.srv) + dir(nixt.usr)
+    return dir(modules)
 
 
 def privileges(username):
@@ -163,14 +149,14 @@ def main():
         Cfg.user = getpass.getuser()
         daemon(Cfg.pidfile, "-v" in sys.argv)
         privileges(Cfg.user)
-        inited(Cfg.mod)
+        init(modules, Cfg.mod)
         wait = True
     elif "c" in Cfg.opts:
         csl = Console()
-        inited(Cfg.mod)
+        init(modules, Cfg.mod)
         csl.start()
         wait = True
-    scanned(Cfg.mod, Cfg.sets.dis)
+    scan(modules, Cfg.mod)
     if Cfg.otxt:
         cmnd(Cfg.otxt, print)
     if wait or "w" in Cfg.opts:
@@ -181,7 +167,11 @@ def main():
 def __dir__():
     return (
         'cmnd',
-        'init',
+        'daemon',
+        'inited',
         'main',
+        'modnames',
+        'privileges',
+        'scanned',
         'wrapped'
     )

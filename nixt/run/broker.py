@@ -6,9 +6,11 @@
 "broker"
 
 
-from nixt.lib.object import Object, fqn, ident, keys, search, update
-from nixt.run.locks  import brokerlock
-from nixt.run.utils  import fntime
+from ..lib.object import Object, fqn, ident, keys, search, update
+
+
+from .locks  import brokerlock
+from .utils  import fntime
 
 
 SEP = "/"

@@ -6,8 +6,8 @@
 "console"
 
 
-from nixt.run.cli   import CLI
-from nixt.run.event import Event
+from .cli   import CLI
+from .event import Event
 
 
 class Console(CLI):

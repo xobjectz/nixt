@@ -9,7 +9,7 @@
 import threading
 
 
-from nixt.lib.default import Default
+from ..lib.default import Default
 
 
 class Event(Default):

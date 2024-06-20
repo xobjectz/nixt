@@ -39,40 +39,41 @@ def __rdir__():
     return (
         'Broker',
         'CLI',
-        'Commands',
         'Console',
+        'Commands',
         'Default',
-        'Errors',
         'Event',
+        'Errors',
         'Handler',
-        'Logging',
         'Object',
+        'Logging',
         'Persist',
         'Repeater',
-        'SEP',
         'Thread',
+        'SEP',
         'Timer',
+        'debug',
         'broker',
         'command',
-        'debug',
         'errors',
         'event',
-        'fetch',
         'find',
+        'fetch',
         'fns',
         'fntime',
         'laps',
-        'last',
         'later',
+        'last',
         'launch',
         'long',
+        'modnames',
         'named',
+        'store',
         'read',
         'skel',
         'spl',
-        'store',
-        'strip',
         'sync',
+        'strip',
         'write'
     )
 
@@ -81,9 +82,9 @@ def __dir__():
     return (
         'Config',
         'Default',
-        'read',
-        'write'
+        'write',
+        'read'
     ) + __odir__() + __rdir__()
 
 
-__all__ = __dir__()
+__all__ = sorted(__dir__())
