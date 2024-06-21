@@ -70,10 +70,12 @@ def daemon(pidfile, verbose=False):
         fds.write(str(os.getpid()))
 
 
-def init(pkg, modstr):
+def init(pkg, modstr, disable=None):
     "scan modules for commands and classes"
     mds = []
     for mod in spl(modstr):
+        if disable and mod in spl(disable):
+            continue
         module = getattr(pkg, mod, None)
         if not module:
             continue
@@ -140,6 +142,7 @@ def main():
     readline.redisplay()
     skel()
     parse(Cfg, " ".join(sys.argv[1:]))
+    Cfg.dis = Cfg.sets.dis
     Cfg.mod += "," + ",".join(modnames())
     if "h" in Cfg.opts:
         print(helpstring)
@@ -153,17 +156,19 @@ def main():
         Cfg.user = getpass.getuser()
         daemon(Cfg.pidfile, "-v" in sys.argv)
         privileges(Cfg.user)
-        init(modules, Cfg.mod, Cfg.sets.dis)
-        init(mods, Cfg.mod, Cfg.sets.dis)
+        modstr = "," + ",".join(modnames())
+        init(modules, modstr)
+        init(mods, modstr)
         wait = True
     elif "c" in Cfg.opts:
         csl = Console()
-        init(modules, Cfg.mod, Cfg.sets.dis)
-        init(mods, Cfg.mod, Cfg.sets.dis)
+        if "i" in Cfg.opts:
+            init(modules, Cfg.mod, Cfg.dis)
+            init(mods, Cfg.mod, Cfg.dis)
         csl.start()
         wait = True
-    scan(modules, Cfg.mod, Cfg.sets.dis)
-    scan(mods, Cfg.mod, Cfg.sets.dis)
+    scan(modules, Cfg.mod, Cfg.dis)
+    scan(mods, Cfg.mod, Cfg.dis)
     if Cfg.otxt:
         cmnd(Cfg.otxt, print)
     if wait or "w" in Cfg.opts:
