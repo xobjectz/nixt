@@ -32,13 +32,14 @@ class Persist(Object):
     @staticmethod
     def scan(mod) -> None:
         "scan module for commands."
-        for key, clz in inspect.getmembers(mod, inspect.isclass):
+        for _key, clz in inspect.getmembers(mod, inspect.isclass):
             if not issubclass(clz, Object):
                 continue
             Persist.whitelist(clz)
 
     @staticmethod
     def whitelist(clz):
+        "whitelist classes."
         Persist.fqns.append(fqn(clz))
 
 

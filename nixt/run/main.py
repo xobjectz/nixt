@@ -30,6 +30,7 @@ from .utils    import spl
 
 
 from .. import mod as modules
+from .. import usr as mods
 
 
 def cmnd(txt, outer):
@@ -154,6 +155,7 @@ def main():
         daemon(Cfg.pidfile, "-v" in sys.argv)
         privileges(Cfg.user)
         init(modules, Cfg.mod)
+        init(mods, Cfg.mod)
         wait = True
     elif "c" in Cfg.opts:
         csl = Console()
@@ -161,6 +163,7 @@ def main():
         csl.start()
         wait = True
     scan(modules, Cfg.mod)
+    scan(mods, Cfg.mod)
     if Cfg.otxt:
         cmnd(Cfg.otxt, print)
     if wait or "w" in Cfg.opts:

@@ -1,6 +1,6 @@
 # This file is placed in the Public Domain.
 #
-# pylint: diable=R0912
+# pylint: disable=R0912
 
 
 "timer"
