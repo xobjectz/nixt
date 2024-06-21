@@ -1,3 +1,4 @@
+grep -R nixt nixt
 grep -R "print(" nixt bin/tinder
 grep -R __import__ nixt bin/tinder
 grep -R importlib nixt bin/tinder
