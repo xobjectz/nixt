@@ -140,13 +140,12 @@ def main():
     readline.redisplay()
     skel()
     parse(Cfg, " ".join(sys.argv[1:]))
-    if "a" in Cfg.opts:
-        Cfg.mod += "," + ",".join(modnames())
+    Cfg.mod += "," + ",".join(modnames())
     if "h" in Cfg.opts:
         print(helpstring)
         return
     if "v" in Cfg.opts:
-        Logging.out = print
+        Logging.out = Errors.out = print
         dte = " ".join(time.ctime(time.time()).replace("  ", " ").split()[1:])
         print(f'{dte} {Cfg.name.upper()} {Cfg.opts.upper()} {Cfg.mod.upper()}'.replace("  ", " "))
     wait = False
@@ -154,17 +153,17 @@ def main():
         Cfg.user = getpass.getuser()
         daemon(Cfg.pidfile, "-v" in sys.argv)
         privileges(Cfg.user)
-        init(modules, Cfg.mod)
-        init(mods, Cfg.mod)
+        init(modules, Cfg.mod, Cfg.sets.dis)
+        init(mods, Cfg.mod, Cfg.sets.dis)
         wait = True
     elif "c" in Cfg.opts:
         csl = Console()
-        init(modules, Cfg.mod)
-        init(mods, Cfg.mod)
+        init(modules, Cfg.mod, Cfg.sets.dis)
+        init(mods, Cfg.mod, Cfg.sets.dis)
         csl.start()
         wait = True
-    scan(modules, Cfg.mod)
-    scan(mods, Cfg.mod)
+    scan(modules, Cfg.mod, Cfg.sets.dis)
+    scan(mods, Cfg.mod, Cfg.sets.dis)
     if Cfg.otxt:
         cmnd(Cfg.otxt, print)
     if wait or "w" in Cfg.opts:
