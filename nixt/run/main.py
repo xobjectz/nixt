@@ -91,7 +91,10 @@ def init(pkg, modstr, disable=None):
 def scan(pkg, modstr, disable=None):
     "scan modules for commands and classes"
     mds = []
+    dirr = sorted([x for x in dir(pkg) if not x.startswith("__")])
     for modname in spl(modstr):
+        if modname not in dirr:
+            continue
         if disable and modname in spl(disable):
             continue
         module = getattr(pkg, modname, None)
@@ -104,7 +107,7 @@ def scan(pkg, modstr, disable=None):
 
 def modnames():
     "list all modules."
-    return dir(modules) + dir(mods)
+    return sorted([x for x in dir(modules) + dir(mods) if not x.startswith("__")])
 
 
 def privileges(username):

@@ -19,7 +19,7 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from nixt.ifc import Commands, CLI, Default, Event, Object, Persist
+from nixt.ifc import Commands, CLI, Default, Errors, Event, Logging, Object, Persist
 from nixt.ifc import ident, keys, laps, launch, parse
 
 
@@ -106,6 +106,7 @@ def payload(clt):
                 evt.orig = repr(clt)
                 evt.txt = cmdd + " " + ex
                 evt.type = "command"
+                print(evt)
                 clt.put(evt)
                 events.append(evt)
                 nmr += 1
@@ -130,6 +131,7 @@ def wrap(func):
 
 def main():
     "main"
+    Logging.out = Errors.out = print
     Cfg.dis = Cfg.sets.dis
     Cfg.mod = ",".join(modnames())
     if "v" in Cfg.opts:
