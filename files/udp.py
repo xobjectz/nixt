@@ -13,17 +13,14 @@ import threading
 import time
 
 
-from nixt.lib.object import Object, fmt
-from nixt.run.log    import debug
-from nixt.run.run    import Cfg, broker
-from nixt.run.thread import launch
+from nixt.ifc import Object, debug, fmt, launch
+
+
+from nixt.run.run import broker
 
 
 def init():
     "initialize udp to irc relay."
-    if "s" not in Cfg.opts:
-        debug("no running udp")
-        return None
     udpd = UDP()
     udpd.start()
     debug(f"started udp {fmt(Config)}")
@@ -57,8 +54,9 @@ class UDP(Object):
         "annouce on bots."
         if addr:
             Config.addr = addr
-        for bot in broker.all():
-            bot.announce(txt.replace("\00", ""))
+        for bot in broker.all("irc"):
+            if "announce" in dir(bot):
+                bot.announce(txt.replace("\00", ""))
 
     def loop(self):
         "run input loop."

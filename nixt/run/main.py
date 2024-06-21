@@ -102,7 +102,7 @@ def scan(pkg, modstr, disable=None):
 
 def modnames():
     "list all modules."
-    return dir(modules)
+    return dir(modules) + dir(mods)
 
 
 def privileges(username):
@@ -160,6 +160,7 @@ def main():
     elif "c" in Cfg.opts:
         csl = Console()
         init(modules, Cfg.mod)
+        init(mods, Cfg.mod)
         csl.start()
         wait = True
     scan(modules, Cfg.mod)

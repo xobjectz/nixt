@@ -71,7 +71,6 @@ class Config(Default):
         self.realname = self.realname or Config.realname
         self.server = self.server or Config.server
         self.username = self.username or Config.username
-        broker.register(self)
 
 
 class TextWrap(textwrap.TextWrapper):
