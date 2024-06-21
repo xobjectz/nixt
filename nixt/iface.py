@@ -66,7 +66,6 @@ def __rdir__():
         'last',
         'launch',
         'long',
-        'modnames',
         'named',
         'store',
         'read',

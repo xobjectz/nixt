@@ -19,16 +19,17 @@ import time
 from .cli      import CLI
 from .commands import Commands, command
 from .console  import Console
-from .errors   import errors, later
+from .errors   import Errors, errors, later
 from .event    import Event
 from .help     import __doc__ as helpstring
+from .log      import Logging
 from .parse    import parse
 from .persist  import Persist, skel
 from .run      import Cfg
 from .utils    import spl
 
 
-from .. import modules
+from .. import mod as modules
 
 
 def cmnd(txt, outer):
@@ -74,6 +75,8 @@ def init(pkg, modstr):
     for mod in spl(modstr):
         module = getattr(pkg, mod, None)
         if not module:
+            continue
+        if "init" not in dir(module):
             continue
         try:
             module.init()
@@ -132,6 +135,7 @@ def wrapped():
 
 def main():
     "main"
+    Errors.out = print
     readline.redisplay()
     skel()
     parse(Cfg, " ".join(sys.argv[1:]))
@@ -141,6 +145,7 @@ def main():
         print(helpstring)
         return
     if "v" in Cfg.opts:
+        Logging.out = print
         dte = " ".join(time.ctime(time.time()).replace("  ", " ").split()[1:])
         print(f'{dte} {Cfg.name.upper()} {Cfg.opts.upper()} {Cfg.mod.upper()}'.replace("  ", " "))
     wait = False
