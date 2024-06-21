@@ -17,15 +17,15 @@ import time
 import _thread
 
 
-from nixt.ifc import CLI, Default, Event, Handler, Logging, Object
-from nixt.ifc import command, debug, edit, fmt, keys, last, later, sync
-from nixt.ifc import launch
+from ..ifc import CLI, Default, Event, Handler, Logging, Object
+from ..ifc import command, debug, edit, fmt, keys, last, later, sync
+from ..ifc import launch
 
 
-from nixt.run.run import broker
+from ..run.run import broker
 
 
-NAME    = "nixt"
+NAME    = __file__.split(os.sep)[-3]
 
 
 saylock = _thread.allocate_lock()

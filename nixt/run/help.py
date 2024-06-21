@@ -3,10 +3,15 @@
 #
 
 
-"""NIXT - you have been nixt.
+"help"
 
-    nixt  <cmd> [key=val] [key==val]
-    nixt  [-a] [-c] [-d] [-h] [-v]
+
+SEP = "/"
+NAME = __file__.split(SEP)[-3]
+TXT = f"""{NAME.upper()}
+
+    {NAME}  <cmd> [key=val] [key==val]
+    {NAME}  [-a] [-c] [-d] [-h] [-v]
 
 OPTIONS
 
@@ -14,15 +19,15 @@ OPTIONS
     -c     start console
     -d     run in the background
     -h     show help
-    -s     run services
+    -i     start services
     -v     use verbose
 
 COMMANDS
     
-    $ nixt cmd
+    $ {NAME} cmd
     cfg,cmd,dpl,err,exp,imp,mod,mre,nme,pwd,rem,res,rss,thr
 
-SERVICES
+INIT
 
-    $ nixt -cv mod=irc,rss
+    $ {NAME} -cvi mod=irc,rss
 """

@@ -9,7 +9,7 @@
 import time
 
 
-from nixt.ifc import Object, find, fntime, laps, sync
+from ..ifc import Object, find, fntime, laps, sync
 
 
 class NoDate(Exception):

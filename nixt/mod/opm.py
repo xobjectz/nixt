@@ -9,7 +9,7 @@
 import uuid
 
 
-from nixt.ifc import Default, construct, find, spl, sync, update
+from ..ifc import Default, construct, find, spl, sync, update
 
 
 from .rss import Rss

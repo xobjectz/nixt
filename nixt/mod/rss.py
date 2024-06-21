@@ -18,12 +18,12 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote_plus, urlencode
 
 
-from nixt.ifc import Default, Object, Repeater
-from nixt.ifc import find, fmt, last, launch, sync, update, values
-from nixt.ifc import fntime, laps, spl
+from ..ifc import Default, Object, Repeater
+from ..ifc import find, fmt, last, launch, sync, update, values
+from ..ifc import fntime, laps, spl
 
 
-from nixt.run.run import broker
+from ..run.run import broker
 
 
 def init():

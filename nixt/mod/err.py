@@ -4,7 +4,7 @@
 "deferred exception handling"
 
 
-from nixt.ifc import Errors
+from ..ifc import Errors
 
 
 def err(event):

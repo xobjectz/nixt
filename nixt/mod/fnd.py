@@ -4,7 +4,7 @@
 "locate"
 
 
-from nixt.ifc  import fmt, find, long, skel, types
+from ..ifc  import fmt, find, long, skel, types
 
 
 def fnd(event):

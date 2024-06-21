@@ -21,7 +21,7 @@ from .commands import Commands, command
 from .console  import Console
 from .errors   import Errors, errors, later
 from .event    import Event
-from .help     import __doc__ as helpstring
+from .help     import TXT
 from .log      import Logging
 from .parse    import parse
 from .persist  import Persist, skel
@@ -145,7 +145,7 @@ def main():
     Cfg.dis = Cfg.sets.dis
     Cfg.mod += "," + ",".join(modnames())
     if "h" in Cfg.opts:
-        print(helpstring)
+        print(TXT)
         return
     if "v" in Cfg.opts:
         Logging.out = Errors.out = print

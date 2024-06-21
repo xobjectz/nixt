@@ -7,7 +7,7 @@
 import time
 
 
-from ..run.utils import laps
+from ..ifc import laps
 
 
 STARTTIME = time.time()
