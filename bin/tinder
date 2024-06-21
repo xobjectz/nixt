@@ -28,6 +28,7 @@ from nixt.run.run  import broker
 
 
 from nixt import mod as modules
+from nixt import usr as mods
 
 
 LAP = 1
@@ -129,11 +130,13 @@ def wrap(func):
 
 def main():
     "main"
+    Cfg.dis = Cfg.sets.dis
     Cfg.mod = ",".join(modnames())
     if "v" in Cfg.opts:
         DTE = " ".join(time.ctime(time.time()).replace("  ", " ").split()[1:])
         print(f'{DTE} {Cfg.name.upper()} {Cfg.opts.upper()} {Cfg.mod.upper()}'.replace("  ", " "))
-    scan(modules, Cfg.mod)
+    scan(modules, Cfg.mod, Cfg.dis)
+    scan(mods, Cfg.mod, Cfg.dis)
     nrs = Cfg.index or 1
     nrcommand = len(Commands.cmds) or 1
     thrs = []

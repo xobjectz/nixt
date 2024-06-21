@@ -7,8 +7,11 @@
 import time
 
 
+from ..run.utils import laps
+
+
 STARTTIME = time.time()
 
 
 def upt(event):
-    event.reply(elapsed(time.time() - STARTTIME))
+    event.reply(laps(time.time() - STARTTIME))
