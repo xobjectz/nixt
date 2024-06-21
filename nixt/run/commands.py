@@ -9,8 +9,10 @@
 import inspect
 
 
-from nixt.lib.object import Object
-from nixt.run.parse  import parse
+from ..lib.object import Object
+
+
+from .parse  import parse
 
 
 class Commands:

@@ -10,9 +10,11 @@ import time
 import threading
 
 
-from nixt.lib.object import Object
-from nixt.run.thread import launch
-from nixt.run.utils  import named
+from ..lib.object import Object
+
+
+from .thread import launch
+from .utils  import named
 
 
 class Timer(Object):

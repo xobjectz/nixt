@@ -4,7 +4,7 @@
 "main"
 
 
-from nixt.run.main import wrapped
+from .run.main import wrapped
 
 
 if __name__ == "__main__":

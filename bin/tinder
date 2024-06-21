@@ -19,16 +19,15 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from nixt.iface import Commands, CLI, Default, Event, Object, Persist
-from nixt.iface import broker, ident, keys, laps, launch
-from nixt.iface import parse
+from nixt.ifc import Commands, CLI, Default, Event, Object, Persist
+from nixt.ifc import ident, keys, laps, launch, parse
 
 
-from nixt.run.main import modnames, scanned
+from nixt.run.main import modnames, scan
+from nixt.run.run  import broker
 
 
-import nixt.mod
-import nixt.srv
+from nixt import mod as modules
 
 
 LAP = 1
@@ -134,7 +133,7 @@ def main():
     if "v" in Cfg.opts:
         DTE = " ".join(time.ctime(time.time()).replace("  ", " ").split()[1:])
         print(f'{DTE} {Cfg.name.upper()} {Cfg.opts.upper()} {Cfg.mod.upper()}'.replace("  ", " "))
-    #scanned(Cfg.mod)
+    scan(modules, Cfg.mod)
     nrs = Cfg.index or 1
     nrcommand = len(Commands.cmds) or 1
     thrs = []

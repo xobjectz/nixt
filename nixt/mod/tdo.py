@@ -9,9 +9,7 @@
 import time
 
 
-from nixt.lib.object   import Object
-from nixt.run.persist  import find, sync
-from nixt.run.utils    import fntime, laps
+from nixt.ifc import Object, find, fntime, laps, sync
 
 
 class NoDate(Exception):

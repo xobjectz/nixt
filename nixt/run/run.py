@@ -7,9 +7,11 @@
 import os
 
 
-from nixt.lib.config  import Config
-from nixt.run.broker  import Broker
-from nixt.run.persist import Persist
+from ..lib.config  import Config
+
+
+from .broker  import Broker
+from .persist import Persist
 
 
 Cfg         = Config()

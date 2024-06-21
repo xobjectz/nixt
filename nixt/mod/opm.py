@@ -9,10 +9,7 @@
 import uuid
 
 
-from nixt.lib.default  import Default
-from nixt.lib.object   import construct, update
-from nixt.run.persist  import find, sync
-from nixt.run.utils    import spl
+from nixt.ifc import Default, construct, find, spl, sync, update
 
 
 from .rss import Rss

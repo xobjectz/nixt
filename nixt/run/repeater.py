@@ -6,8 +6,8 @@
 "at repeating intervals"
 
 
-from nixt.run.thread import launch
-from nixt.run.timer  import Timer
+from .thread import launch
+from .timer  import Timer
 
 
 class Repeater(Timer):

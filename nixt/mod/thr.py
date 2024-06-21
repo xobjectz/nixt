@@ -8,8 +8,7 @@ import threading
 import time
 
 
-from nixt.lib.object   import Object, update
-from nixt.run.utils    import laps
+from nixt.ifc import Object, laps, update
 
 
 STARTTIME = time.time()

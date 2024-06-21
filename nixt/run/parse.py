@@ -6,7 +6,7 @@
 "parsing"
 
 
-from nixt.lib.default import Default
+from ..lib.default import Default
 
 
 def parse(obj, txt=None):

@@ -4,8 +4,7 @@
 "locate"
 
 
-from nixt.lib.object   import fmt
-from nixt.run.persist  import find, long, skel, types
+from nixt.ifc  import fmt, find, long, skel, types
 
 
 def fnd(event):

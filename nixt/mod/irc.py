@@ -17,17 +17,12 @@ import time
 import _thread
 
 
-from nixt.lib.default  import Default
-from nixt.lib.object   import Object, edit, fmt, keys
-from nixt.run.cli      import CLI
-from nixt.run.commands import command
-from nixt.run.errors   import later
-from nixt.run.event    import Event
-from nixt.run.handler  import Handler
-from nixt.run.log      import Logging, debug
-from nixt.run.persist  import last, sync
-from nixt.run.run      import broker
-from nixt.run.thread   import launch
+from nixt.ifc import CLI, Default, Event, Handler, Logging, Object
+from nixt.ifc import command, debug, edit, fmt, keys, last, later, sync
+from nixt.ifc import launch
+
+
+from nixt.run.run import broker
 
 
 NAME    = "nixt"

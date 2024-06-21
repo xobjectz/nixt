@@ -11,8 +11,8 @@ import threading
 import time
 
 
-from nixt.run.errors import later
-from nixt.run.utils  import named
+from .errors import later
+from .utils  import named
 
 
 class Thread(threading.Thread):
