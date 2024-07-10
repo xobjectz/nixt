@@ -4,7 +4,7 @@
 "list of commands."
 
 
-from ..run.run import Cfg
+from ..run import Cfg
 
 
 def ver(event):

@@ -14,12 +14,12 @@ import time
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 
-from rssbot.defer  import later
-from rssbot.dft    import Default
-from rssbot.disk   import Persist, fns
-from rssbot.log    import debug
-from rssbot.object import Object, fmt
-from rssbot.launch import launch
+from .defer  import later
+from .dft    import Default
+from .disk   import Persist, fns
+from .log    import debug
+from .object import Object, fmt
+from .launch import launch
 
 
 def init():
