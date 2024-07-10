@@ -8,7 +8,9 @@ import threading
 import time
 
 
-from ..ifc import Object, laps, update
+from ..cmds   import add
+from ..object import Object, update
+from ..utils  import laps
 
 
 STARTTIME = time.time()
@@ -37,3 +39,6 @@ def thr(event):
         event.reply(' '.join(res))
     else:
         event.reply('no threads')
+
+
+add(thr)

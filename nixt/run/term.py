@@ -1,6 +1,4 @@
 # This file is placed in the Public Domain.
-#
-#
 
 
 "console"
@@ -8,14 +6,22 @@
 
 from .cli   import CLI
 from .event import Event
+from .run   import fleet
 
 
 class Console(CLI):
 
     "Console"
 
+    def __init__(self, outer, inner, prompt="> "):
+        CLI.__init__(self, outer)
+        self.inner = inner
+        self.prompt = prompt
+        fleet.register(self)
+
     def announce(self, txt):
-        "disable announce."
+        "echo text"
+        self.raw(txt)
 
     def callback(self, evt):
         "wait for callback."
@@ -25,12 +31,6 @@ class Console(CLI):
     def poll(self):
         "poll console and create event."
         evt = Event()
-        evt.txt = input("> ")
+        evt.txt = self.inner(self.prompt)
         evt.type = "command"
         return evt
-
-
-def __dir__():
-    return (
-       'Console',
-    )

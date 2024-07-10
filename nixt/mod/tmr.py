@@ -1,5 +1,4 @@
 # This file is placed in the Public Domain.
-#
 # pylint: disable=R0912
 
 
@@ -11,22 +10,20 @@ import re
 import time as ttime
 
 
-from ..ifc import Event, Timer, laps, launch, update
-
-
-from ..run.run import broker
+from rssbot.cmds   import add
+from rssbot.disk   import find, sync
+from rssbot.run    import fleet
+from rssbot.timer  import Timer
+from rssbot.utils  import laps
+from rssbot.launch import launch
 
 
 def init():
     "initialaze modules."
-    for _fnm, obj in broker.all("timer"):
+    for _fnm, obj in find("timer"):
         diff = float(obj.time) - ttime.time()
         if diff > 0:
-            bot = broker.first("timer")
-            evt = Event()
-            update(evt, obj)
-            evt.orig = repr(bot)
-            timer = Timer(diff, evt.show)
+            timer = Timer(diff, fleet.announce, obj.rest)
             launch(timer.start)
 
 
@@ -63,9 +60,9 @@ class NoDate(Exception):
 def extract_date(daystr):
     "extract date from string."
     res = None
-    for fmt in FORMATS:
+    for fmtt in FORMATS:
         try:
-            res = ttime.mktime(ttime.strptime(daystr, fmt))
+            res = ttime.mktime(ttime.strptime(daystr, fmtt))
             break
         except ValueError:
             pass
@@ -183,10 +180,10 @@ def tmr(event):
     res = None
     if not event.rest:
         nmr = 0
-        for _fnm, obj in broker.all('timer'):
+        for _fnm, obj in find('timer'):
             lap = float(obj.time) - ttime.time()
             if lap > 0:
-                event.reply(f'{nmr} {obj.txt} {laps(lap)}')
+                event.reply(f'{nmr} {obj.rest} {laps(lap)}')
                 nmr += 1
         if not nmr:
             event.reply("no timers")
@@ -215,13 +212,14 @@ def tmr(event):
     if not target or ttime.time() > target:
         event.reply("already passed given time.")
         return res
-    bot = broker.get(event.orig)
-    event.time = target
     diff = target - ttime.time()
-    event.result = []
     event.reply("ok " +  laps(diff))
-    event.result.append(event.rest)
-    timer = Timer(diff, bot.show, event, thrname=event.cmd)
-    update(timer, event)
+    timer = Timer(diff, fleet.announce, event.rest, thrname=event.cmd)
+    timer.time = target
+    timer.rest = event.rest
+    sync(timer)
     launch(timer.start)
     return res
+
+
+add(tmr)

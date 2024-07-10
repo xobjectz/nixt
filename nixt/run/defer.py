@@ -1,6 +1,5 @@
 # This file is placed in the Public Domain.
-#
-# pylint: disable=E1102
+# pylint: disable=W0125,E1102
 
 
 "deferred exception handling."

@@ -1,5 +1,4 @@
 # This file is placed in the Public Domain.
-#
 # pylint: disable=R0903
 
 
@@ -9,7 +8,10 @@
 import time
 
 
-from ..ifc import Object, find, fntime, laps, sync
+from rssbot.cmds   import add
+from rssbot.object import Object
+from rssbot.disk   import find, sync, whitelist
+from rssbot.utils  import fntime, laps
 
 
 class NoDate(Exception):
@@ -24,6 +26,9 @@ class Todo(Object):
     def __init__(self):
         Object.__init__(self)
         self.txt = ''
+
+
+whitelist(Todo)
 
 
 def dne(event):
@@ -43,6 +48,9 @@ def dne(event):
         event.reply("nothing todo")
 
 
+add(dne)
+
+
 def tdo(event):
     "add todo."
     if not event.rest:
@@ -58,3 +66,6 @@ def tdo(event):
     obj.txt = event.rest
     sync(obj)
     event.reply('ok')
+
+
+add(tdo)

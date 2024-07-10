@@ -7,7 +7,8 @@
 import time
 
 
-from ..ifc import laps
+from ..cmds  import add
+from ..utils import laps
 
 
 STARTTIME = time.time()
@@ -16,3 +17,6 @@ STARTTIME = time.time()
 def upt(event):
     "show uptime."
     event.reply(laps(time.time() - STARTTIME))
+
+
+add(upt)

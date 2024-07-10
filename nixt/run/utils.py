@@ -1,20 +1,29 @@
 # This file is placed in the Public Domain.
-#
 # pylint: disable=R0911,C0415,W0212,E0401
 
 
 "utilities"
 
 
-import os
+import pathlib
 import time
 import types
+import _thread
+
+
+SEP = "/"
+
+
+def cdir(pth):
+    "create directory."
+    path = pathlib.Path(pth)
+    path.parent.mkdir(parents=True, exist_ok=True)
 
 
 def fntime(daystr):
     "convert file name to it's saved time."
     daystr = daystr.replace('_', ':')
-    datestr = ' '.join(daystr.split(os.sep)[-2:])
+    datestr = ' '.join(daystr.split(SEP)[-2:])
     if '.' in datestr:
         datestr, rest = datestr.rsplit('.', 1)
     else:
@@ -23,6 +32,15 @@ def fntime(daystr):
     if rest:
         timed += float('.' + rest)
     return timed
+
+
+def forever():
+    "it doesn't stop, until ctrl-c"
+    while True:
+        try:
+            time.sleep(1.0)
+        except (KeyboardInterrupt, EOFError):
+            _thread.interrupt_main()
 
 
 def laps(seconds, short=True):
@@ -65,11 +83,19 @@ def laps(seconds, short=True):
     return txt
 
 
+def modnames(*args):
+    "return module names."
+    res = []
+    for arg in args:
+        res.extend([x for x in dir(arg) if not x.startswith("__")])
+    return sorted(res)
+
+
 def named(obj):
     "return a full qualified name of an object/function/module."
-    typ = type(obj)
-    if isinstance(typ, types.ModuleType):
+    if isinstance(obj, types.ModuleType):
         return obj.__name__
+    typ = type(obj)
     if '__builtins__' in dir(typ):
         return obj.__name__
     if '__self__' in dir(obj):
@@ -94,13 +120,16 @@ def spl(txt):
 
 def strip(pth, nmr=3):
     "reduce to path with directory."
-    return os.sep.join(pth.split(os.sep)[-nmr:])
+    return SEP.join(pth.split(SEP)[-nmr:])
 
 
 def __dir__():
     return (
+        'cdir',
         'fntime',
+        'forever',
         'laps',
+        'modnames',
         'named',
         'spl',
         'strip'

@@ -1,15 +1,13 @@
 # This file is placed in the Public Domain.
-#
 # pylint: disable=W0125
 
 
 "command line interface"
 
 
-from ..lib.iface   import Object
-
-from .commands import command
-from .handler  import Handler
+from .cmds   import command
+from .handle import Handler
+from .object import Object
 
 
 class CLI(Handler):
@@ -17,11 +15,12 @@ class CLI(Handler):
     "CLI"
 
     cache = Object()
-    out = print
+    out = None
 
-    def __init__(self):
+    def __init__(self, outer=None):
         Handler.__init__(self)
         self.register("command", command)
+        self.out = outer
 
     def say(self, _channel, txt):
         "echo on verbose."

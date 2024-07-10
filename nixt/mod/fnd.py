@@ -4,7 +4,9 @@
 "locate"
 
 
-from ..ifc  import fmt, find, long, skel, types
+from rssbot.cmds   import add
+from rssbot.object import fmt
+from rssbot.disk   import find, long, skel, types
 
 
 def fnd(event):
@@ -22,3 +24,6 @@ def fnd(event):
         nmr += 1
     if not nmr:
         event.reply("no result")
+
+
+add(fnd)

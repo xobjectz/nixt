@@ -1,12 +1,10 @@
 # This file is placed in the Public Domain.
-#
-#
 
 
 "parsing"
 
 
-from ..lib.default import Default
+from .dft import Default
 
 
 def parse(obj, txt=None):

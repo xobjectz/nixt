@@ -1,5 +1,4 @@
 # This file is placed in the Public Domain.
-#
 # pylint: disable=R0903
 
 
@@ -9,7 +8,9 @@
 import time
 
 
-from ..ifc import Object, find, fntime, laps, sync
+from rssbot.object import Object
+from rssbot.disk   import find, sync, whitelist
+from rssbot.utils  import fntime, laps
 
 
 class Log(Object):
@@ -19,6 +20,9 @@ class Log(Object):
     def __init__(self):
         super().__init__()
         self.txt = ''
+
+
+whitelist(Log)
 
 
 def log(event):
