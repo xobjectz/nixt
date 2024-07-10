@@ -1,5 +1,6 @@
 # This file is placed in the Public Domain.
 #
+#
 # pylint: disable=C,R,W1503
 
 
@@ -9,13 +10,13 @@
 import unittest
 
 
-from nixt.mod.opm import Parser
+from nixt.mod.rss import OPMLParser
 
 
 class TestAttrs(unittest.TestCase):
 
     def test_attrs(self):
-        res = Parser.parse(TXT, "outline")
+        res = OPMLParser.parse(TXT, "outline")
         self.assertTrue(len(res) == 50)
 
 

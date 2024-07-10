@@ -1,6 +1,4 @@
 # This file is placed in the Public Domain.
-#
-# pylint: disable=R0903
 
 
 "mixin"
@@ -9,17 +7,16 @@
 import unittest
 
 
-from nixt.lib.object import Object
+from nixt.object import Object
 
 
-class Mix:
-
+class Mix: # pylint: disable=R0903
     "class to mixin."
 
     a = "b"
 
 
-class Mixin(Mix, Object):
+class Mixin(Mix, Object): # pylint: disable=R0903
 
     "mixin class"
 

@@ -1,6 +1,7 @@
 # This file is placed in the Public Domain.
 #
 #
+# pylint: disable=C,R,W1503
 
 
 "no tests"
@@ -9,7 +10,7 @@
 import unittest
 
 
-from nixt.mod.opm import Parser
+from nixt.mod.rss import OPMLParser
 
 
 TXT = """<opml version="1.0">
@@ -68,14 +69,10 @@ TXT2 = """
 
 class TestOPML(unittest.TestCase):
 
-    "TestOPML"
-
     def test_opml(self):
-        "test opml."
-        res = Parser.parse(TXT, "outline", "title,type,text,xmlUrl")
+        res = OPMLParser.parse(TXT, "outline", "title,type,text,xmlUrl")
         self.assertTrue(len(res) == 20)
 
     def test_import(self):
-        "test import."
-        res = Parser.parse(TXT2, "outline", "name,display_list,xmlUrl")
+        res = OPMLParser.parse(TXT2, "outline", "name,display_list,xmlUrl")
         self.assertTrue(len(res) == 1)
