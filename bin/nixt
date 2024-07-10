@@ -27,7 +27,7 @@ from nixt import usr
 Cfg         = Config()
 Cfg.dis     = ""
 Cfg.mod     = "mod,cmd,err,thr"
-Cfg.name    = "rssbot"
+Cfg.name    = "nixt"
 Cfg.opts    = ""
 Cfg.wdr     = os.path.expanduser(f"~/.{Cfg.name}")
 Cfg.pidfile = os.path.join(Cfg.wdr, f"{Cfg.name}.pid")
