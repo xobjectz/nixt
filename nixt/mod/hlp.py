@@ -27,4 +27,5 @@ COMMANDS
 
 
 def hlp(event):
+    "show help"
     event.reply(TXT)

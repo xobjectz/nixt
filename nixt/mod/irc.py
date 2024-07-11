@@ -17,9 +17,8 @@ import _thread
 
 
 from ..cli    import CLI
-from ..cmds   import add, command
+from ..cmds   import command
 from ..dft    import Default
-from ..disk   import whitelist
 from ..defer  import later
 from ..event  import Event
 from ..handle import Handler
@@ -76,9 +75,6 @@ class Config(Default):
         self.realname = self.realname or Config.realname
         self.server = self.server or Config.server
         self.username = self.username or Config.username
-
-
-whitelist(Config)
 
 
 class TextWrap(textwrap.TextWrapper):

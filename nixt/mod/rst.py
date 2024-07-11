@@ -13,12 +13,12 @@ import time
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 
-from .defer  import later
-from .dft    import Default
-from .disk   import Persist, fns
-from .log    import debug
-from .object import Object, fmt
-from .launch import launch
+from ..defer  import later
+from ..dft    import Default
+from ..disk   import Persist, fns
+from ..log    import debug
+from ..object import Object, fmt
+from ..launch import launch
 
 
 def init():
