@@ -10,7 +10,7 @@
 import unittest
 
 
-from nixt.mod.rss import OPMLParser
+from nixt.modules.rss import OPMLParser
 
 
 class TestAttrs(unittest.TestCase):
