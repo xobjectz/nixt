@@ -9,7 +9,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "nixt"
 description = "you have been nixt."
-version = "7"
+version = "8"
 authors = [
     {name = "xobjectz", email = "objx@proton.me"},
 ]
@@ -24,9 +24,6 @@ classifiers = [
 ]
 
 
-[project.scripts]
-"nixt" = "nixt.__main__:wrapped"
-
 [project.urls]
 "home" = "https://pypi.org/project/nixt"
 "bugs" = "https://github.com/xobjectz/nixt/issues"
@@ -36,8 +33,8 @@ classifiers = [
 [tool.setuptools]
 packages = [
     'nixt',
-    'nixt.mod',
-    'nixt.usr'
+    'nixt.modules',
+    'nixt.user'
 ]
 zip-safe=true
 
