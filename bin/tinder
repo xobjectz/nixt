@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # This file is placed in the Public Domain.
 #
-# pylint: disable=C0413
+# pylint: disable=C0103,C0413,W0201,W0401,W0614,E0401
 
 
 "tinder"
@@ -19,16 +19,20 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from nixt.ifc import Commands, CLI, Default, Errors, Event, Logging, Object, Persist
-from nixt.ifc import ident, keys, laps, launch, parse
+from nixt.face import *
 
 
-from nixt.run.main import modnames, scan
-from nixt.run.run  import broker
+from nixt import mod
+from nixt import usr
 
 
-from nixt import mod as modules
-from nixt import usr as mods
+if os.path.exists("examples"):
+    import examples
+else:
+    examples = None
+
+
+mod.rss.DEBUG = True
 
 
 LAP = 1
@@ -45,7 +49,6 @@ Cfg.mod     = ""
 Cfg.name    = "tinder"
 Cfg.silent  = False
 Cfg.skip    = ["debug",]
-Cfg.version = "13"
 Cfg.wdr     = ".test"
 
 
@@ -59,8 +62,8 @@ paylock = _thread.allocate_lock()
 param = Object()
 param.cmd = [""]
 param.dpl = ["hnrss title,url"]
-param.fnd = ["log", "todo"]
-param.imp = ["tests/feeds.opml"]
+param.fnd = ["log", "todo", "rss", "config"]
+param.imp = ["ttests/feeds.opml"]
 param.log = ["bla"]
 param.mod = [""]
 param.mre = [""]
@@ -68,11 +71,14 @@ param.nme = ["hnrss hackernews"]
 param.pwd = ["bla mekker"]
 param.rem = ["hnrss"]
 param.res = [""]
+param.rss = ["http://hnrss.org/newest",]
 param.tdo = ["mekker"]
 param.ver = [""]
 
 
 class CLII(CLI):
+
+    "command line interface."
 
     def raw(self, txt):
         if "v" in Cfg.opts:
@@ -96,24 +102,23 @@ def consume(evts):
 
 def payload(clt):
     "do payload."
-    cmds = sorted(list(keys(Commands.cmds)))
+    cmdz = sorted(list(keys(Commands.cmds)))
     with paylock:
         nmr = 0
-        for cmdd in cmds:
+        for cmdd in cmdz:
             for ex in getattr(param, cmdd, [""]):
                 evt = Event()
-                evt.channel = "#nixt"
+                evt.channel = "#objr"
                 evt.orig = repr(clt)
                 evt.txt = cmdd + " " + ex
                 evt.type = "command"
-                print(evt)
                 clt.put(evt)
                 events.append(evt)
                 nmr += 1
         return nmr
 
 
-def wrap(func):
+def wrap(function):
     "reset terminal."
     old2 = None
     try:
@@ -121,7 +126,7 @@ def wrap(func):
     except termios.error:
         pass
     try:
-        func()
+        function()
     except (KeyboardInterrupt, EOFError):
         print("")
     finally:
@@ -133,25 +138,31 @@ def main():
     "main"
     Logging.out = Errors.out = print
     Cfg.dis = Cfg.sets.dis
-    Cfg.mod = ",".join(modnames())
+    Cfg.mod = ",".join(modnames(mod, usr, examples))
     if "v" in Cfg.opts:
-        DTE = " ".join(time.ctime(time.time()).replace("  ", " ").split()[1:])
-        print(f'{DTE} {Cfg.name.upper()} {Cfg.opts.upper()} {Cfg.mod.upper()}'.replace("  ", " "))
-    scan(modules, Cfg.mod, Cfg.dis)
-    scan(mods, Cfg.mod, Cfg.dis)
+        dte = " ".join(time.ctime(time.time()).replace("  ", " ").split()[1:])
+        print(f'{dte} {Cfg.name.upper()} {Cfg.opts.upper()} {Cfg.mod.upper()}'.replace("  ", " "))
+    scan(mod, Cfg.mod)
+    scan(usr, Cfg.mod)
     nrs = Cfg.index or 1
     nrcommand = len(Commands.cmds) or 1
+    clt = CLII()
+    clt.start()
+    clt.threaded = "t" in Cfg.opts
     thrs = []
-    cli = CLII()
-    cli.start()
     for _nr in range(nrs):
-        thrs.append(launch(payload, cli))
+        thrs.append(launch(payload, clt))
     for thr in thrs:
         thr.join()
     consume(events)
     endtime = time.time()
     lap = laps(endtime-STARTTIME)
     percall = (endtime-STARTTIME)/(nrs*nrcommand)
+    if not Errors.errors:
+        if "v" in Cfg.opts:
+            print("no errors")
+    else:
+        errors()
     if "v" in Cfg.opts:
         print(f"{lap} {nrs} {nrcommand} {percall}")
 
@@ -161,8 +172,10 @@ if __name__ == "__main__":
     if "f" in Cfg.opts:
         if os.path.exists(Persist.workdir):
             shutil.rmtree(Persist.workdir)
+    skel()
     if "p" in Cfg.opts:
         profile.runctx(main.__code__, globals(), locals())
     else:
         wrap(main)
+    errors()
     sys.exit()

@@ -6,7 +6,7 @@
 "interface"
 
 
-from . import cache, cli, cmds, defer, event, handle
+from . import cache, cli, cmds, defer, event, handle, main
 from . import log, parse, disk, repeat, launch, timer, utils
 
 
@@ -24,6 +24,7 @@ from .repeat import *
 from .launch import *
 from .timer  import *
 from .utils  import *
+from .main   import *
 
 
 def __dir__():
@@ -43,17 +44,18 @@ def __dir__():
         'SEP',
         'Thread',
         'Timer',
-        'broker',
+        'cmnd',
         'command',
         'daemon',
         'debug',
+        'enable',
         'errors',
         'event',
         'fetch',
         'find',
         'fns',
         'fntime',
-        'getmods',
+        'init',
         'laps',
         'last',
         'later',
