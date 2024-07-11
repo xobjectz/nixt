@@ -25,8 +25,8 @@ from nixt.term  import Console
 from nixt.utils import forever, modnames
 
 
-from nixt import mod
-from nixt import usr
+from nixt import modules
+from nixt import user
 
 
 if os.path.exists("mods"):
@@ -77,18 +77,14 @@ def main():
     skel()
     parse(Cfg, " ".join(sys.argv[1:]))
     Cfg.dis = Cfg.sets.dis
-    Cfg.mod += "," + ",".join(modnames(mod, usr, MODS))
+    Cfg.mod += "," + ",".join(modnames(modules, user, MODS))
     if "v" in Cfg.opts:
         dte = " ".join(time.ctime(time.time()).replace("  ", " ").split()[1:])
         print(f'{dte} {Cfg.name.upper()} {Cfg.opts.upper()} {CFg.mod.upper()}'.replace("  ", " "))
-    scan(mod, Cfg.mod)
-    scan(usr, Cfg.usr)
-    scan(MODS, Cfg.mod)
+    scan(Cfg.mod, modules, user, MODS, Cfg.dis)
     csl = CSL(print, input)
     if "i" in Cfg.opts:
-        init(mod, Cfg.mod, Cfg.dis)
-        init(usr, Cfg.mod, Cfg.dis)
-        init(MODS, Cfg.mod, Cfg.dis)
+        init(Cfg.mod, modules, user, MODS, Cfg.dis)
     csl.start()
     cmnd(Cfg.otxt, print)
     forever()

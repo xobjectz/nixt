@@ -19,8 +19,8 @@ from nixt.main  import enable, init, scan
 from nixt.utils import forever, modnames
 
 
-from nixt import mod
-from nixt import usr
+from nixt import modules
+from nixt import user
 
 
 Cfg         = Config()
@@ -82,11 +82,9 @@ def main():
     privileges(Cfg.user)
     if "-v" in sys.argv:
         enable(print)
-    Cfg.mod = ",".join(modnames(mod, usr))
-    scan(mod, Cfg.mod)
-    scan(usr, Cfg.mod)
-    init(mod, Cfg.mod)
-    init(usr, Cfg.mod)
+    Cfg.mod = ",".join(modnames(modules, user))
+    scan(Cfg.mod, modules, user)
+    init(Cfg.mod, modules, user)
     forever()
 
 

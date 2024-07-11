@@ -7,7 +7,7 @@
 import os
 
 
-from .. import usr
+from .. import user
 
 
 def mod(event):
@@ -20,7 +20,7 @@ def mod(event):
         if mdd.endswith("~"):
             continue
         mods.append(mdd[:-3])
-    path = os.path.dirname(usr.__file__)
+    path = os.path.dirname(user.__file__)
     for mdd in os.listdir(path):
         if mdd.startswith("__"):
             continue

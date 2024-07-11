@@ -34,35 +34,38 @@ def enable(outer):
     CLI.out = Errors.out = Logging.out = outer
 
 
-def init(pkg, modstr, disable=None):
+def init(modstr, *pkgs, disable=None):
     "scan modules for commands and classes"
     mds = []
     for mod in spl(modstr):
         if disable and mod in spl(disable):
             continue
-        module = getattr(pkg, mod, None)
-        if not module:
-            continue
-        if "init" not in dir(module):
-            continue
-        try:
-            module.init()
-        except Exception as ex:
-            later(ex)
+        for pkg in pkgs:
+            module = getattr(pkg, mod, None)
+            if not module:
+                continue
+            if "init" not in dir(module):
+                continue
+            try:
+                module.init()
+            except Exception as ex:
+                later(ex)
+            break
     return mds
 
 
-def scan(pkg, modstr, disable=""):
+def scan(modstr, *pkgs, disable=""):
     "scan modules for commands and classes"
     mds = []
     for modname in spl(modstr):
         if skip(modname, disable):
             continue
-        module = getattr(pkg, modname, None)
-        if not module:
-            continue
-        scancmd(module)
-        scancls(module)
+        for pkg in pkgs:
+            module = getattr(pkg, modname, None)
+            if not module:
+                continue
+            scancmd(module)
+            scancls(module)
     return mds
 
 

@@ -21,8 +21,8 @@ from nixt.parse import parse
 from nixt.utils import modnames
 
 
-from nixt import mod
-from nixt import usr
+from nixt import modules
+from nixt import user
 
 
 Cfg         = Config()
@@ -44,9 +44,8 @@ def main():
     if "h" in Cfg.opts:
         return cmnd("hlp", print)
     Cfg.dis = Cfg.sets.dis
-    Cfg.mod = ",".join(modnames(mod, usr))
-    scan(mod, Cfg.mod)
-    scan(usr, Cfg.mod)
+    Cfg.mod = ",".join(modnames(modules, user))
+    scan(Cfg.mod, modules, user)
     cmnd(Cfg.otxt, print)
 
 
