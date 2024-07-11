@@ -19,7 +19,7 @@ sys.path.insert(0, os.getcwd())
 from nixt.cfg   import Config
 from nixt.defer import errors
 from nixt.disk  import Persist, skel
-from nixt.main  import cmnd, enable, init
+from nixt.main  import cmnd, enable, init, scan
 from nixt.parse import parse
 from nixt.term  import Console
 from nixt.utils import forever, modnames
@@ -80,8 +80,10 @@ def main():
     Cfg.mod += "," + ",".join(modnames(mod, usr, MODS))
     if "v" in Cfg.opts:
         dte = " ".join(time.ctime(time.time()).replace("  ", " ").split()[1:])
-        modiess = ",".join([x.upper() for x in modnames(mod, usr, MODS)])
-        print(f'{dte} {Cfg.name.upper()} {Cfg.opts.upper()} {modiess}'.replace("  ", " "))
+        print(f'{dte} {Cfg.name.upper()} {Cfg.opts.upper()} {CFg.mod.upper()}'.replace("  ", " "))
+    scan(mod, Cfg.mod)
+    scan(usr, Cfg.usr)
+    scan(MODS, Cfg.mod)
     csl = CSL(print, input)
     if "i" in Cfg.opts:
         init(mod, Cfg.mod, Cfg.dis)
