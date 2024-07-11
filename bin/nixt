@@ -46,7 +46,7 @@ def main():
     Cfg.dis = Cfg.sets.dis
     Cfg.mod = ",".join(modnames(modules, user))
     scan(Cfg.mod, modules, user)
-    cmnd(Cfg.otxt, print)
+    return cmnd(Cfg.otxt, print)
 
 
 if __name__ == "__main__":

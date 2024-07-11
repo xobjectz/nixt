@@ -49,6 +49,8 @@ Persist.workdir = Cfg.wdr
 
 class CSL(Console):
 
+    "cSL"
+
     def announce(self, txt):
         "mask announce"
 
@@ -80,7 +82,7 @@ def main():
     Cfg.mod += "," + ",".join(modnames(modules, user, MODS))
     if "v" in Cfg.opts:
         dte = " ".join(time.ctime(time.time()).replace("  ", " ").split()[1:])
-        print(f'{dte} {Cfg.name.upper()} {Cfg.opts.upper()} {CFg.mod.upper()}'.replace("  ", " "))
+        print(f'{dte} {Cfg.name.upper()} {Cfg.opts.upper()} {Cfg.mod.upper()}'.replace("  ", " "))
     scan(Cfg.mod, modules, user, MODS, Cfg.dis)
     csl = CSL(print, input)
     if "i" in Cfg.opts:
