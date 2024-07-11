@@ -5,13 +5,14 @@
 "modules"
 
 
-from . import cmd, err, irc, mod, rss, thr, upt
+from . import cmd, err, hlp, irc, mod, rss, thr, upt
 
 
 def __dir__():
     return (
         'cmd',
         'err',
+        'hlp',
         'irc',
         'mod',
         'rss',

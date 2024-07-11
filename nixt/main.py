@@ -10,7 +10,11 @@ from .cmds  import command
 from .defer import Errors, later
 from .event import Event
 from .log   import Logging
-from .utils import spl
+from .utils import skip, spl
+
+
+from .cmds import scan as scancmd
+from .disk import scan as scancls
 
 
 def cmnd(txt, outer):
@@ -45,6 +49,20 @@ def init(pkg, modstr, disable=None):
             module.init()
         except Exception as ex:
             later(ex)
+    return mds
+
+
+def scan(pkg, modstr, disable=""):
+    "scan modules for commands and classes"
+    mds = []
+    for modname in spl(modstr):
+        if skip(modname, disable):
+            continue
+        module = getattr(pkg, modname, None)
+        if not module:
+            continue
+        scancmd(module)
+        scancls(module)
     return mds
 
 

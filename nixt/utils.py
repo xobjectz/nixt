@@ -20,6 +20,11 @@ def cdir(pth):
     path.parent.mkdir(parents=True, exist_ok=True)
 
 
+def date():
+    "return time with date."
+    return str(datetime.datetime.now())
+
+
 def fntime(daystr):
     "convert file name to it's saved time."
     daystr = daystr.replace('_', ':')
@@ -41,6 +46,11 @@ def forever():
             time.sleep(1.0)
         except (KeyboardInterrupt, EOFError):
             _thread.interrupt_main()
+
+
+def hms():
+    "return hour:minutes:seconds string."
+    return now().split(".")[0]
 
 
 def laps(seconds, short=True):
@@ -109,6 +119,19 @@ def named(obj):
     return None
 
 
+def now():
+    "return string of the current time."
+    return date().split()[-1]
+
+
+def skip(name, skipp):
+    "check for skipping"
+    for skp in spl(skipp):
+        if skp in name:
+            return True
+    return False
+
+
 def spl(txt):
     "split comma separated string into a list."
     try:
@@ -126,11 +149,15 @@ def strip(pth, nmr=3):
 def __dir__():
     return (
         'cdir',
+        'date',
         'fntime',
         'forever',
+        'hms',
         'laps',
         'modnames',
         'named',
+        'now',
+        'skip',
         'spl',
         'strip'
     )

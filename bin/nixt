@@ -13,11 +13,12 @@ import sys
 sys.path.insert(0, os.getcwd())
 
 
-from nixt.cfg    import Config
-from nixt.defer  import errors
-from nixt.disk   import Persist
-from nixt.main   import cmnd, enable
-from nixt.parse  import parse
+from nixt.cfg   import Config
+from nixt.defer import errors
+from nixt.disk  import Persist
+from nixt.main  import cmnd, enable, scan
+from nixt.parse import parse
+from nixt.utils import modnames
 
 
 from nixt import mod
@@ -36,17 +37,16 @@ Cfg.pidfile = os.path.join(Cfg.wdr, f"{Cfg.name}.pid")
 Persist.workdir = Cfg.wdr
 
 
-def modnames():
-    "list all modules."
-    return sorted({x for x in dir(mod) + dir(usr) if not x.startswith("__")})
-
-
 def main():
     "main"
     enable(print)
     parse(Cfg, " ".join(sys.argv[1:]))
+    if "h" in Cfg.opts:
+        return cmnd("hlp", print)
     Cfg.dis = Cfg.sets.dis
-    Cfg.mod = ",".join(modnames())
+    Cfg.mod = ",".join(modnames(mod, usr))
+    scan(mod, Cfg.mod)
+    scan(usr, Cfg.mod)
     cmnd(Cfg.otxt, print)
 
 

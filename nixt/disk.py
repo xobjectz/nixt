@@ -5,6 +5,7 @@
 "persistence"
 
 
+import inspect
 import os
 import pathlib
 
@@ -98,6 +99,16 @@ def pidfile(pid):
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(pid, "w", encoding="utf-8") as fds:
         fds.write(str(os.getpid()))
+
+
+def scan(mod):
+    "scan module for classes."
+    for key, clz in inspect.getmembers(mod, inspect.isclass):
+        if key.startswith("cb"):
+            continue
+        if not issubclass(clz, Object):
+            continue
+        whitelist(clz)
 
 
 def skel():

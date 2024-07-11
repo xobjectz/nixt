@@ -632,9 +632,6 @@ def cfg(event):
         event.reply('ok')
 
 
-add(cfg)
-
-
 def mre(event):
     "show from output cache."
     if not event.channel:
@@ -655,9 +652,6 @@ def mre(event):
     event.reply(f'{size} more in cache')
 
 
-add(mre)
-
-
 def pwd(event):
     "create a base64 password."
     if len(event.args) != 2:
@@ -670,6 +664,3 @@ def pwd(event):
     base = base64.b64encode(enc)
     dcd = base.decode('ascii')
     event.reply(dcd)
-
-
-add(pwd)

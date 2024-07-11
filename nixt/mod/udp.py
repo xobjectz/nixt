@@ -13,7 +13,6 @@ import threading
 import time
 
 
-from .cmds   import add
 from .launch import launch
 from .log    import debug
 from .object import Object, fmt
@@ -117,6 +116,3 @@ def udp(event):
             toudp(Cfg.host, Cfg.port, txt)
         if stop:
             break
-
-
-add(udp)

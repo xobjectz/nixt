@@ -10,7 +10,6 @@ import re
 import time as ttime
 
 
-from ..cmds   import add
 from ..disk   import find, sync
 from ..run    import fleet
 from ..timer  import Timer
@@ -220,6 +219,3 @@ def tmr(event):
     sync(timer)
     launch(timer.start)
     return res
-
-
-add(tmr)
