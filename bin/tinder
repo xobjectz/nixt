@@ -22,17 +22,17 @@ sys.path.insert(0, os.getcwd())
 from nixt.face import *
 
 
-from nixt import mod
-from nixt import usr
+from nixt import modules
+from nixt import user
 
 
-if os.path.exists("examples"):
-    import examples
+if os.path.exists("mods"):
+    import mods
 else:
-    examples = None
+    mods = None
 
 
-mod.rss.DEBUG = True
+modules.rss.DEBUG = True
 
 
 LAP = 1
@@ -138,12 +138,11 @@ def main():
     "main"
     Logging.out = Errors.out = print
     Cfg.dis = Cfg.sets.dis
-    Cfg.mod = ",".join(modnames(mod, usr, examples))
+    Cfg.mod = ",".join(modnames(modules, user, mods))
     if "v" in Cfg.opts:
         dte = " ".join(time.ctime(time.time()).replace("  ", " ").split()[1:])
         print(f'{dte} {Cfg.name.upper()} {Cfg.opts.upper()} {Cfg.mod.upper()}'.replace("  ", " "))
-    scan(mod, Cfg.mod)
-    scan(usr, Cfg.mod)
+    scan(Cfg.mod, modules, user, mods)
     nrs = Cfg.index or 1
     nrcommand = len(Commands.cmds) or 1
     clt = CLII()

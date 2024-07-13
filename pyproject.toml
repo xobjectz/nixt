@@ -9,7 +9,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "nixt"
 description = "you have been nixt."
-version = "8"
+version = "11"
 authors = [
     {name = "xobjectz", email = "objx@proton.me"},
 ]
@@ -26,7 +26,7 @@ classifiers = [
 
 [project.scripts]
 "nixt" = "nixt.__main__:main"
-
+"nixtd" = "nixt.__main__:background"
 
 [project.urls]
 "home" = "https://pypi.org/project/nixt"
@@ -47,6 +47,8 @@ zip-safe=true
 "share/doc/nixt" = [
     "README.rst",
 ]
+
+
 [tool.setuptools.exclude-package-data]
 "*" = [
        "env*",
