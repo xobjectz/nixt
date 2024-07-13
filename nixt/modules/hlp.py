@@ -6,11 +6,10 @@
 
 SEP = "/"
 NAME = __file__.split(SEP)[-3]
-TXT = f"""{NAME.upper()}
+TXT = f"""{NAME.upper()} - you have been {NAME}
 
     {NAME}  <cmd> [key=val] [key==val]
     {NAME}d
-    {NAME}sh
 
 OPTIONS
 

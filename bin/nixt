@@ -41,11 +41,11 @@ def main():
     "main"
     enable(print)
     parse(Cfg, " ".join(sys.argv[1:]))
-    if "h" in Cfg.opts:
-        return cmnd("hlp", print)
     Cfg.dis = Cfg.sets.dis
     Cfg.mod = ",".join(modnames(modules, user))
     scan(Cfg.mod, modules, user)
+    if "h" in Cfg.opts:
+        return cmnd("hlp", print)
     return cmnd(Cfg.otxt, print)
 
 

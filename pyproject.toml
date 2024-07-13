@@ -24,6 +24,10 @@ classifiers = [
 ]
 
 
+[project.scripts]
+"nixt" = "nixt.__main__:main"
+
+
 [project.urls]
 "home" = "https://pypi.org/project/nixt"
 "bugs" = "https://github.com/xobjectz/nixt/issues"
