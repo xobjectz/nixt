@@ -12,7 +12,7 @@ import sys
 
 
 from .cfg   import Config
-from .disk  import pidfile, skel
+from .disk  import Persist, pidfile, skel
 from .main  import enable, init, scan
 from .utils import forever, modnames
 
@@ -25,6 +25,9 @@ Cfg.name    = "nixt"
 Cfg.user    = getpass.getuser()
 Cfg.wdr     = os.path.expanduser(f"~/.{Cfg.name}")
 Cfg.pidfile = os.path.join(Cfg.wdr, f"{Cfg.name}.pid")
+
+
+Persist.workdir = Cfg.wdr
 
 
 def daemon(verbose=False):

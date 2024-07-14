@@ -1,1 +1,1 @@
-python3 -m nixt:background $* ;
+python3 -m nixt.daemon
