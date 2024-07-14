@@ -11,9 +11,8 @@ import os
 import sys
 
 
-from .cfg   import Cfg
 from .disk  import Persist, pidfile, skel
-from .main  import enable, init, scan
+from .main  import Cfg, enable, init, scan
 from .utils import forever, modnames
 
 

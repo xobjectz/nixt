@@ -5,9 +5,15 @@
 "main"
 
 
+import getpass
+import os
+
+
+from .cfg   import Config
 from .cli   import CLI
 from .cmds  import command
 from .defer import Errors, later
+from .disk  import Persist
 from .event import Event
 from .log   import Logging
 from .utils import skip, spl
@@ -15,6 +21,16 @@ from .utils import skip, spl
 
 from .cmds import scan as scancmd
 from .disk import scan as scancls
+
+
+Cfg         = Config()
+Cfg.name    = "nixt"
+Cfg.user    = getpass.getuser()
+Cfg.wdr     = os.path.expanduser(f"~/.{Cfg.name}")
+Cfg.pidfile = os.path.join(Cfg.wdr, f"{Cfg.name}.pid")
+
+
+Persist.workdir = Cfg.wdr
 
 
 def cmnd(txt, outer):
@@ -71,6 +87,7 @@ def scan(modstr, *pkgs, disable=""):
 
 def __dir__():
     return (
+        'Cfg',
         'cmnd',
         'enable',
         'init',

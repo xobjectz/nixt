@@ -5,12 +5,10 @@
 "main"
 
 
-import os
 import sys
 
 
-from .cfg   import Cfg
-from .main  import cmnd, enable, scan
+from .main  import Cfg, cmnd, enable, scan
 from .parse import parse
 from .utils import modnames
 
