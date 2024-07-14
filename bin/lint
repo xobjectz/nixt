@@ -1,1 +1,0 @@
-pylint nixt bin/nixt bin/nixtd bin/nixtsh tests
