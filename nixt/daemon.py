@@ -5,13 +5,12 @@
 "daemon"
 
 
-import getpass
 import pwd
 import os
 import sys
 
 
-from .disk  import Persist, pidfile, skel
+from .disk  import pidfile, skel
 from .main  import Cfg, enable, init, scan
 from .utils import forever, modnames
 
