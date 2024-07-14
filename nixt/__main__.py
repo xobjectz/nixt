@@ -9,8 +9,7 @@ import os
 import sys
 
 
-from .cfg   import Config
-from .disk  import Persist
+from .cfg   import Cfg
 from .main  import cmnd, enable, scan
 from .parse import parse
 from .utils import modnames
@@ -18,15 +17,6 @@ from .utils import modnames
 
 from . import modules
 from . import user
-
-
-Cfg         = Config()
-Cfg.name    = "nixt"
-Cfg.wdr     = os.path.expanduser(f"~/.{Cfg.name}")
-Cfg.pidfile = os.path.join(Cfg.wdr, f"{Cfg.name}.pid")
-
-
-Persist.workdir = Cfg.wdr
 
 
 def main():
