@@ -80,3 +80,6 @@ p.s.
 def req(event):
     "reconsider"
     event.reply(__doc__)
+
+
+#req.target = "cli"

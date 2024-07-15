@@ -112,7 +112,7 @@ class Output:
     def extend(channel, txtlist):
         "add list of txt to channel cache."
         if channel not in Output.cache:
-            Output.cache[channel] = []
+            setattr(Output.cache, channel, [])
         chanlist = getattr(Output.cache, channel)
         chanlist.extend(txtlist)
 
@@ -637,6 +637,7 @@ def mre(event):
     if 'cache' not in dir(bot):
         event.reply('bot is missing cache')
         return
+    event.reply(dir(bot.cache))
     if event.channel not in bot.cache:
         event.reply(f'no output in {event.channel} cache.')
         return

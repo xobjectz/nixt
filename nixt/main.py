@@ -37,10 +37,6 @@ def cmnd(txt, outer):
     "do a command using the provided output function."
     if not txt:
         return None
-    from nixt.modules import req, srv, hlp
-    scancmd(req)
-    scancmd(srv)
-    scancmd(hlp)
     cli = CLI(outer)
     evn = Event()
     evn.txt = txt

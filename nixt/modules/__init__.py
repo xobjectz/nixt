@@ -12,12 +12,12 @@ def __dir__():
     return (
         'cmd',
         'err',
-#        'hlp',
+        'hlp',
         'irc',
         'mod',
-#        'req',
+        'req',
         'rss',
-#        'srv',
+        'srv',
         'thr',
         'upt'
     )

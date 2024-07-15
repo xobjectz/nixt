@@ -8,7 +8,7 @@
 import inspect
 
 
-from .object import Object
+from .object import Object, fqn
 from .parse  import parse
 
 
@@ -32,8 +32,9 @@ def command(bot, evt):
     parse(evt)
     func = getattr(Commands.cmds, evt.cmd, None)
     if func:
-        func(evt)
-        bot.show(evt)
+        if "target" not in dir(func) or func.target in fqn(bot):
+            func(evt)
+            bot.show(evt)
     evt.ready()
 
 
