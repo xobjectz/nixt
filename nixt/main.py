@@ -7,21 +7,29 @@
 
 import getpass
 import os
-
+import sys
+import termios
+import time
 
 from .cfg    import Config
 from .cli    import CLI
 from .cmds   import command
 from .defer  import Errors
-from .disk   import Persist
+from .disk   import Persist, skel
 from .event  import Event
 from .launch import launch
-from .log    import Logging
-from .utils  import skip, spl
+from .log    import Logging, debug
+from .parse  import parse
+from .term   import Console
+from .utils  import daemon, forever, modnames, pidfile, privileges, skip, spl
 
 
 from .cmds import scan as scancmd
 from .disk import scan as scancls
+
+
+from . import modules
+from . import user
 
 
 Cfg         = Config()
@@ -35,16 +43,63 @@ Cfg.pidfile = os.path.join(Cfg.wdr, f"{Cfg.name}.pid")
 Persist.workdir = Cfg.wdr
 
 
+def background():
+    "main"
+    daemon("-v" in sys.argv)
+    skel()
+    pidfile(Cfg.pidfile)
+    privileges(Cfg.user)
+    if "-v" in sys.argv:
+        enable(print)
+    Cfg.mod = ",".join(modnames(modules, user))
+    scan(Cfg.mod, modules, user)
+    init(Cfg.mod, modules, user)
+    forever()
+
+
+def cli():
+    "command line interface."
+    parse(Cfg, " ".join(sys.argv[1:]))
+    enable(print)
+    if "h" in Cfg.opts:
+        cmnd("hlp", print)
+        return
+    Cfg.dis = Cfg.sets.dis
+    Cfg.mod = ",".join(modnames(modules, user))
+    scan(Cfg.mod, modules, user)
+    cmnd(Cfg.otxt, print)
+
+
 def cmnd(txt, outer):
     "do a command using the provided output function."
     if not txt:
         return None
-    cli = CLI(outer)
+    clis = CLI(outer)
     evn = Event()
     evn.txt = txt
-    command(cli, evn)
+    command(clis, evn)
     evn.wait()
     return evn
+
+
+def console():
+    "start console"
+    parse(Cfg, " ".join(sys.argv[1:]))
+    skel()
+    if "a" in Cfg.opts:
+        Cfg.mod = ",".join(modnames(modules, user))
+    if "v" in Cfg.opts:
+        enable(print)
+        dte = " ".join(time.ctime(time.time()).replace("  ", " ").split()[1:])
+        debug(f'{dte} {Cfg.name.upper()} {Cfg.opts.upper()} {Cfg.mod.upper()}')
+    scan(Cfg.mod, modules, user)
+    if "i" in Cfg.opts:
+        thrs = init(Cfg.mod, modules, user)
+        for thr in thrs:
+            thr.join()
+    csl = Console(print, input)
+    csl.start()
+    forever()
 
 
 def enable(outer):
@@ -84,11 +139,32 @@ def scan(modstr, *pkgs, disable=""):
     return mds
 
 
+def wrap(func):
+    "restore console."
+    old2 = None
+    try:
+        old2 = termios.tcgetattr(sys.stdin.fileno())
+    except termios.error:
+        pass
+    try:
+        func()
+    except (KeyboardInterrupt, EOFError):
+        sys.stdout.write("\n")
+        sys.stdout.flush()
+    finally:
+        if old2:
+            termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, old2)
+
+
 def __dir__():
     return (
         'Cfg',
+        'background',
+        'cli',
+        'console',
         'cmnd',
         'enable',
         'init',
-        'scan'
+        'scan',
+        'wrap'
     )

@@ -6,7 +6,10 @@
 
 
 import datetime
+import os
 import pathlib
+import pwd
+import sys
 import time
 import types
 import _thread
@@ -19,6 +22,29 @@ def cdir(pth):
     "create directory."
     path = pathlib.Path(pth)
     path.parent.mkdir(parents=True, exist_ok=True)
+
+
+def daemon(verbose=False):
+    "switch to background."
+    pid = os.fork()
+    if pid != 0:
+        os._exit(0)
+    os.setsid()
+    pid2 = os.fork()
+    if pid2 != 0:
+        os._exit(0)
+    if not verbose:
+        with open('/dev/null', 'r', encoding="utf-8") as sis:
+            os.dup2(sis.fileno(), sys.stdin.fileno())
+        with open('/dev/null', 'a+', encoding="utf-8") as sos:
+            os.dup2(sos.fileno(), sys.stdout.fileno())
+        with open('/dev/null', 'a+', encoding="utf-8") as ses:
+            os.dup2(ses.fileno(), sys.stderr.fileno())
+    os.umask(0)
+    os.chdir("/")
+
+
+
 
 
 def date():
@@ -125,6 +151,23 @@ def now():
     return date().split()[-1]
 
 
+def pidfile(pid):
+    "write the pid to a file."
+    if os.path.exists(pid):
+        os.unlink(pid)
+    path = pathlib.Path(pid)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(pid, "w", encoding="utf-8") as fds:
+        fds.write(str(os.getpid()))
+
+
+def privileges(username):
+    "drop privileges."
+    pwnam = pwd.getpwnam(username)
+    os.setgid(pwnam.pw_gid)
+    os.setuid(pwnam.pw_uid)
+
+
 def skip(name, skipp):
     "check for skipping"
     for skp in spl(skipp):
@@ -150,6 +193,7 @@ def strip(pth, nmr=3):
 def __dir__():
     return (
         'cdir',
+        'daemon',
         'date',
         'fntime',
         'forever',
@@ -158,6 +202,8 @@ def __dir__():
         'modnames',
         'named',
         'now',
+        'pidfile',
+        'privileges',
         'skip',
         'spl',
         'strip'

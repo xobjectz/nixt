@@ -91,16 +91,6 @@ def long(name):
     return res
 
 
-def pidfile(pid):
-    "write the pid to a file."
-    if os.path.exists(pid):
-        os.unlink(pid)
-    path = pathlib.Path(pid)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with open(pid, "w", encoding="utf-8") as fds:
-        fds.write(str(os.getpid()))
-
-
 def scan(mod):
     "scan module for classes."
     for key, clz in inspect.getmembers(mod, inspect.isclass):
