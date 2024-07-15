@@ -130,8 +130,6 @@ class Output:
 
     def oput(self, channel, txt):
         "put text to output queue."
-        if channel and channel not in dir(Output.cache):
-            setattr(Output.cache, channel, [])
         self.oqueue.put_nowait((channel, txt))
 
     def out(self):
@@ -159,9 +157,7 @@ class Output:
     @staticmethod
     def size(chan):
         "return size of channel cache."
-        if chan in Output.cache:
-            return len(getattr(Output.cache, chan, []))
-        return 0
+        return len(getattr(Output.cache, chan, []))
 
 
 class IRC(CLI, Handler, Output):
@@ -637,7 +633,8 @@ def mre(event):
     if 'cache' not in dir(bot):
         event.reply('bot is missing cache')
         return
-    event.reply(dir(bot.cache))
+    print(bot)
+    print(dir(bot.cache))
     if event.channel not in bot.cache:
         event.reply(f'no output in {event.channel} cache.')
         return

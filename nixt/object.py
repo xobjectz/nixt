@@ -13,7 +13,7 @@ class Object:
     "Object"
 
     def __contains__(self, key):
-        return key in dir(self)
+        return key in dir(self.__dict__)
 
     def __iter__(self):
         return iter(self.__dict__)
