@@ -5,10 +5,11 @@
 
 
 import getpass
+import os
 
 
-TITLE = "you have been nixt!"
-PROG  = "nixt"
+NAME = __file__.split(os.sep)[-3]
+TITLE = "you have been {NAME}t!"
 
 
 def srv(event):
@@ -26,8 +27,8 @@ After=network-online.target
 Type=simple
 User={user}
 Group={user}
-WorkingDirectory=/home/{user}/.{PROG}
-ExecStart=/home/{user}/.local/pipx/venvs/{PROG}/bin/{PROG}d
+WorkingDirectory=/home/{user}/.{NAME}
+ExecStart=/home/{user}/.local/pipx/venvs/{NAME}/bin/{NAME}d
 ExitType=cgroup
 RemainAfterExit=yes
 

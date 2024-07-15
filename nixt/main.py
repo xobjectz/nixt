@@ -24,7 +24,7 @@ from .disk import scan as scancls
 
 
 Cfg         = Config()
-Cfg.name    = "nixt"
+Cfg.name    = __file__.split(os.sep)[-2]
 Cfg.user    = getpass.getuser()
 Cfg.wdr     = os.path.expanduser(f"~/.{Cfg.name}")
 Cfg.pidfile = os.path.join(Cfg.wdr, f"{Cfg.name}.pid")
