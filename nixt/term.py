@@ -8,7 +8,6 @@ import readline
 import sys
 import termios
 import time
-import _thread
 
 
 from .cli   import CLI
