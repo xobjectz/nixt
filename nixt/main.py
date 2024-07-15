@@ -59,12 +59,12 @@ def init(modstr, *pkgs, disable=None):
         if disable and mod in spl(disable):
             continue
         for pkg in pkgs:
-            module = getattr(pkg, mod, None)
-            if not module:
+            modi = getattr(pkg, mod, None)
+            if not modi:
                 continue
-            if "init" not in dir(module):
+            if "init" not in dir(modi):
                 continue
-            thrs.append(launch(module.init))
+            thrs.append(launch(modi.init))
             break
     return thrs
 

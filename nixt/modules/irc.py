@@ -42,7 +42,7 @@ def init():
     "initialize a irc bot."
     irc = IRC()
     irc.start()
-    irc.events.joined.wait()
+    irc.events.ready.wait()
     debug(f'started irc {fmt(irc.cfg, skip="password")}')
     return irc
 
@@ -165,10 +165,10 @@ class IRC(CLI, Handler, Output):
         self.cfg = Config()
         self.channels = []
         self.events = Default()
-        self.events.authed = threading.Event()
+        self.events.authed    = threading.Event()
         self.events.connected = threading.Event()
-        self.events.joined = threading.Event()
-        self.events.ready = threading.Event()
+        self.events.joined    = threading.Event()
+        self.events.ready     = threading.Event()
         self.sock = None
         self.state = Default()
         self.state.dostop = False
@@ -198,6 +198,7 @@ class IRC(CLI, Handler, Output):
     def connect(self, server, port=6667):
         "connect to server."
         self.state.nrconnect += 1
+        self.events.joined.clear()
         self.events.connected.clear()
         if self.cfg.password:
             debug("using SASL")
@@ -487,11 +488,11 @@ class IRC(CLI, Handler, Output):
 
     def start(self):
         "start bot."
+        self.events.connected.clear()
+        self.events.joined.clear()
         last(self.cfg)
         if self.cfg.channel not in self.channels:
             self.channels.append(self.cfg.channel)
-        self.events.connected.clear()
-        self.events.joined.clear()
         launch(Output.out, self)
         launch(Handler.start, self)
         launch(

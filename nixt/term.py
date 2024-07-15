@@ -8,6 +8,7 @@ import readline
 import sys
 import termios
 import time
+import _thread
 
 
 from .cli   import CLI
@@ -78,9 +79,10 @@ def console():
         dte = " ".join(time.ctime(time.time()).replace("  ", " ").split()[1:])
         debug(f'{dte} {Cfg.name.upper()} {Cfg.opts.upper()} {Cfg.mod.upper()}')
     scan(Cfg.mod, modules, user)
-    thrs = init(Cfg.mod, modules, user)
-    for thr in thrs:
-        thr.join()
+    if "i" in Cfg.opts:
+        thrs = init(Cfg.mod, modules, user)
+        for thr in thrs:
+            thr.join()
     csl = Console(print, input)
     csl.start()
     forever()
@@ -88,6 +90,7 @@ def console():
 
 def main():
     "wrap main."
+    readline.redisplay()
     wrap(console)
 
 

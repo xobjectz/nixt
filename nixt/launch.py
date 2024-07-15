@@ -34,7 +34,7 @@ class Thread(threading.Thread):
     def __next__(self):
         yield from dir(self)
 
-    def join(self, timeout=1.0):
+    def join(self, timeout=None):
         "join this thread."
         super().join(timeout)
         return self._result
