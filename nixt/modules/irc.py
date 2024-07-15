@@ -98,9 +98,8 @@ class Output:
 
     "Output"
 
-    cache = Object()
-
     def __init__(self):
+        self.cache  = Object()
         self.dostop = threading.Event()
         self.oqueue = queue.Queue()
 
@@ -108,24 +107,19 @@ class Output:
         "overload this."
         raise NotImplementedError
 
-    @staticmethod
-    def extend(channel, txtlist):
+    def extend(self, channel, txtlist):
         "add list of txt to channel cache."
-        if channel not in Output.cache:
-            setattr(Output.cache, channel, [])
-        chanlist = getattr(Output.cache, channel)
+        if channel not in self.cache:
+            setattr(self.cache, channel, [])
+        chanlist = getattr(self.cache, channel)
         chanlist.extend(txtlist)
 
-    @staticmethod
-    def gettxt(channel):
+    def gettxt(self, channel):
         "return text from channel cache."
         txt = None
-        try:
-            che = getattr(Output.cache, channel, None)
-            if che:
-                txt = che.pop(0)
-        except (KeyError, IndexError):
-            pass
+        che = getattr(self.cache, channel, None)
+        if che:
+            txt = che.pop(0)
         return txt
 
     def oput(self, channel, txt):
@@ -154,10 +148,9 @@ class Output:
                 _nr += 1
                 self.dosay(channel, txt)
 
-    @staticmethod
-    def size(chan):
+    def size(self, chan):
         "return size of channel cache."
-        return len(getattr(Output.cache, chan, []))
+        return len(getattr(self.cache, chan, []))
 
 
 class IRC(CLI, Handler, Output):
@@ -633,8 +626,6 @@ def mre(event):
     if 'cache' not in dir(bot):
         event.reply('bot is missing cache')
         return
-    print(bot)
-    print(dir(bot.cache))
     if event.channel not in bot.cache:
         event.reply(f'no output in {event.channel} cache.')
         return
@@ -643,7 +634,8 @@ def mre(event):
         if txt:
             bot.say(event.channel, txt)
     size = bot.size(event.channel)
-    event.reply(f'{size} more in cache')
+    if size:
+        event.reply(f'{size} more in cache')
 
 
 def pwd(event):
