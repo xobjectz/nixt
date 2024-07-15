@@ -1,16 +1,23 @@
-#!/usr/bin/env python3
+# This file is placed in the Public Domain.
+
+
+"create service file."
 
 
 import getpass
 import sys
 
 
-USER  = getpass.getuser()
 TITLE = "you have been nixt!"
 PROG  = "nixt"
 
-
-TXT = f"""[Unit]
+def srv(event):
+    if event.args:
+        global USER
+        USER = event.args[0]
+    else:
+       USER  = getpass.getuser()
+    TXT = f"""[Unit]
 Description={TITLE}
 Requires=network-online.target
 After=network-online.target
@@ -21,11 +28,9 @@ User={USER}
 Group={USER}
 WorkingDirectory=/home/{USER}/.{PROG}
 ExecStart=/home/{USER}/.local/pipx/venvs/{PROG}/bin/{PROG}d
+ExitType=cgroup
 RemainAfterExit=yes
 
 [Install]
 WantedBy=default.target"""
-
-
-def srv(event):
     event.reply(TXT)
