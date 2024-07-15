@@ -60,7 +60,8 @@ def wrap(func):
     try:
         func()
     except (KeyboardInterrupt, EOFError):
-        print("")
+        sys.stdout.write("\n")
+        sys.stdout.flush()
     finally:
         if old2:
             termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, old2)
