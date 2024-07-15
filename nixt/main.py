@@ -9,14 +9,15 @@ import getpass
 import os
 
 
-from .cfg   import Config
-from .cli   import CLI
-from .cmds  import command
-from .defer import Errors, later
-from .disk  import Persist
-from .event import Event
-from .log   import Logging
-from .utils import skip, spl
+from .cfg    import Config
+from .cli    import CLI
+from .cmds   import command
+from .defer  import Errors
+from .disk   import Persist
+from .event  import Event
+from .launch import launch
+from .log    import Logging
+from .utils  import skip, spl
 
 
 from .cmds import scan as scancmd
@@ -24,6 +25,7 @@ from .disk import scan as scancls
 
 
 Cfg         = Config()
+Cfg.mod     = "cmd,err,mod,thr"
 Cfg.name    = __file__.split(os.sep)[-2]
 Cfg.user    = getpass.getuser()
 Cfg.wdr     = os.path.expanduser(f"~/.{Cfg.name}")
@@ -52,7 +54,7 @@ def enable(outer):
 
 def init(modstr, *pkgs, disable=None):
     "scan modules for commands and classes"
-    mds = []
+    thrs = []
     for mod in spl(modstr):
         if disable and mod in spl(disable):
             continue
@@ -62,12 +64,9 @@ def init(modstr, *pkgs, disable=None):
                 continue
             if "init" not in dir(module):
                 continue
-            try:
-                module.init()
-            except Exception as ex:
-                later(ex)
+            thrs.append(launch(module.init))
             break
-    return mds
+    return thrs
 
 
 def scan(modstr, *pkgs, disable=""):

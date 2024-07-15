@@ -116,3 +116,6 @@ def udp(event):
             toudp(Cfg.host, Cfg.port, txt)
         if stop:
             break
+
+
+udp.target = "irc"
