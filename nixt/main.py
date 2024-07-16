@@ -11,16 +11,17 @@ import sys
 import termios
 import time
 
+
 from .cfg    import Config
 from .cli    import CLI
 from .cmds   import command
+from .cons   import Console
 from .defer  import Errors
 from .disk   import Persist, skel
 from .event  import Event
 from .launch import launch
 from .log    import Logging, debug
 from .parse  import parse
-from .term   import Console
 from .utils  import daemon, forever, modnames, pidfile, privileges, skip, spl
 
 
