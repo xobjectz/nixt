@@ -33,7 +33,7 @@ from . import user
 
 
 Cfg         = Config()
-Cfg.mod     = "cmd,err,mod,thr"
+Cfg.mod     = "cmd,err,hlp,mod,thr"
 Cfg.name    = __file__.split(os.sep)[-2]
 Cfg.user    = getpass.getuser()
 Cfg.wdr     = os.path.expanduser(f"~/.{Cfg.name}")
@@ -60,13 +60,13 @@ def background():
 def cli():
     "command line interface."
     parse(Cfg, " ".join(sys.argv[1:]))
+    Cfg.dis = Cfg.sets.dis
+    Cfg.mod = ",".join(modnames(modules, user))
     enable(print)
+    scan(Cfg.mod, modules, user)
     if "h" in Cfg.opts:
         cmnd("hlp", print)
         return
-    Cfg.dis = Cfg.sets.dis
-    Cfg.mod = ",".join(modnames(modules, user))
-    scan(Cfg.mod, modules, user)
     cmnd(Cfg.otxt, print)
 
 

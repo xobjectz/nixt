@@ -30,6 +30,7 @@ def add(func):
 def command(bot, evt):
     "check for and run a command."
     parse(evt)
+    print(Commands.cmds)
     func = getattr(Commands.cmds, evt.cmd, None)
     if func:
         if "target" not in dir(func) or func.target in fqn(bot):
