@@ -16,15 +16,15 @@ class Broker:
         self.objs = Object()
 
 
-def get(obj, orig):
-    "return object by origin (repr)"
-    return getattr(obj.objs, orig, None)
+    def get(self, orig):
+        "return object by origin (repr)"
+        return getattr(self.objs, orig, None)
 
 
-def register(obj, obj2):
-    "add an object to the broker."
-    ids = object.__repr__(obj2)
-    setattr(obj.objs, ids, obj2)
+    def register(self, obj):
+        "add an object to the broker."
+        ids = object.__repr__(obj)
+        setattr(self.objs, ids, obj)
 
 
 def __dir__():
