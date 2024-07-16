@@ -25,6 +25,11 @@ class Object:
         return str(self.__dict__)
 
 
+def pjoin(*args):
+    "path join."
+    return "/".join(args)
+
+
 def construct(obj, *args, **kwargs):
     "construct an object from provided arguments."
     if args:
@@ -149,14 +154,6 @@ def update(obj, data, empty=True):
 def values(obj):
     "return values of an object."
     return obj.__dict__.values()
-
-
-"interface"
-
-
-def pjoin(*args):
-    "path join."
-    return "/".join(args)
 
 
 def __dir__():

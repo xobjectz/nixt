@@ -19,10 +19,7 @@ class Event(Default):
         Default.__init__(self)
         self._ready  = threading.Event()
         self._thr    = None
-        self.orig    = ""
         self.result  = []
-        self.txt     = ""
-        self.type    = "command"
 
     def ready(self):
         "event is ready."

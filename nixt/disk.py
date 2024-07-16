@@ -144,9 +144,10 @@ def __dir__():
         'find',
         'last',
         'long',
-        'pidfile',
+        'scan',
         'skel',
         'store',
         'sync',
-        'types'
+        'types',
+        'whitelist'
     )

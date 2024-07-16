@@ -23,7 +23,7 @@ from urllib.parse import quote_plus, urlencode
 from ..dft    import Default
 from ..object import Object, construct, fmt, update
 from ..disk   import find, last, sync
-from ..ool    import OoL, ladd
+from ..ool    import OoL, append
 from ..repeat import Repeater
 from ..launch import launch
 from ..log    import debug
@@ -85,7 +85,7 @@ def uadd(obj, url, item):
         nrs = getattr(obj.nrlinks, url, None)
         if nrs and len(links) > nrs:
             links.pop(0)
-    ladd(obj, url, item)
+    append(obj, url, item)
 
 
 class Fetcher(Object):

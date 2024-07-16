@@ -140,6 +140,7 @@ def scan(modstr, *pkgs, disable=""):
 
 
 def terminal():
+    "start terminal."
     wrap(console)
 
 
@@ -165,10 +166,11 @@ def __dir__():
         'Cfg',
         'background',
         'cli',
-        'console',
         'cmnd',
+        'console',
         'enable',
         'init',
         'scan',
+        'terminal',
         'wrap'
     )

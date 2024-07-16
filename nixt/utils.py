@@ -44,9 +44,6 @@ def daemon(verbose=False):
     os.chdir("/")
 
 
-
-
-
 def date():
     "return time with date."
     return str(datetime.datetime.now())

@@ -62,9 +62,6 @@ def read(obj, pth):
             update(obj, load(ofile))
 
 
-"interface"
-
-
 def __dir__():
     return (
         'hook',
