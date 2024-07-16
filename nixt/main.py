@@ -139,6 +139,10 @@ def scan(modstr, *pkgs, disable=""):
     return mds
 
 
+def terminal():
+    wrap(console)
+
+
 def wrap(func):
     "restore console."
     old2 = None

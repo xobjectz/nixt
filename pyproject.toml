@@ -25,9 +25,9 @@ classifiers = [
 
 
 [project.scripts]
-"nixt"   = "nixt.__main__:main"
-"nixtd"  = "nixt.daemon:main"
-"nixtsh" = "nixt.term:main"
+"nixt"   = "nixt.main:cli"
+"nixtd"  = "nixt.main:background"
+"nixtsh" = "nixt.main:terminal"
 
 
 [project.urls]
