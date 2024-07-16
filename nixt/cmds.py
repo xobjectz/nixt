@@ -8,7 +8,8 @@
 import inspect
 
 
-from .object import Object, fqn
+from .event  import ready
+from .object import Object, add, fqn
 from .parse  import parse
 
 
@@ -16,26 +17,16 @@ class Commands:
 
     "Commands"
 
-    cmds     = Object()
-    modnames = Object()
-
-
-def add(func):
-    "add command."
-    setattr(Commands.cmds, func.__name__, func)
-    if func.__module__ != "__main__":
-        setattr(Commands.modnames, func.__name__, func.__module__)
-
 
 def command(bot, evt):
     "check for and run a command."
     parse(evt)
-    func = getattr(Commands.cmds, evt.cmd, None)
-    if func:
+    func = getattr(Commands, evt.cmd, None)
+    if func and evt.txt:
         if "target" not in dir(func) or func.target in fqn(bot):
             func(evt)
             bot.show(evt)
-    evt.ready()
+    ready(evt)
 
 
 def scan(mod) -> None:
@@ -44,7 +35,7 @@ def scan(mod) -> None:
         if key.startswith("cb"):
             continue
         if 'event' in cmd.__code__.co_varnames:
-            add(cmd)
+            add(Commands, cmd)
 
 
 def __dir__():

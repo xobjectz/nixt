@@ -71,7 +71,6 @@ def forever():
         except (KeyboardInterrupt, EOFError):
             _thread.interrupt_main()
 
-
 def hms():
     "return hour:minutes:seconds string."
     return now().split(".")[0]

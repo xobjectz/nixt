@@ -15,29 +15,37 @@ class Event(Default):
 
     "Event"
 
-    def __init__(self):
-        Default.__init__(self)
-        self._ready  = threading.Event()
-        self._thr    = None
-        self.result  = []
 
-    def ready(self):
-        "event is ready."
-        self._ready.set()
+def ready(obj):
+    "event is ready."
+    if not obj._ready:
+        obj._ready = threading.Event()
+    obj._ready.set()
 
-    def reply(self, txt):
-        "add text to the result"
-        self.result.append(txt)
 
-    def wait(self):
-        "wait for event to be ready."
-        if self._thr:
-            self._thr.join()
-        self._ready.wait()
-        return self.result
+def reply(obj, txt):
+    "add text to the result"
+    if not obj.result:
+        obj.result = []
+    obj.result.append(txt)
+
+
+def wait(obj):
+    "wait for event to be ready."
+    if not obj.result:
+        obj.result = []
+    if not obj._ready:
+        obj._ready = threading.Event()
+    obj._ready.wait()
+    if obj._thr:
+        obj._thr.join()
+    return obj.result
 
 
 def __dir__():
     return (
         'Event',
+        'ready',
+        'reply',
+        'wait'
     )

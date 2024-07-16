@@ -5,6 +5,7 @@
 
 
 from ..defer import Errors
+from ..event  import reply
 
 
 def err(event):
@@ -18,4 +19,4 @@ def err(event):
     if not nmr:
         event.reply("no errors")
         return
-    event.reply(f"found {nmr} errors.")
+    reply(event, f"found {nmr} errors.")

@@ -8,6 +8,7 @@ import threading
 import time
 
 
+from ..event  import reply
 from ..object import Object, update
 from ..utils  import laps
 
@@ -35,6 +36,6 @@ def thr(event):
         lap = laps(uptime)
         res.append(f'{txt}/{lap}')
     if res:
-        event.reply(' '.join(res))
+        reply(event, ' '.join(res))
     else:
-        event.reply('no threads')
+        reply(event, 'no threads')

@@ -30,6 +30,16 @@ def pjoin(*args):
     return "/".join(args)
 
 
+def add(obj, obj2):
+    "add obeject with __name__ as key."
+    setattr(obj, obj2.__name__, obj2)
+
+
+def all(obj):
+    "return all values."
+    return values(obj)
+
+
 def construct(obj, *args, **kwargs):
     "construct an object from provided arguments."
     if args:
@@ -99,6 +109,11 @@ def fqn(obj):
     return kin
 
 
+def get(obj, key):
+    "return object by key"
+    return getattr(obj, orig, None)
+
+
 def ident(obj):
     "return an id for an object."
     return pjoin(fqn(obj), *str(datetime.datetime.now()).split())
@@ -124,6 +139,12 @@ def match(obj, txt):
         if txt in key:
             return True
     return False
+
+
+def register(obj, obj2):
+    "add an object to the broker."
+    ids = object.__repr__(obj2)
+    setattr(obj, ids, obj2)
 
 
 def search(obj, selector):

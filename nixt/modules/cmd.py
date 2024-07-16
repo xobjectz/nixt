@@ -5,9 +5,10 @@
 
 
 from ..cmds   import Commands
+from ..event  import reply
 from ..object import keys
 
 
 def cmd(event):
     "list commands."
-    event.reply(",".join(sorted(keys(Commands.modnames))))
+    reply(event, ",".join(sorted([x for x in keys(Commands) if not x.startswith("__")])))

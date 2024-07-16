@@ -16,9 +16,9 @@ from .cfg    import Config
 from .cli    import CLI
 from .cmds   import command
 from .cons   import Console
-from .defer  import Errors
+from .defer  import Errors, errors
 from .disk   import Persist, skel
-from .event  import Event
+from .event  import Event, wait
 from .launch import launch
 from .log    import Logging, debug
 from .parse  import parse
@@ -79,7 +79,7 @@ def cmnd(txt, outer):
     evn = Event()
     evn.txt = txt
     command(clis, evn)
-    evn.wait()
+    wait(evn)
     return evn
 
 
@@ -89,14 +89,10 @@ def console():
     skel()
     if "a" in Cfg.opts:
         Cfg.mod = ",".join(modnames(modules, user))
-    if "v" in Cfg.opts:
-        enable(print)
-        dte = " ".join(time.ctime(time.time()).replace("  ", " ").split()[1:])
-        debug(f'{dte} {Cfg.name.upper()} {Cfg.opts.upper()} {Cfg.mod.upper()}')
+    enable(print)
     scan(Cfg.mod, modules, user)
     if "i" in Cfg.opts:
-        thrs = init(Cfg.mod, modules, user)
-        for thr in thrs:
+        for thr in  init(Cfg.mod, modules, user):
             thr.join()
     csl = Console(print, input)
     csl.start()
@@ -160,6 +156,7 @@ def wrap(func):
     finally:
         if old2:
             termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, old2)
+    errors()
 
 
 def __dir__():

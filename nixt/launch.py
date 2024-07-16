@@ -51,6 +51,7 @@ class Thread(threading.Thread):
             except IndexError:
                 pass
 
+
 def launch(func, *args, **kwargs):
     "launch a thread."
     nme = kwargs.get("name", named(func))
