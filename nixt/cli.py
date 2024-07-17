@@ -35,6 +35,8 @@ class CLI(Handler):
     def show(self, evt):
         "show results into a channel."
         for txt in evt.result:
+            if not txt:
+                continue
             self.say(evt.channel, txt)
 
 

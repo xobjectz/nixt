@@ -8,6 +8,9 @@ import getpass
 import os
 
 
+from ..event import reply
+
+
 NAME = __file__.split(os.sep)[-3]
 TITLE = "you have been {NAME}t!"
 
@@ -34,7 +37,7 @@ RemainAfterExit=yes
 
 [Install]
 WantedBy=default.target"""
-    event.reply(txt)
+    reply(event, txt)
 
 
 srv.target = "cli"

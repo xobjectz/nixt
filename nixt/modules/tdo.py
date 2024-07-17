@@ -10,6 +10,7 @@ import time
 
 from ..object import Object
 from ..disk   import find, sync
+from ..event  import reply
 from ..utils  import fntime, laps
 
 
@@ -30,7 +31,7 @@ class Todo(Object):
 def dne(event):
     "flag todo as done."
     if not event.args:
-        event.reply("dne <txt>")
+        reply(event, "dne <txt>")
         return
     selector = {'txt': event.args[0]}
     nmr = 0
@@ -38,10 +39,10 @@ def dne(event):
         nmr += 1
         obj.__deleted__ = True
         sync(obj, fnm)
-        event.reply('ok')
+        reply(event, 'ok')
         break
     if not nmr:
-        event.reply("nothing todo")
+        reply(event, "nothing todo")
 
 
 def tdo(event):
@@ -50,12 +51,12 @@ def tdo(event):
         nmr = 0
         for fnm, obj in find('todo'):
             lap = laps(time.time()-fntime(fnm))
-            event.reply(f'{nmr} {obj.txt} {lap}')
+            reply(event, f'{nmr} {obj.txt} {lap}')
             nmr += 1
         if not nmr:
-            event.reply("no todo")
+            reply(event, "no todo")
         return
     obj = Todo()
     obj.txt = event.rest
     sync(obj)
-    event.reply('ok')
+    reply(event, 'ok')

@@ -10,6 +10,7 @@ import time
 
 from ..object import Object
 from ..disk   import find, sync
+from ..event  import reply
 from ..utils  import fntime, laps
 
 
@@ -28,7 +29,7 @@ def log(event):
         nmr = 0
         for fnm, obj in find('log'):
             lap = laps(time.time() - fntime(fnm))
-            event.reply(f'{nmr} {obj.txt} {lap}')
+            reply(event, f'{nmr} {obj.txt} {lap}')
             nmr += 1
         if not nmr:
             event.reply('no log')
@@ -36,4 +37,4 @@ def log(event):
     obj = Log()
     obj.txt = event.rest
     sync(obj)
-    event.reply('ok')
+    reply(event, 'ok')

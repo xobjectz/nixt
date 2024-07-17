@@ -4,6 +4,9 @@
 "help"
 
 
+from ..event import reply
+
+
 SEP = "/"
 NAME = __file__.split(SEP)[-3]
 TXT = f"""{NAME.upper()} - you have been {NAME}!
@@ -33,7 +36,7 @@ MODULES
 
 def hlp(event):
     "show help"
-    event.reply(TXT)
+    reply(event, TXT)
 
 
 hlp.target = "cli"

@@ -7,6 +7,9 @@
 import os
 
 
+from ..event import reply
+
+
 from .. import user
 
 
@@ -27,4 +30,4 @@ def mod(event):
         if mdd.endswith("~"):
             continue
         mods.append(mdd[:-3])
-    event.reply(",".join(sorted(mods)))
+    reply(event, ",".join(sorted(mods)))

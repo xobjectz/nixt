@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=R0902,W0105
+# pylint: disable=R0902,W0105,W0622
 
 
 "a clean namespace"
@@ -23,11 +23,6 @@ class Object:
 
     def __str__(self):
         return str(self.__dict__)
-
-
-def pjoin(*args):
-    "path join."
-    return "/".join(args)
 
 
 def add(obj, obj2):
@@ -111,7 +106,7 @@ def fqn(obj):
 
 def get(obj, key):
     "return object by key"
-    return getattr(obj, orig, None)
+    return getattr(obj, key, None)
 
 
 def ident(obj):
@@ -175,6 +170,14 @@ def update(obj, data, empty=True):
 def values(obj):
     "return values of an object."
     return obj.__dict__.values()
+
+
+"interface"
+
+
+def pjoin(*args):
+    "path join."
+    return "/".join(args)
 
 
 def __dir__():

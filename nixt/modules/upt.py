@@ -7,6 +7,7 @@
 import time
 
 
+from ..event import reply
 from ..utils import laps
 
 
@@ -15,4 +16,4 @@ STARTTIME = time.time()
 
 def upt(event):
     "show uptime."
-    event.reply(laps(time.time() - STARTTIME))
+    reply(event, laps(time.time() - STARTTIME))

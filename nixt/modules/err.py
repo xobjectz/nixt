@@ -5,7 +5,7 @@
 
 
 from ..defer import Errors
-from ..event  import reply
+from ..event import reply
 
 
 def err(event):
@@ -14,9 +14,9 @@ def err(event):
     for exc in Errors.errors:
         txt = Errors.format(exc)
         for line in txt.split():
-            event.reply(line)
+            reply(event, line)
         nmr += 1
     if not nmr:
-        event.reply("no errors")
+        reply(event, "no errors")
         return
     reply(event, f"found {nmr} errors.")

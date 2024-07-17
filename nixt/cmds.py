@@ -13,7 +13,7 @@ from .object import Object, add, fqn
 from .parse  import parse
 
 
-class Commands:
+class Commands(Object):
 
     "Commands"
 

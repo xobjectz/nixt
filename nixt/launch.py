@@ -11,6 +11,7 @@ import time
 
 
 from .defer import later
+from .event import ready
 from .utils import named
 
 
@@ -47,7 +48,7 @@ class Thread(threading.Thread):
         except Exception as ex:
             later(ex)
             try:
-                args[1].ready()
+                ready(args[1])
             except IndexError:
                 pass
 

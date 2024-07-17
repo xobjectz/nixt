@@ -10,6 +10,7 @@ import threading
 import _thread
 
 
+from .event  import ready
 from .object import Object
 from .launch import launch
 
@@ -28,7 +29,7 @@ class Handler:
         evt.orig = repr(self)
         func = getattr(self.cbs, evt.type, None)
         if not func:
-            evt.ready()
+            ready(evt)
             return
         evt._thr = launch(func, self, evt)
 

@@ -1,6 +1,9 @@
 # This file is placed in the Public Domain.
 
 
+from ..event import reply
+
+
 """| **Information and Evidence Unit**
 | **Office of the Prosecutor**
 | **Post Office Box 19519**
@@ -79,7 +82,7 @@ p.s.
 
 def req(event):
     "reconsider"
-    event.reply(__doc__)
+    reply(event, __doc__)
 
 
-#req.target = "cli"
+req.target = "cli"

@@ -23,7 +23,7 @@ from ..defer  import later
 from ..event  import Event
 from ..handle import Handler
 from ..log    import Logging, debug
-from ..object import Object, edit, fmt, keys
+from ..object import Object, edit, fmt, get, keys, register
 from ..disk   import last, sync
 from ..run    import fleet
 from ..launch import launch
@@ -188,7 +188,7 @@ class IRC(CLI, Handler, Output):
         self.register('PRIVMSG', cb_privmsg)
         self.register('QUIT', cb_quit)
         self.register("366", cb_ready)
-        fleet.register(self)
+        register(fleet, self)
 
     def announce(self, txt):
         "announce on all channels."
@@ -605,7 +605,7 @@ def cfg(event):
     config = Config()
     last(config)
     if not event.sets:
-        event.reply(
+        reply(event,
                     fmt(
                         config,
                         keys(config),
@@ -615,20 +615,20 @@ def cfg(event):
     else:
         edit(config, event.sets)
         sync(config)
-        event.reply('ok')
+        reply(event, 'ok')
 
 
 def mre(event):
     "show from output cache."
     if not event.channel:
-        event.reply('channel is not set.')
+        reply(event, 'channel is not set.')
         return
-    bot = fleet.get(event.orig)
+    bot = get(fleet, event.orig)
     if 'cache' not in dir(bot):
-        event.reply('bot is missing cache')
+        reply(event, 'bot is missing cache')
         return
     if event.channel not in bot.cache:
-        event.reply(f'no output in {event.channel} cache.')
+        reply(event, f'no output in {event.channel} cache.')
         return
     for _x in range(3):
         txt = bot.gettxt(event.channel)
@@ -636,13 +636,13 @@ def mre(event):
             bot.say(event.channel, txt)
     size = bot.size(event.channel)
     if size:
-        event.reply(f'{size} more in cache')
+        reply(event, f'{size} more in cache')
 
 
 def pwd(event):
     "create a base64 password."
     if len(event.args) != 2:
-        event.reply('pwd <nick> <password>')
+        reply(event, 'pwd <nick> <password>')
         return
     arg1 = event.args[0]
     arg2 = event.args[1]
@@ -650,4 +650,4 @@ def pwd(event):
     enc = txt.encode('ascii')
     base = base64.b64encode(enc)
     dcd = base.decode('ascii')
-    event.reply(dcd)
+    reply(event, dcd)

@@ -13,6 +13,7 @@ import threading
 import time
 
 
+from ..fleet  import announce
 from ..launch import launch
 from ..log    import debug
 from ..object import Object, fmt
@@ -48,7 +49,7 @@ class UDP(Object):
     def output(self, txt, addr=None):
         if addr:
             Cfg.addr = addr
-        fleet.announce(txt.replace("\00", ""))
+        announce(fleet, txt.replace("\00", ""))
 
     def loop(self):
         try:

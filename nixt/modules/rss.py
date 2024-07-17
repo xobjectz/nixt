@@ -23,11 +23,12 @@ from urllib.parse import quote_plus, urlencode
 from ..dft    import Default
 from ..object import Object, construct, fmt, update
 from ..disk   import find, last, sync
+from ..event  import reply
 from ..ool    import OoL, append
-from ..repeat import Repeater
 from ..launch import launch
 from ..log    import debug
-from ..run    import fleet
+from ..repeat import Repeater
+from ..run    import announce
 from ..utils  import fntime, laps, spl
 
 
@@ -151,7 +152,7 @@ class Fetcher(Object):
             txt = f'[{feedname}] '
         for obj in result:
             txt2 = txt + self.display(obj)
-            fleet.announce(txt2.rstrip())
+            announce(txt2.rstrip())
         return counter
 
     def run(self, silent=False):
@@ -303,33 +304,33 @@ def useragent(txt):
 def dpl(event):
     "set display items."
     if len(event.args) < 2:
-        event.reply('dpl <stringinurl> <item1,item2>')
+        reply(event, 'dpl <stringinurl> <item1,item2>')
         return
     setter = {'display_list': event.args[1]}
     for fnm, feed in find("rss", {'rss': event.args[0]}):
         if feed:
             update(feed, setter)
             sync(feed, fnm)
-    event.reply('ok')
+    reply(event, 'ok')
 
 
 def nme(event):
     "set name of feed."
     if len(event.args) != 2:
-        event.reply('nme <stringinurl> <name>')
+        reply(event, 'nme <stringinurl> <name>')
         return
     selector = {'rss': event.args[0]}
     for fnm, feed in find("rss", selector):
         if feed:
             feed.name = event.args[1]
             sync(feed, fnm)
-    event.reply('ok')
+    reply(event, 'ok')
 
 
 def rem(event):
     "remove a feed."
     if len(event.args) != 1:
-        event.reply('rem <stringinurl>')
+        reply(event, 'rem <stringinurl>')
         return
     for fnm, feed in find("rss"):
         if event.args[0] not in feed.rss:
@@ -337,13 +338,13 @@ def rem(event):
         if feed:
             feed.__deleted__ = True
             sync(feed, fnm)
-    event.reply('ok')
+    reply(event, 'ok')
 
 
 def res(event):
     "restore a feed."
     if len(event.args) != 1:
-        event.reply('res <stringinurl>')
+        reply(event, 'res <stringinurl>')
         return
     for fnm, feed in find("rss", deleted=True):
         if event.args[0] not in feed.rss:
@@ -351,7 +352,7 @@ def res(event):
         if feed:
             feed.__deleted__ = False
             sync(feed, fnm)
-    event.reply('ok')
+    reply(event, 'ok')
 
 
 def rss(event):
@@ -362,22 +363,22 @@ def rss(event):
             nrs += 1
             elp = laps(time.time()-fntime(fnm))
             txt = fmt(feed)
-            event.reply(f'{nrs} {txt} {elp}')
+            reply(event, f'{nrs} {txt} {elp}')
         if not nrs:
-            event.reply('no rss feed found.')
+            reply(event, 'no rss feed found.')
         return
     url = event.args[0]
     if 'http' not in url:
-        event.reply('i need an url')
+        reply(event, 'i need an url')
         return
     for fnm, result in find("rss", {'rss': url}):
         if result:
-            event.reply(f'already got {url}')
+            reply(event, f'already got {url}')
             return
     feed = Rss()
     feed.rss = event.args[0]
     sync(feed)
-    event.reply('ok')
+    reply(event, 'ok')
 
 
 def syn(event):
@@ -391,7 +392,7 @@ def syn(event):
     for thr in thrs:
         thr.join()
         nrs += 1
-    event.reply(f"{nrs} feeds synced")
+    reply(event, f"{nrs} feeds synced")
 
 
 "OPML"
@@ -479,7 +480,7 @@ def attrs(obj, txt):
 
 def exp(event):
     "export to opml."
-    event.reply(TEMPLATE)
+    reply(event, TEMPLATE)
     nrs = 0
     for _fn, ooo in find("rss"):
         nrs += 1
@@ -487,20 +488,20 @@ def exp(event):
         update(obj, ooo)
         name = obj.name or f"url{nrs}"
         txt = f'<outline name="{name}" display_list="{obj.display_list}" xmlUrl="{obj.rss}"/>'
-        event.reply(" "*12 + txt)
-    event.reply(" "*8 + "</outline>")
-    event.reply("    <body>")
-    event.reply("</opml>")
+        reply(event, " "*12 + txt)
+    reply(event, " "*8 + "</outline>")
+    reply(event, "    <body>")
+    reply(event, "</opml>")
 
 
 def imp(event):
     "import opml."
     if not event.args:
-        event.reply("imp <filename>")
+        reply(event, "imp <filename>")
         return
     fnm = event.args[0]
     if not os.path.exists(fnm):
-        event.reply(f"no {fnm} file found.")
+        reply(event, f"no {fnm} file found.")
         return
     with open(fnm, "r", encoding="utf-8") as file:
         txt = file.read()
@@ -515,4 +516,4 @@ def imp(event):
         sync(feed)
         nrs += 1
     if nrs:
-        event.reply(f"added {nrs} urls.")
+        reply(event, f"added {nrs} urls.")

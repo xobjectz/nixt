@@ -11,6 +11,7 @@ import time as ttime
 
 
 from ..disk   import find, sync
+from ..fleet  import announce
 from ..run    import fleet
 from ..timer  import Timer
 from ..utils  import laps
@@ -22,7 +23,7 @@ def init():
     for _fnm, obj in find("timer"):
         diff = float(obj.time) - ttime.time()
         if diff > 0:
-            timer = Timer(diff, fleet.announce, obj.rest)
+            timer = Timer(diff, announce, fleet, obj.rest)
             launch(timer.start)
 
 
@@ -185,7 +186,7 @@ def tmr(event):
                 event.reply(f'{nmr} {obj.rest} {laps(lap)}')
                 nmr += 1
         if not nmr:
-            event.reply("no timers")
+            reply(event, "no timers")
         return res
     seconds = 0
     line = ""
@@ -194,7 +195,7 @@ def tmr(event):
             try:
                 seconds = int(word[1:])
             except (ValueError, IndexError):
-                event.reply(f"{seconds} is not an integer")
+                reply(event, f"{seconds} is not an integer")
                 return res
         else:
             line += word + " "
@@ -209,11 +210,11 @@ def tmr(event):
         if hour:
             target += hour
     if not target or ttime.time() > target:
-        event.reply("already passed given time.")
+        reply(event, "already passed given time.")
         return res
     diff = target - ttime.time()
-    event.reply("ok " +  laps(diff))
-    timer = Timer(diff, fleet.announce, event.rest, thrname=event.cmd)
+    reply(event, "ok " +  laps(diff))
+    timer = Timer(diff, announce, fleet, event.rest, thrname=event.cmd)
     timer.time = target
     timer.rest = event.rest
     sync(timer)

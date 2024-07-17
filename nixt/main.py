@@ -9,7 +9,6 @@ import getpass
 import os
 import sys
 import termios
-import time
 
 
 from .cfg    import Config
@@ -20,7 +19,7 @@ from .defer  import Errors, errors
 from .disk   import Persist, skel
 from .event  import Event, wait
 from .launch import launch
-from .log    import Logging, debug
+from .log    import Logging
 from .parse  import parse
 from .utils  import daemon, forever, modnames, pidfile, privileges, skip, spl
 
