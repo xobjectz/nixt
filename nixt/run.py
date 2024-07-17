@@ -4,8 +4,10 @@
 "runtime"
 
 
-from .cache import Cache
-from .fleet import Fleet
+from .cache  import Cache
+from .fleet  import Fleet
+from .object import all
+
 
 cache = Cache()
 fleet = Fleet()
@@ -13,7 +15,6 @@ fleet = Fleet()
 
 def announce(txt):
     "announce on all bots."
-    print(dir(fleet))
     for bot in all(fleet):
         print(dir(bot))
         if "announce" in dir(bot):
