@@ -1,9 +1,6 @@
 # This file is placed in the Public Domain.
 
 
-from ..event import reply
-
-
 """| **Information and Evidence Unit**
 | **Office of the Prosecutor**
 | **Post Office Box 19519**
@@ -78,6 +75,9 @@ p.s.
 
 
 """
+
+
+from ..event import reply
 
 
 def req(event):

@@ -26,13 +26,14 @@ class Object:
 
 
 def add(obj, obj2):
-    "add obeject with __name__ as key."
-    setattr(obj, obj2.__name__, obj2)
+    "add to object."
+    name = obj2.__name__
+    setattr(obj, name, obj2)
 
 
 def all(obj):
     "return all values."
-    return values(obj)
+    return list(values(obj))
 
 
 def construct(obj, *args, **kwargs):

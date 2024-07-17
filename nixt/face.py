@@ -44,6 +44,8 @@ def __dir__():
         'SEP',
         'Thread',
         'Timer',
+        'add',
+        'all',
         'cmnd',
         'command',
         'daemon',

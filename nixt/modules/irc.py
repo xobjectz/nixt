@@ -20,7 +20,7 @@ from ..cli    import CLI
 from ..cmds   import command
 from ..dft    import Default
 from ..defer  import later
-from ..event  import Event
+from ..event  import Event, reply
 from ..handle import Handler
 from ..log    import Logging, debug
 from ..object import Object, edit, fmt, get, keys, register

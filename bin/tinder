@@ -63,7 +63,7 @@ param = Object()
 param.cmd = [""]
 param.dpl = ["hnrss title,url"]
 param.fnd = ["log", "todo", "rss", "config"]
-param.imp = ["ttests/feeds.opml"]
+param.imp = ["tests/feeds.opml"]
 param.log = ["bla"]
 param.mod = [""]
 param.mre = [""]
@@ -144,7 +144,7 @@ def main():
         print(f'{dte} {Cfg.name.upper()} {Cfg.opts.upper()} {Cfg.mod.upper()}'.replace("  ", " "))
     scan(Cfg.mod, modules, user, mods)
     nrs = Cfg.index or 1
-    nrcommand = len(Commands.cmds) or 1
+    nrcommand = all(Commands) or 1
     clt = CLII()
     clt.start()
     clt.threaded = "t" in Cfg.opts
