@@ -11,25 +11,27 @@ import sys
 import termios
 
 
-from .cfg    import Config
+from ..cfg    import Config
+from ..cmds   import command
+from ..defer  import Errors, errors
+from ..disk   import Persist, skel
+from ..event  import Event, wait
+from ..launch import launch
+from ..log    import Logging
+from ..parse  import parse
+from ..utils  import daemon, forever, modnames, pidfile, privileges, skip, spl
+
+
 from .cli    import CLI
-from .cmds   import command
 from .cons   import Console
-from .defer  import Errors, errors
-from .disk   import Persist, skel
-from .event  import Event, wait
-from .launch import launch
-from .log    import Logging
-from .parse  import parse
-from .utils  import daemon, forever, modnames, pidfile, privileges, skip, spl
 
 
-from .cmds import scan as scancmd
-from .disk import scan as scancls
+from ..cmds import scan as scancmd
+from ..disk import scan as scancls
 
 
-from . import modules
-from . import user
+from .. import modules
+from .. import user
 
 
 Cfg         = Config()

@@ -70,13 +70,14 @@ param.mre = [""]
 param.nme = ["hnrss hackernews"]
 param.pwd = ["bla mekker"]
 param.rem = ["hnrss"]
+param.req = [""]
 param.res = [""]
 param.rss = ["http://hnrss.org/newest",]
 param.tdo = ["mekker"]
 param.ver = [""]
 
 
-class CLII(CLI):
+class CLI(CLI):
 
     "command line interface."
 
@@ -90,7 +91,7 @@ def consume(evts):
     fixed = []
     res = []
     for evt in evts:
-        res.append(evt.wait())
+        res.append(wait(evt))
         fixed.append(evt)
     for fff in fixed:
         try:
@@ -102,7 +103,7 @@ def consume(evts):
 
 def payload(clt):
     "do payload."
-    cmdz = sorted(list(keys(Commands.cmds)))
+    cmdz = list([x[0] for x in all(Commands)])
     with paylock:
         nmr = 0
         for cmdd in cmdz:
@@ -144,8 +145,8 @@ def main():
         print(f'{dte} {Cfg.name.upper()} {Cfg.opts.upper()} {Cfg.mod.upper()}'.replace("  ", " "))
     scan(Cfg.mod, modules, user, mods)
     nrs = Cfg.index or 1
-    nrcommand = all(Commands) or 1
-    clt = CLII()
+    nrcommand = len(all(Commands)) or 1
+    clt = CLI()
     clt.start()
     clt.threaded = "t" in Cfg.opts
     thrs = []
@@ -157,11 +158,7 @@ def main():
     endtime = time.time()
     lap = laps(endtime-STARTTIME)
     percall = (endtime-STARTTIME)/(nrs*nrcommand)
-    if not Errors.errors:
-        if "v" in Cfg.opts:
-            print("no errors")
-    else:
-        errors()
+    errors()
     if "v" in Cfg.opts:
         print(f"{lap} {nrs} {nrcommand} {percall}")
 
@@ -176,5 +173,4 @@ if __name__ == "__main__":
         profile.runctx(main.__code__, globals(), locals())
     else:
         wrap(main)
-    errors()
     sys.exit()

@@ -11,6 +11,7 @@ import inspect
 from .event  import ready
 from .object import Object, add, fqn
 from .parse  import parse
+from .utils  import skip
 
 
 class Commands(Object):
@@ -23,7 +24,7 @@ def command(bot, evt):
     parse(evt)
     func = getattr(Commands, evt.cmd, None)
     if func and evt.txt:
-        if "target" not in dir(func) or func.target in fqn(bot):
+        if "target" not in dir(func) or skip(fqn(bot).split(".")[-1].lower(), func.target):
             func(evt)
             bot.show(evt)
     ready(evt)

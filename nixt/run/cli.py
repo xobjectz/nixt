@@ -5,9 +5,11 @@
 "command line interface"
 
 
-from .cmds   import command
+from ..cmds   import command
+from ..object import Object
+
+
 from .handle import Handler
-from .object import Object
 
 
 class CLI(Handler):

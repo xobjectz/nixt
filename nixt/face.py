@@ -6,16 +6,17 @@
 "interface"
 
 
-from . import cache, cli, cmds, defer, event, handle, main
+from . import cache, cmds, defer, event
 from . import log, parse, disk, repeat, launch, timer, utils
 
 
+from .run import cli, handle, main
+
+
 from .cache  import *
-from .cli    import *
 from .cmds   import *
 from .defer  import *
 from .event  import *
-from .handle import *
 from .log    import *
 from .object import *
 from .parse  import *
@@ -24,7 +25,11 @@ from .repeat import *
 from .launch import *
 from .timer  import *
 from .utils  import *
-from .main   import *
+
+
+from .run.cli    import *
+from .run.handle import *
+from .run.main   import *
 
 
 def __dir__():
@@ -62,6 +67,7 @@ def __dir__():
         'last',
         'later',
         'launch',
+        'len',
         'long',
         'modnames',
         'named',

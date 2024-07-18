@@ -18,8 +18,7 @@ class Fleet(Object):
 
 def announce(txt):
     "announce on all bots."
-    for bot in all(Fleet):
-        print(bot, txt)
+    for _name, bot in all(Fleet):
         if "announce" in dir(bot):
             bot.announce(txt)
 

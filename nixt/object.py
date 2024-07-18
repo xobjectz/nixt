@@ -33,7 +33,7 @@ def add(obj, obj2):
 
 def all(obj):
     "return all values."
-    return list(values(obj))
+    return list((x, getattr(obj,x)) for x in dir(obj) if not x.startswith("__"))
 
 
 def construct(obj, *args, **kwargs):

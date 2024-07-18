@@ -5,7 +5,7 @@
 "main"
 
 
-from .main import cli
+from .run.main import cli
 
 
 if __name__ == "__main__":

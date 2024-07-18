@@ -4,10 +4,12 @@
 "console"
 
 
-from .cli    import CLI
-from .event  import Event, wait
-from .object import register
-from .run    import fleet
+from ..event  import Event, wait
+from ..object import register
+
+
+from .cli import CLI
+from .    import fleet
 
 
 class Console(CLI):

@@ -10,9 +10,9 @@ import threading
 import _thread
 
 
-from .event  import ready
-from .object import Object
-from .launch import launch
+from ..event  import ready
+from ..object import Object
+from ..launch import launch
 
 
 class Handler:

@@ -85,4 +85,4 @@ def req(event):
     reply(event, __doc__)
 
 
-req.target = "cli"
+req.target = "cli,console"
