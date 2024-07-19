@@ -1,7 +1,7 @@
-#grep -R nixt nixt
+grep -R nixt nixt
 grep -R "print(" nixt 
 grep -R __import__ nixt 
 grep -R importlib nixt 
 grep -R sys nixt 
 grep -R "import sys" nixt 
-grep -R "import os" nixt 
+#grep -R "import os" nixt 
