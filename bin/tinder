@@ -40,7 +40,7 @@ NRS = 1
 NRCOMMAND = 1
 PERCALL   = 1
 STARTTIME = time.time()
-CLI.out   = print
+Client.out   = print
 
 
 Cfg         = Default()
@@ -77,7 +77,7 @@ param.tdo = ["mekker"]
 param.ver = [""]
 
 
-class CLI(CLI):
+class CLI(Client):
 
     "command line interface."
 
