@@ -9,7 +9,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "nixt"
 description = "you have been nixt."
-version = "12"
+version = "13"
 authors = [
     {name = "xobjectz", email = "objx@proton.me"},
 ]
@@ -24,12 +24,6 @@ classifiers = [
 ]
 
 
-[project.scripts]
-"nixt"   = "nixt.main:cli"
-"nixtd"  = "nixt.main:background"
-"nixtsh" = "nixt.main:terminal"
-
-
 [project.urls]
 "home" = "https://pypi.org/project/nixt"
 "bugs" = "https://github.com/xobjectz/nixt/issues"
@@ -37,6 +31,11 @@ classifiers = [
 
 
 [tool.setuptools]
+script-files = [
+    'bin/nixt',
+    'bin/nixtc',
+    'bin/nixtd'
+]
 packages = [
     'nixt',
     'nixt.modules',
