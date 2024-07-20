@@ -2,7 +2,7 @@
 # pylint: disable=W0212,W0718
 
 
-"handler"
+"reacting"
 
 
 import queue
@@ -16,7 +16,7 @@ from .thread import launch
 
 class Reactor:
 
-    "Handler"
+    "Reactor"
 
     def __init__(self):
         self.cbs      = Object()
@@ -64,5 +64,5 @@ class Reactor:
 
 def __dir__():
     return (
-        'Handler',
+        'Reactor',
     )

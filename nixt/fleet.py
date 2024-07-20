@@ -14,23 +14,27 @@ class Fleet(Object):
 
     "Fleet"
 
+    bots = []
+
     def all(self):
         "return all objects."
-        return values(self)
+        return self.bots
 
     def announce(self, txt):
         "announce on all bots."
-        for bot in values(self):
+        for bot in self.bots:
             if "announce" in dir(bot):
                 bot.announce(txt)
 
     def get(self, orig):
         "return bot."
-        return getattr(self, orig, None)
+        for x in self.bots:
+            if rpr(x) == orig:
+                return x
 
     def register(self, obj):
         "add bot."
-        setattr(self, rpr(obj), obj)
+        self.bots.append(obj)
 
 
 def __dir__():

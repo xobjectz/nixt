@@ -7,6 +7,7 @@
 from .cache import Cache
 from .fleet import Fleet
 
+
 cache = Cache()
 fleet = Fleet()
 

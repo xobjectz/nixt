@@ -159,5 +159,6 @@ def __dir__():
         'skel',
         'store',
         'sync',
-        'types'
+        'types',
+        'whitelist'
     )
