@@ -4,7 +4,7 @@
 "list of bots."
 
 
-from .object import Object, values
+from .object import Object
 
 
 rpr = object.__repr__
@@ -28,9 +28,12 @@ class Fleet(Object):
 
     def get(self, orig):
         "return bot."
-        for x in self.bots:
-            if rpr(x) == orig:
-                return x
+        res = None
+        for bot in self.bots:
+            if rpr(bot) == orig:
+                res = bot
+                break
+        return res
 
     def register(self, obj):
         "add bot."
