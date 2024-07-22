@@ -53,7 +53,8 @@ def daemon(verbose=False):
             os.dup2(ses.fileno(), sys.stderr.fileno())
     os.umask(0)
     os.chdir("/")
-
+    os.nice(10)
+    
 
 def privileges(username):
     "drop privileges."

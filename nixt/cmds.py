@@ -32,7 +32,7 @@ def command(bot, evt):
     "check for and run a command."
     parse(evt)
     func = getattr(Commands.cmds, evt.cmd, None)
-    if func and evt.txt:
+    if func:
         if "target" not in dir(func) or skip(fqn(bot).split(".")[-1].lower(), func.target):
             func(evt)
             bot.show(evt)

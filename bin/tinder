@@ -91,7 +91,7 @@ def consume(evts):
     fixed = []
     res = []
     for evt in evts:
-        res.append(wait(evt))
+        res.append(evt.wait())
         fixed.append(evt)
     for fff in fixed:
         try:
@@ -103,7 +103,7 @@ def consume(evts):
 
 def payload(clt):
     "do payload."
-    cmdz = list([x[0] for x in all(Commands)])
+    cmdz = Commands.cmds
     with paylock:
         nmr = 0
         for cmdd in cmdz:
@@ -137,7 +137,7 @@ def wrap(function):
 
 def main():
     "main"
-    Logging.out = Errors.out = print
+    enable(print)
     Cfg.dis = Cfg.sets.dis
     Cfg.mod = ",".join(modnames(modules, user, mods))
     if "v" in Cfg.opts:
@@ -145,7 +145,7 @@ def main():
         print(f'{dte} {Cfg.name.upper()} {Cfg.opts.upper()} {Cfg.mod.upper()}'.replace("  ", " "))
     scan(Cfg.mod, modules, user, mods)
     nrs = Cfg.index or 1
-    nrcommand = len(all(Commands)) or 1
+    nrcommand = len(Commands.cmds) or 1
     clt = CLI()
     clt.start()
     clt.threaded = "t" in Cfg.opts
