@@ -11,16 +11,15 @@ import _thread
 
 
 from .object import Object
-from .pool   import Pool
+from .run    import pool
 from .thread import launch
 
 
-class Reactor(Pool):
+class Reactor:
 
     "Reactor"
 
     def __init__(self):
-        Pool.__init__(self, 6)
         self.cbs      = Object()
         self.queue    = queue.Queue()
         self.stopped  = threading.Event()
@@ -32,7 +31,7 @@ class Reactor(Pool):
         if not func:
             evt.ready()
             return
-        self.work(func, self, evt)
+        evt._thr = launch(func, self, evt)
 
     def loop(self):
         "proces events until interrupted."
