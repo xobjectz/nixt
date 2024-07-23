@@ -16,8 +16,7 @@ import time
 import _thread
 
 
-from ..client import Client
-from ..cmds   import command
+from ..client import Client, command
 from ..dft    import Default
 from ..errors import later
 from ..event  import Event

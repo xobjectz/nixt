@@ -11,7 +11,6 @@ import _thread
 
 
 from .object import Object
-from .run    import pool
 from .thread import launch
 
 

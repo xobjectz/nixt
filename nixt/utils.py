@@ -5,9 +5,10 @@
 "utilities"
 
 
+import os
 import pathlib
 import time
-import types
+import types as rtypes
 import _thread
 
 
@@ -83,6 +84,17 @@ def laps(seconds, short=True):
     return txt
 
 
+def long(name):
+    "match from single name to long name."
+    split = name.split(".")[-1].lower()
+    res = name
+    for names in types():
+        if split == names.split(".")[-1].lower():
+            res = names
+            break
+    return res
+
+
 def modnames(*args):
     "return module names."
     res = []
@@ -93,7 +105,7 @@ def modnames(*args):
 
 def named(obj):
     "return a full qualified name of an object/function/module."
-    if isinstance(obj, types.ModuleType):
+    if isinstance(obj, rtypes.ModuleType):
         return obj.__name__
     typ = type(obj)
     if '__builtins__' in dir(typ):
@@ -108,6 +120,15 @@ def named(obj):
         return f'{obj.__class__.__name__}.{obj.__name__}'
     return None
 
+
+def pidfile(pid):
+    "write the pid to a file."
+    if os.path.exists(pid):
+        os.unlink(pid)
+    path = pathlib.Path(pid)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(pid, "w", encoding="utf-8") as fds:
+        fds.write(str(os.getpid()))
 
 def skip(name, skipp):
     "check for skipping"
@@ -129,6 +150,12 @@ def spl(txt):
 def strip(pth, nmr=3):
     "reduce to path with directory."
     return SEP.join(pth.split(SEP)[-nmr:])
+
+
+def types():
+    "return types stored."
+    return [x.name for x in os.listdir(store())]
+
 
 
 def __dir__():

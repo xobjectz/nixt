@@ -21,37 +21,24 @@ class Commands:
     modnames = Object()
 
 
-def add(func):
-    "add command."
-    setattr(Commands.cmds, func.__name__, func)
-    if func.__module__ != "__main__":
-        setattr(Commands.modnames, func.__name__, func.__module__)
+    @staticmethod
+    def add(func):
+        "add command."
+        setattr(Commands.cmds, func.__name__, func)
+        if func.__module__ != "__main__":
+            setattr(Commands.modnames, func.__name__, func.__module__)
 
-
-def command(bot, evt):
-    "check for and run a command."
-    parse(evt)
-    func = getattr(Commands.cmds, evt.cmd, None)
-    if func:
-        if "target" not in dir(func) or skip(fqn(bot).split(".")[-1].lower(), func.target):
-            func(evt)
-            bot.show(evt)
-    evt.ready()
-
-
-def scancmd(mod) -> None:
-    "scan module for commands."
-    for key, cmd in inspect.getmembers(mod, inspect.isfunction):
-        if key.startswith("cb"):
-            continue
-        if 'event' in cmd.__code__.co_varnames:
-            add(cmd)
+    @staticmethod
+    def scan(mod) -> None:
+        "scan module for commands."
+        for key, cmd in inspect.getmembers(mod, inspect.isfunction):
+            if key.startswith("cb"):
+                continue
+            if 'event' in cmd.__code__.co_varnames:
+                Commands.add(cmd)
 
 
 def __dir__():
     return (
         'Commands',
-        'add',
-        'command',
-        'scancmd'
     )
