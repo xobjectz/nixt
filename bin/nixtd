@@ -14,9 +14,9 @@ import sys
 
 from nixt.cfg    import Config
 from nixt.errors import errors, later
-from nixt.disk   import Persist, pidfile, skel
+from nixt.disk   import Persist, skel
 from nixt.main   import enable, init
-from nixt.utils  import forever
+from nixt.utils  import forever, pidfile
 
 
 from nixt import modules, user
@@ -54,7 +54,7 @@ def daemon(verbose=False):
     os.umask(0)
     os.chdir("/")
     os.nice(10)
-    
+
 
 def privileges(username):
     "drop privileges."

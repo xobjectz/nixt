@@ -1,5 +1,5 @@
 # This file is placed in the Public Domain.
-# pylint: disable=R0903
+# pylint: disable=R0903,W0105
 
 
 "persistence"
@@ -15,7 +15,7 @@ from .dft    import Default
 from .encode import write
 from .object import Object, fqn, ident, search, update
 from .lock   import disklock
-from .utils  import fntime, long, pidfile, strip, types
+from .utils  import fntime, strip
 
 
 class Persist(Object):
@@ -33,25 +33,7 @@ class Persist(Object):
                 continue
             if not issubclass(clz, Object):
                 continue
-            Persist.whitelist(clz)
-
-    @staticmethod
-    def skel():
-        "create directory,"
-        stor = os.path.join(Persist.workdir, "store", "")
-        path = pathlib.Path(stor)
-        path.mkdir(parents=True, exist_ok=True)
-
-    def store(pth=""):
-        "return objects directory."
-        stor = os.path.join(Persist.workdir, "store", "")
-        if not os.path.exists(stor):
-            skel()
-        return os.path.join(Persist.workdir, "store", pth)
-
-    def whitelist(clz):
-        "whitelist classes."
-        Persist.fqns.append(fqn(clz))
+            whitelist(clz)
 
 
 "methods"
@@ -60,7 +42,7 @@ class Persist(Object):
 def fetch(obj, pth):
     "read object from disk."
     with disklock:
-        pth2 = Persist.store(pth)
+        pth2 = store(pth)
         read(obj, pth2)
         return os.sep.join(pth.split(os.sep)[-3:])
 
@@ -86,7 +68,7 @@ def sync(obj, pth=None):
     with disklock:
         if pth is None:
             pth = ident(obj)
-        pth2 = Persist.store(pth)
+        pth2 = store(pth)
         write(obj, pth2)
         return pth
 
@@ -97,7 +79,7 @@ def sync(obj, pth=None):
 def fns(mtc=""):
     "show list of files."
     dname = ''
-    pth = Persist.store(mtc)
+    pth = store(mtc)
     for rootdir, dirs, _files in os.walk(pth, topdown=False):
         if dirs:
             for dname in sorted(dirs):
@@ -135,10 +117,29 @@ def find(mtc, selector=None, index=None, deleted=False):
         yield (fnm, obj)
 
 
+def skel():
+    "create directory,"
+    stor = os.path.join(Persist.workdir, "store", "")
+    path = pathlib.Path(stor)
+    path.mkdir(parents=True, exist_ok=True)
+
+
+def store(pth=""):
+    "return objects directory."
+    stor = os.path.join(Persist.workdir, "store", "")
+    if not os.path.exists(stor):
+        skel()
+    return os.path.join(Persist.workdir, "store", pth)
+
+
 def types():
     "return types stored."
-    return os.listdir(Persist.store())
+    return os.listdir(store())
 
+
+def whitelist(clz):
+    "whitelist classes."
+    Persist.fqns.append(fqn(clz))
 
 
 "interface"

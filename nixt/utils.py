@@ -84,17 +84,6 @@ def laps(seconds, short=True):
     return txt
 
 
-def long(name):
-    "match from single name to long name."
-    split = name.split(".")[-1].lower()
-    res = name
-    for names in types():
-        if split == names.split(".")[-1].lower():
-            res = names
-            break
-    return res
-
-
 def modnames(*args):
     "return module names."
     res = []
@@ -150,12 +139,6 @@ def spl(txt):
 def strip(pth, nmr=3):
     "reduce to path with directory."
     return SEP.join(pth.split(SEP)[-nmr:])
-
-
-def types():
-    "return types stored."
-    return [x.name for x in os.listdir(store())]
-
 
 
 def __dir__():
