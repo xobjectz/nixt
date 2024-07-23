@@ -8,11 +8,15 @@ import getpass
 import os
 
 
+from ..disk import skel
+
+
 NAME = __file__.split(os.sep)[-3]
 
 
 def skl(event):
     "create service file (pipx)."
+    skel()
     if event.args:
         user = event.args[0]
     else:
