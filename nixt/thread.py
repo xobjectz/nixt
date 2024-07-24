@@ -11,6 +11,7 @@ import time
 
 
 from .errors import later
+from .event  import Event
 from .utils  import named
 
 
@@ -24,14 +25,14 @@ class Thread(threading.Thread):
     def __init__(self, func, thrname, *args, daemon=True, **kwargs):
         super().__init__(None, self.run, thrname, (), {}, daemon=daemon)
         self._result   = None
-        self.name      = thrname or named(func)
+        self.name      = thrname or (func and named(func)) or named(self).split(".")[-1]
         self.out       = None
         self.queue     = queue.Queue()
         self.sleep     = None
-        self.running   = True
         self.starttime = time.time()
         self.throttle  = 0.002
-        self.queue.put_nowait((func, args))
+        if func:
+            self.queue.put_nowait((func, args))
 
     def __iter__(self):
         return self
@@ -56,10 +57,9 @@ class Thread(threading.Thread):
             self._result = func(*args)
         except Exception as ex:
             later(ex)
-        try:
-            args[1].ready()
-        except (AttributeError, IndexError):
-            pass
+            for arg in args:
+                if isinstance(arg, Event):
+                    arg.ready()
 
 
 def launch(func, *args, **kwargs):

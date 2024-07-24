@@ -49,7 +49,6 @@ def command(bot, evt):
     evt.ready()
 
 
-
 def __dir__():
     return (
        'Client',

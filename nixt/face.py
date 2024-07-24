@@ -13,13 +13,13 @@ from . import log, parse, disk, repeat, thread, timer, utils
 from .cache  import *
 from .client import *
 from .cmds   import *
+from .disk   import *
 from .errors import *
 from .event  import *
 from .log    import *
 from .main   import *
 from .object import *
 from .parse  import *
-from .disk   import *
 from .react  import *
 from .repeat import *
 from .thread import *
