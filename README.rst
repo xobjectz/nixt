@@ -13,7 +13,12 @@ SYNOPSIS
 
 ::
 
-    $ sudo pip install nixt
+    $ pipx install nixt
+    $ pipx ensurepath
+    $ nixt skl
+    $ nixt srv > nixt.service
+    $ sudo mv nixt.service > /etc/systemd/system/
+    $ systemctl enable nixt --now
 
 
 DESCRIPTION

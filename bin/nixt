@@ -6,6 +6,7 @@
 "main"
 
 
+import getpass
 import os
 import sys
 
@@ -18,7 +19,7 @@ from nixt.errors import errors
 from nixt.disk   import Persist
 from nixt.main   import cmnd, enable, scan
 from nixt.parse  import parse
-from nixt.utils  import modnames
+from nixt.utils  import modnames, privileges
 
 
 from nixt import modules, user
@@ -29,6 +30,7 @@ Cfg.dis     = ""
 Cfg.mod     = "mod,cmd,err,skl,thr"
 Cfg.name    = "nixt"
 Cfg.opts    = ""
+Cfg.user    = getpass.getuser()
 Cfg.wdr     = os.path.expanduser(f"~/.{Cfg.name}")
 Cfg.pidfile = os.path.join(Cfg.wdr, f"{Cfg.name}.pid")
 
@@ -40,6 +42,7 @@ def main():
     "main"
     enable(print)
     parse(Cfg, " ".join(sys.argv[1:]))
+    #privileges(Cfg.user)
     Cfg.dis = Cfg.sets.dis
     Cfg.mod = ",".join(modnames(modules, user))
     scan(Cfg.mod, modules, user)

@@ -7,6 +7,7 @@
 
 import os
 import pathlib
+import pwd
 import time
 import types as rtypes
 import _thread
@@ -118,6 +119,14 @@ def pidfile(pid):
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(pid, "w", encoding="utf-8") as fds:
         fds.write(str(os.getpid()))
+
+
+def privileges(username):
+    "drop privileges."
+    pwnam = pwd.getpwnam(username)
+    os.setgid(pwnam.pw_gid)
+    os.setuid(pwnam.pw_uid)
+
 
 def skip(name, skipp):
     "check for skipping"

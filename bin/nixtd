@@ -16,7 +16,7 @@ from nixt.cfg    import Config
 from nixt.errors import errors, later
 from nixt.disk   import Persist, skel
 from nixt.main   import enable, init
-from nixt.utils  import forever, pidfile
+from nixt.utils  import forever, pidfile, privileges
 
 
 from nixt import modules, user
@@ -56,13 +56,6 @@ def daemon(verbose=False):
     os.nice(10)
 
 
-def privileges(username):
-    "drop privileges."
-    pwnam = pwd.getpwnam(username)
-    os.setgid(pwnam.pw_gid)
-    os.setuid(pwnam.pw_uid)
-
-
 def wrap(func):
     "catch exceptions"
     try:
@@ -77,11 +70,12 @@ def wrap(func):
 def main():
     "main"
     daemon("-v" in sys.argv)
+    privileges(Cfg.user)
     skel()
     pidfile(Cfg.pidfile)
-    privileges(Cfg.user)
     if "-v" in sys.argv:
         enable(print)
+    scan(Cfg.mod, modules, user)
     init(Cfg.mod, modules, user)
     forever()
 
