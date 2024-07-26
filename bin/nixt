@@ -19,7 +19,7 @@ from nixt.errors import errors
 from nixt.disk   import Persist
 from nixt.main   import cmnd, enable, scan
 from nixt.parse  import parse
-from nixt.utils  import modnames, privileges
+from nixt.utils  import modnames
 
 
 from nixt import modules, user
@@ -42,7 +42,6 @@ def main():
     "main"
     enable(print)
     parse(Cfg, " ".join(sys.argv[1:]))
-    #privileges(Cfg.user)
     Cfg.dis = Cfg.sets.dis
     Cfg.mod = ",".join(modnames(modules, user))
     scan(Cfg.mod, modules, user)

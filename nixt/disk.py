@@ -122,6 +122,7 @@ def skel():
     stor = os.path.join(Persist.workdir, "store", "")
     path = pathlib.Path(stor)
     path.mkdir(parents=True, exist_ok=True)
+    return path
 
 
 def store(pth=""):

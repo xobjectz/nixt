@@ -5,7 +5,6 @@
 
 
 import getpass
-import os
 
 
 from ..disk  import skel
@@ -15,4 +14,5 @@ from ..utils import privileges
 def skl(event):
     "create service file (pipx)."
     privileges(getpass.getuser())
-    skel()
+    path = skel()
+    event.reply(f"{path}")

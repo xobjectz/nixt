@@ -8,14 +8,13 @@
 
 import getpass
 import os
-import pwd
 import sys
 
 
 from nixt.cfg    import Config
 from nixt.errors import errors, later
 from nixt.disk   import Persist, skel
-from nixt.main   import enable, init
+from nixt.main   import enable, init, scan
 from nixt.utils  import forever, pidfile, privileges
 
 
