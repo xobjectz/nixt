@@ -17,10 +17,10 @@ sys.path.insert(0, os.getcwd())
 from nixt.cfg    import Config
 from nixt.cmds   import Commands
 from nixt.errors import errors
-from nixt.disk   import Persist
+from nixt.disk   import Persist, skel
 from nixt.main   import cmnd, enable, scan
 from nixt.parse  import parse
-from nixt.utils  import modnames
+from nixt.utils  import modnames, privileges
 
 
 from nixt import modules, user
@@ -42,8 +42,7 @@ Persist.workdir = Cfg.wdr
 def skl(event):
     "create service file (pipx)."
     privileges(getpass.getuser())
-    path = skel()
-    event.reply(f"{path}")
+    skel()
 
 
 def srv(event):
