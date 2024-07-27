@@ -6,7 +6,7 @@
 "interface"
 
 
-from . import cache, client, cmds, errors, event, main, react
+from . import cache, client, cmds, errors, event, react
 from . import log, parse, disk, repeat, thread, timer, utils
 
 
