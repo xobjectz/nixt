@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # This file is placed in the Public Domain.
-# pylint: disable=C0413,W0212,E0401
+# pylint: disable=C0413,W0212,W0613,E0401
 
 
 "main"
@@ -48,9 +48,9 @@ def skl(event):
 def srv(event):
     "create service file (pipx)."
     if event.args:
-        user = event.args[0]
+        username = event.args[0]
     else:
-        user  = getpass.getuser()
+        username  = getpass.getuser()
     txt = f"""[Unit]
 Description={Cfg.name.upper()}
 Requires=network-online.target
@@ -58,10 +58,10 @@ After=network-online.target
 
 [Service]
 Type=simple
-User={user}
-Group={user}
-WorkingDirectory=/home/{user}/.{Cfg.name}
-ExecStart=/home/{user}/.local/bin/{Cfg.name}d
+User={username}
+Group={username}
+WorkingDirectory=/home/{username}/.{Cfg.name}
+ExecStart=/home/{username}/.local/bin/{Cfg.name}d
 ExitType=cgroup
 RemainAfterExit=yes
 
