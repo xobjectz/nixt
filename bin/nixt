@@ -15,6 +15,7 @@ sys.path.insert(0, os.getcwd())
 
 
 from nixt.cfg    import Config
+from nixt.cmds   import Commands
 from nixt.errors import errors
 from nixt.disk   import Persist
 from nixt.main   import cmnd, enable, scan
@@ -38,10 +39,44 @@ Cfg.pidfile = os.path.join(Cfg.wdr, f"{Cfg.name}.pid")
 Persist.workdir = Cfg.wdr
 
 
+def skl(event):
+    "create service file (pipx)."
+    privileges(getpass.getuser())
+    path = skel()
+    event.reply(f"{path}")
+
+
+def srv(event):
+    "create service file (pipx)."
+    if event.args:
+        user = event.args[0]
+    else:
+        user  = getpass.getuser()
+    txt = f"""[Unit]
+Description={Cfg.name.upper()}
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User={user}
+Group={user}
+WorkingDirectory=/home/{user}/.{Cfg.name}
+ExecStart=/home/{user}/.local/bin/{Cfg.name}d
+ExitType=cgroup
+RemainAfterExit=yes
+
+[Install]
+WantedBy=default.target"""
+    event.reply(txt)
+
+
 def main():
     "main"
-    enable(print)
     parse(Cfg, " ".join(sys.argv[1:]))
+    Commands.add(skl)
+    Commands.add(srv)
+    enable(print)
     Cfg.dis = Cfg.sets.dis
     Cfg.mod = ",".join(modnames(modules, user))
     scan(Cfg.mod, modules, user)
