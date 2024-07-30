@@ -8,8 +8,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nixt"
-description = "you have been nixt."
-version = "13"
+description = "you have been nixt!"
+version = "15"
 authors = [
     {name = "xobjectz", email = "objx@proton.me"},
 ]
@@ -47,6 +47,7 @@ zip-safe=true
 [tool.setuptools.data-files]
 "share/doc/nixt" = [
     "README.rst",
+    "MANUAL.rst"
 ]
 
 
